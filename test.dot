@@ -1,0 +1,28 @@
+digraph G {
+	subgraph cluster_0 {
+		L0_0;
+		L0_1;
+		L0_b;
+	}
+	subgraph cluster_1 {
+		L1_0;
+		L1_1;
+		L1_b;
+	}
+	subgraph cluster_2 {
+		L2_0;
+		L2_1;
+	}
+	L0_0->L1_0 [label = "A0,0 : 1.20489" ];
+	L0_1->L1_0 [label = "A1,0 : 1.2048" ];
+	L0_b->L1_0 [label = "b0 : -1.66372" ];
+	L0_0->L1_1 [label = "A0,1 : 2.37906" ];
+	L0_1->L1_1 [label = "A1,1 : 2.37892" ];
+	L0_b->L1_1 [label = "b1 : -0.925985" ];
+	L1_0->L2_0 [label = "A0,0 : 1.70386" ];
+	L1_1->L2_0 [label = "A1,0 : -1.58777" ];
+	L1_b->L2_0 [label = "b0 : 2.15861" ];
+	L1_0->L2_1 [label = "A0,1 : -1.85166" ];
+	L1_1->L2_1 [label = "A1,1 : 1.67728" ];
+	L1_b->L2_1 [label = "b1 : -0.496709" ];
+}

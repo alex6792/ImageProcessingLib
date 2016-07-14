@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="ImageProcessingLib" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/ImageProcessingLib" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/ImageProcessingLib" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="../../../../../SDL2-2.0.4/i686-w64-mingw32/include" />
+			<Add directory="../../../../../Program Files (x86)/GnuWin32/include" />
+		</Compiler>
+		<Linker>
+			<Add library="..\..\..\..\..\Program Files (x86)\CodeBlocks\MinGW\lib\libmingw32.a" />
+			<Add library="..\..\..\..\..\SDL2-2.0.4\i686-w64-mingw32\lib\libSDL2main.a" />
+			<Add library="..\..\..\..\..\SDL2-2.0.4\i686-w64-mingw32\lib\libSDL2.dll.a" />
+			<Add library="..\..\..\..\..\Program Files (x86)\GnuWin32\lib\libjpeg.dll.a" />
+			<Add directory="../../../../../SDL2-2.0.4/i686-w64-mingw32/lib" />
+			<Add directory="../../../../../Program Files (x86)/GnuWin32/lib" />
+		</Linker>
+		<Unit filename="ImageProcessing/ImageIO/bmpIO.cpp" />
+		<Unit filename="ImageProcessing/ImageIO/bmpIO.hpp" />
+		<Unit filename="ImageProcessing/ImageIO/gifIO.cpp" />
+		<Unit filename="ImageProcessing/ImageIO/gifIO.hpp" />
+		<Unit filename="ImageProcessing/ImageIO/icoIO.cpp" />
+		<Unit filename="ImageProcessing/ImageIO/icoIO.hpp" />
+		<Unit filename="ImageProcessing/ImageIO/jpegIO.cpp" />
+		<Unit filename="ImageProcessing/ImageIO/jpegIO.hpp" />
+		<Unit filename="ImageProcessing/ImageIO/lodepng/lodepng.cpp" />
+		<Unit filename="ImageProcessing/ImageIO/lodepng/lodepng.h" />
+		<Unit filename="ImageProcessing/ImageIO/pngIO.cpp" />
+		<Unit filename="ImageProcessing/ImageIO/pngIO.hpp" />
+		<Unit filename="ImageProcessing/ImageIO/pnmIO.cpp" />
+		<Unit filename="ImageProcessing/ImageIO/pnmIO.hpp" />
+		<Unit filename="ImageProcessing/ImageIO/tgaIO.cpp" />
+		<Unit filename="ImageProcessing/ImageIO/tgaIO.hpp" />
+		<Unit filename="ImageProcessing/ImageIO/tiffIO.cpp" />
+		<Unit filename="ImageProcessing/ImageIO/tiffIO.hpp" />
+		<Unit filename="ImageProcessing/color.cpp" />
+		<Unit filename="ImageProcessing/color.hpp" />
+		<Unit filename="ImageProcessing/fourier.cpp" />
+		<Unit filename="ImageProcessing/fourier.hpp" />
+		<Unit filename="ImageProcessing/imgconverter.cpp" />
+		<Unit filename="ImageProcessing/imgconverter.hpp" />
+		<Unit filename="ImageProcessing/linear_filtering.cpp" />
+		<Unit filename="ImageProcessing/linear_filtering.hpp" />
+		<Unit filename="ImageProcessing/morphology.cpp" />
+		<Unit filename="ImageProcessing/morphology.hpp" />
+		<Unit filename="ImageProcessing/nonlinear_filtering.cpp" />
+		<Unit filename="ImageProcessing/nonlinear_filtering.hpp" />
+		<Unit filename="ImageProcessing/snake.cpp" />
+		<Unit filename="ImageProcessing/snake.hpp" />
+		<Unit filename="MachineLearning/Clustering/affinitypropagation.cpp" />
+		<Unit filename="MachineLearning/Clustering/affinitypropagation.hpp" />
+		<Unit filename="MachineLearning/Clustering/gmm.cpp" />
+		<Unit filename="MachineLearning/Clustering/gmm.hpp" />
+		<Unit filename="MachineLearning/Clustering/hierarchicalclustering.cpp" />
+		<Unit filename="MachineLearning/Clustering/hierarchicalclustering.hpp" />
+		<Unit filename="MachineLearning/Clustering/kmeans.cpp" />
+		<Unit filename="MachineLearning/Clustering/kmeans.hpp" />
+		<Unit filename="MachineLearning/Clustering/kmedoids.cpp" />
+		<Unit filename="MachineLearning/Clustering/kmedoids.hpp" />
+		<Unit filename="MachineLearning/Clustering/meanshift.cpp" />
+		<Unit filename="MachineLearning/Clustering/meanshift.hpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/bernoulli_naive_bayes.cpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/bernoulli_naive_bayes.hpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/dtree.cpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/dtree.hpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/gaussian_naive_bayes.cpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/gaussian_naive_bayes.hpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/knn.cpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/knn.hpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/mlp.cpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/mlp.hpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/perceptron.cpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/perceptron.hpp" />
+		<Unit filename="MachineLearning/pca.cpp" />
+		<Unit filename="MachineLearning/pca.hpp" />
+		<Unit filename="MachineLearning/scaler.cpp" />
+		<Unit filename="MachineLearning/scaler.hpp" />
+		<Unit filename="csvIO.hpp" />
+		<Unit filename="csvIO.tcc" />
+		<Unit filename="file_explorer.cpp" />
+		<Unit filename="file_explorer.hpp" />
+		<Unit filename="linalg.hpp" />
+		<Unit filename="linalg.tcc" />
+		<Unit filename="logical_operators.cpp" />
+		<Unit filename="logical_operators.hpp" />
+		<Unit filename="main.cpp" />
+		<Unit filename="matrix.hpp" />
+		<Unit filename="matrix.tcc" />
+		<Unit filename="mmath.hpp" />
+		<Unit filename="mmath.tcc" />
+		<Unit filename="polynomial_equation_solver.hpp" />
+		<Unit filename="regression.hpp" />
+		<Unit filename="regression.tcc" />
+		<Unit filename="statistics.hpp" />
+		<Unit filename="statistics.tcc" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
