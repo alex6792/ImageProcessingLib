@@ -7,13 +7,14 @@
 
 MLP::MLP(const std::vector<int>& hidden_layers_sizes_arg)
 {
-    alpha = 0.003;
-    max_iteration = 20000;
+    alpha = 0.01;
+    max_iteration = 200;
     nb_clusters = -1;
     nb_features = -1;
 
     hidden_layers_sizes = hidden_layers_sizes_arg;
     nb_hidden_layers = hidden_layers_sizes.size()+1;
+
     //activation_fct = [](float value){return 1.0f/(1.0f+std::exp(-value));};
     //activation_fct_der = [](float value){float temp = 1.0f/(1.0f+std::exp(-value)); return temp*(1.0f-temp);};
 
@@ -71,13 +72,17 @@ void MLP::fit(const Matrix<float>& M, const Matrix<int>& label)
     nb_clusters = max(label)+1;
     hidden_layers_sizes.push_back(nb_clusters);
     nb_hidden_layers = hidden_layers_sizes.size();
+
     Matrix<float> true_labels = zeros<float>(nb_samples, nb_clusters);
     for(int i=0;i<nb_samples;++i)
         true_labels(i, label(i, 0)) = 1.0f;
+
+    std::cout<<true_labels<<std::endl;
     y = std::vector<Matrix<float> >(nb_hidden_layers);
     z = std::vector<Matrix<float> >(nb_hidden_layers+1);
     A = std::vector<Matrix<float> >(nb_hidden_layers);
     biases = std::vector<Matrix<float> >(nb_hidden_layers);
+
     A[0] = Matrix<float>(rand<int>(nb_features, hidden_layers_sizes[0])%10)/10.0f;
     for(int i=1;i<nb_hidden_layers;++i)
         A[i] = Matrix<float>(rand<int>(hidden_layers_sizes[i-1], hidden_layers_sizes[i])%10)/10.0f;
@@ -88,6 +93,11 @@ void MLP::fit(const Matrix<float>& M, const Matrix<int>& label)
     //biases[0] = {{0.5, -0.5}};
     for(int it=0;it<max_iteration;++it)
     {
+        //std::vector<Matrix<float> > sum_y_der(nb_hidden_layers);
+        std::vector<Matrix<float> > delta_A(nb_hidden_layers);
+        std::vector<Matrix<float> > delta_B(nb_hidden_layers);
+        float sse = 0.0f;
+
         for(int i=0;i<nb_samples;++i)
         {
 
@@ -100,16 +110,47 @@ void MLP::fit(const Matrix<float>& M, const Matrix<int>& label)
 
             z_der[nb_hidden_layers] = z[nb_hidden_layers]-cur_label;
             y_der[nb_hidden_layers-1] = apply<float, float>(y[nb_hidden_layers-1], activation_fct_der)*z_der[nb_hidden_layers];
+
+            sse+=sum(pow(z_der[nb_hidden_layers], 2.0f));
+            /*if(i!=0)
+                sum_y_der[nb_hidden_layers-1] += y_der[nb_hidden_layers-1];
+            else
+                sum_y_der[nb_hidden_layers-1] = y_der[nb_hidden_layers-1];*/
             for(int j=nb_hidden_layers-2;j>=0;--j)
             {
                 z_der[j+1] = dot(y_der[j+1], transpose(A[j+1]));
                 y_der[j] = apply<float, float>(y[j], activation_fct_der)*z_der[j+1];
+                /*if(i!=0)
+                    sum_y_der[j] += y_der[j];
+                else
+                    sum_y_der[j] = y_der[j];*/
             }
+
             for(int j=0;j<nb_hidden_layers;++j)
             {
-                A[j]-=alpha*dot(transpose(z[j]), y_der[j]);
-                biases[j]-=alpha*y_der[j];
+                //A[j]-=alpha*dot(transpose(z[j]), y_der[j]);
+                //std::cout<<alpha*dot(transpose(z[j]), y_der[j])<<std::endl;
+                //biases[j]-=alpha*y_der[j];
+                //std::cout<<alpha*y_der[j]<<std::endl;
+                if(i==0)
+                {
+                    delta_A[j] = alpha*dot(transpose(z[j]), y_der[j]);
+                    delta_B[j] = alpha*y_der[j];
+                }
+                else
+                {
+                    delta_A[j] += alpha*dot(transpose(z[j]), y_der[j]);
+                    delta_B[j] += alpha*y_der[j];
+                }
             }
+        }
+        std::cout<<sse<<std::endl;
+        std::cout<<delta_A[0]<<std::endl;
+        std::cout<<delta_B[0]<<std::endl;
+        for(int j=0;j<nb_hidden_layers;++j)
+        {
+            A[j]-=delta_A[j];
+            biases[j]-=delta_B[j];
         }
     }
 }

@@ -92,9 +92,6 @@ void show_matrix(SDL_Renderer* renderer, const Matrix<Color>& img)
     pColor = (Color*) malloc(sizeof(Color)*img.size());
     std::copy(img.cbegin(), img.cend(), pColor);
 
-    //std::deque<Color>::const_iterator it(img.cbegin());
-    //std::allocator<Color> al(img.mat.get_allocator());
-    //pColor = img.mat.get_allocator().address(img(0, 0));
     SDL_UpdateTexture(tex, NULL, pColor, img.colNb()*sizeof(Color));
     SDL_RenderCopy(renderer, tex, NULL, NULL);
     SDL_RenderPresent(renderer);
@@ -181,23 +178,32 @@ int main()
                             {15.0f, 40.0f, 5.0f, 30.0f}};
     Matrix<float> stddevs = {{1.0f, 2.0f, 3.0f, 4.0f},
                             {2.5f, 1.5f, 1.0f, 2.0f}};
-    stddevs = full<float>(2, 4, 1.5f);
+
+
+
+    /*Matrix<float> means = {{10.0f, 20.0f},
+                            {15.0f, 40.0f}};
+    Matrix<float> stddevs = {{1.0f, 2.0f},
+                            {2.5f, 1.5f}};*/
+
+    stddevs = full<float>(n_features, n_classes, 1.5f);
     for(int i=0;i<n_classes;++i)
     {
         for(int j=0;j<n_features;++j)
             Data.setSubmat(i*n_samples/n_classes, j, randn(n_samples/n_classes, 1, means(j, i), stddevs(j, i)));
         Labels.setSubmat(i*n_samples/n_classes, 0, full<int>(n_samples/n_classes, 1, i));
     }
+    Matrix<float> results;
 
     // test Affinity Propagation
-    std::cout<<"Affinity Propagation"<<std::endl;
+    /*std::cout<<"Affinity Propagation"<<std::endl;
     AffinityPropagation clf_affpro;
     Matrix<float> results = Matrix<float>(clf_affpro.fit_predict(Data));
     results.reshape(n_classes, n_samples/n_classes);
     std::cout<<histogram(Matrix<unsigned char>(results)).getCols(0, n_classes)<<std::endl;
     std::cout<<axismean(results, 1)<<std::endl;
     std::cout<<axisstdev(results, 1)<<std::endl;
-    std::cout<<clf_affpro.getCenters()<<std::endl;
+    std::cout<<clf_affpro.getCenters()<<std::endl;*/
 
     // test Kmeans
     std::cout<<"Kmeans"<<std::endl;
@@ -277,16 +283,20 @@ int main()
 
     ///// test MLP
     std::cout<<"MLP"<<std::endl;
+    StandardScaler ssc(1,1, 2);
+    Data = ssc.fit_transform(Data);
+    std::cout<<Data<<std::endl;
+    //return 0;
     int aaaa=0;
     while(aaaa++<1)
     {
-        std::vector<int> param = {2};
+        std::vector<int> param = {};
         for(unsigned i=0;i<param.size();++i)
             std::cout<<param[i];
         std::cout<<std::endl;
         MLP clf_mlp(param);
-        Data = {{0,0},{0,1},{1,0},{1,1}};
-        Labels = {{0},{1},{1},{0}};
+        //Data = {{0,0},{0,0},{0,0},{0,10},{10,0},{10,10}};
+        //Labels = {{0},{0},{0},{1},{1},{1}};
         //std::cout<<Data<<std::endl;
         //std::cout<<Labels<<std::endl;
         //clf_mlp.fit(Data, Labels);
