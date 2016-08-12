@@ -35,6 +35,7 @@
 #include "ImageProcessing/morphology.hpp"
 #include "ImageProcessing/snake.hpp"
 
+#include "ImageProcessing/ImageIO/imageIO.hpp"
 #include "ImageProcessing/ImageIO/bmpIO.hpp"
 #include "ImageProcessing/ImageIO/gifIO.hpp"
 #include "ImageProcessing/ImageIO/icoIO.hpp"
@@ -179,31 +180,31 @@ int main()
     Matrix<float> stddevs = {{1.0f, 2.0f, 3.0f, 4.0f},
                             {2.5f, 1.5f, 1.0f, 2.0f}};
 
-
+    Matrix<float> results;
 
     /*Matrix<float> means = {{10.0f, 20.0f},
                             {15.0f, 40.0f}};
     Matrix<float> stddevs = {{1.0f, 2.0f},
                             {2.5f, 1.5f}};*/
 
-    stddevs = full<float>(n_features, n_classes, 1.5f);
+    stddevs = full<float>(n_features, n_classes, 1.0f);
     for(int i=0;i<n_classes;++i)
     {
         for(int j=0;j<n_features;++j)
             Data.setSubmat(i*n_samples/n_classes, j, randn(n_samples/n_classes, 1, means(j, i), stddevs(j, i)));
         Labels.setSubmat(i*n_samples/n_classes, 0, full<int>(n_samples/n_classes, 1, i));
     }
-    Matrix<float> results;
+
 
     // test Affinity Propagation
-    /*std::cout<<"Affinity Propagation"<<std::endl;
+    std::cout<<"Affinity Propagation"<<std::endl;
     AffinityPropagation clf_affpro;
-    Matrix<float> results = Matrix<float>(clf_affpro.fit_predict(Data));
+    results = Matrix<float>(clf_affpro.fit_predict(Data));
     results.reshape(n_classes, n_samples/n_classes);
     std::cout<<histogram(Matrix<unsigned char>(results)).getCols(0, n_classes)<<std::endl;
     std::cout<<axismean(results, 1)<<std::endl;
     std::cout<<axisstdev(results, 1)<<std::endl;
-    std::cout<<clf_affpro.getCenters()<<std::endl;*/
+    std::cout<<clf_affpro.getCenters()<<std::endl;
 
     // test Kmeans
     std::cout<<"Kmeans"<<std::endl;
@@ -251,7 +252,7 @@ int main()
     MeanShift clf_meanshift = MeanShift();
     results = Matrix<float>(clf_meanshift.fit_predict(Data));
     results.reshape(n_classes, n_samples/n_classes);
-    std::cout<<histogram(Matrix<unsigned char>(results))/*.getCols(0, n_classes)*/<<std::endl;
+    std::cout<<histogram(Matrix<unsigned char>(results)).getCols(0, n_classes)<<std::endl;
     std::cout<<axismean(results, 1)<<std::endl;
     std::cout<<axisstdev(results, 1)<<std::endl;
 
@@ -285,30 +286,13 @@ int main()
     std::cout<<"MLP"<<std::endl;
     StandardScaler ssc(1,1, 2);
     Data = ssc.fit_transform(Data);
-    std::cout<<Data<<std::endl;
-    //return 0;
-    int aaaa=0;
-    while(aaaa++<1)
-    {
-        std::vector<int> param = {};
-        for(unsigned i=0;i<param.size();++i)
-            std::cout<<param[i];
-        std::cout<<std::endl;
-        MLP clf_mlp(param);
-        //Data = {{0,0},{0,0},{0,0},{0,10},{10,0},{10,10}};
-        //Labels = {{0},{0},{0},{1},{1},{1}};
-        //std::cout<<Data<<std::endl;
-        //std::cout<<Labels<<std::endl;
-        //clf_mlp.fit(Data, Labels);
-        results = Matrix<float>(clf_mlp.fit_predict(Data, Labels));
-        clf_mlp.export_graphviz("test.dot");
-        //std::cout<<results<<std::endl;
-        //std::cout<<histogram(Matrix<unsigned char>(results))<<std::endl;
-        std::cout<<count_nonzero(Matrix<int>(results) == Labels)<<std::endl;
-        //if(count_nonzero(Matrix<int>(results) == Labels)!=4)
-            //std::cout<<"erreur"<<std::endl;
-    }
+    std::vector<int> param = {};
+    MLP clf_mlp(param);
+    results = Matrix<float>(clf_mlp.fit_predict(Data, Labels));
+    clf_mlp.export_graphviz("test.dot");
+    std::cout<<count_nonzero(Matrix<int>(results) == Labels)<<std::endl;
 
+    return 0;
 
     ///// test Otsu
     Matrix<unsigned char> testimg = {{0,0,1,4,4,5},

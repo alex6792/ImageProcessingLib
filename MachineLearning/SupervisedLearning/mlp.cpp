@@ -77,7 +77,6 @@ void MLP::fit(const Matrix<float>& M, const Matrix<int>& label)
     for(int i=0;i<nb_samples;++i)
         true_labels(i, label(i, 0)) = 1.0f;
 
-    std::cout<<true_labels<<std::endl;
     y = std::vector<Matrix<float> >(nb_hidden_layers);
     z = std::vector<Matrix<float> >(nb_hidden_layers+1);
     A = std::vector<Matrix<float> >(nb_hidden_layers);
@@ -89,11 +88,8 @@ void MLP::fit(const Matrix<float>& M, const Matrix<int>& label)
     for(int i=0;i<nb_hidden_layers;++i)
         biases[i] = zeros<float>(1, hidden_layers_sizes[i]);
 
-    //A[0] = {{-1, 1},{-1, 1}};
-    //biases[0] = {{0.5, -0.5}};
     for(int it=0;it<max_iteration;++it)
     {
-        //std::vector<Matrix<float> > sum_y_der(nb_hidden_layers);
         std::vector<Matrix<float> > delta_A(nb_hidden_layers);
         std::vector<Matrix<float> > delta_B(nb_hidden_layers);
         float sse = 0.0f;
@@ -112,26 +108,14 @@ void MLP::fit(const Matrix<float>& M, const Matrix<int>& label)
             y_der[nb_hidden_layers-1] = apply<float, float>(y[nb_hidden_layers-1], activation_fct_der)*z_der[nb_hidden_layers];
 
             sse+=sum(pow(z_der[nb_hidden_layers], 2.0f));
-            /*if(i!=0)
-                sum_y_der[nb_hidden_layers-1] += y_der[nb_hidden_layers-1];
-            else
-                sum_y_der[nb_hidden_layers-1] = y_der[nb_hidden_layers-1];*/
             for(int j=nb_hidden_layers-2;j>=0;--j)
             {
                 z_der[j+1] = dot(y_der[j+1], transpose(A[j+1]));
                 y_der[j] = apply<float, float>(y[j], activation_fct_der)*z_der[j+1];
-                /*if(i!=0)
-                    sum_y_der[j] += y_der[j];
-                else
-                    sum_y_der[j] = y_der[j];*/
             }
 
             for(int j=0;j<nb_hidden_layers;++j)
             {
-                //A[j]-=alpha*dot(transpose(z[j]), y_der[j]);
-                //std::cout<<alpha*dot(transpose(z[j]), y_der[j])<<std::endl;
-                //biases[j]-=alpha*y_der[j];
-                //std::cout<<alpha*y_der[j]<<std::endl;
                 if(i==0)
                 {
                     delta_A[j] = alpha*dot(transpose(z[j]), y_der[j]);
@@ -144,9 +128,6 @@ void MLP::fit(const Matrix<float>& M, const Matrix<int>& label)
                 }
             }
         }
-        std::cout<<sse<<std::endl;
-        std::cout<<delta_A[0]<<std::endl;
-        std::cout<<delta_B[0]<<std::endl;
         for(int j=0;j<nb_hidden_layers;++j)
         {
             A[j]-=delta_A[j];

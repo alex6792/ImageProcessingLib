@@ -9,6 +9,7 @@ var matrix_8hpp =
     [ "compress", "matrix_8hpp.html#ad2365cd419eb7564dd651d295360f4db", null ],
     [ "count", "matrix_8hpp.html#aef639a7d1a52224a2ad67b5cf96c1cb8", null ],
     [ "count_nonzero", "matrix_8hpp.html#ac23e528920a4cd06810fc3caab7e3514", null ],
+    [ "diag", "matrix_8hpp.html#a0037e54b4c40bcf9764db808d3d0236d", null ],
     [ "full", "matrix_8hpp.html#affa8797c7823c54f82edc2de91078b53", null ],
     [ "full", "matrix_8hpp.html#aa21dd75feec115474a6d320066df2280", null ],
     [ "id", "matrix_8hpp.html#acb8f9132c9ee2bd16720217455237d5e", null ],

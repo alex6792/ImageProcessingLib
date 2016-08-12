@@ -47,6 +47,8 @@
 		<Unit filename="ImageProcessing/ImageIO/gifIO.hpp" />
 		<Unit filename="ImageProcessing/ImageIO/icoIO.cpp" />
 		<Unit filename="ImageProcessing/ImageIO/icoIO.hpp" />
+		<Unit filename="ImageProcessing/ImageIO/imageIO.cpp" />
+		<Unit filename="ImageProcessing/ImageIO/imageIO.hpp" />
 		<Unit filename="ImageProcessing/ImageIO/jpegIO.cpp" />
 		<Unit filename="ImageProcessing/ImageIO/jpegIO.hpp" />
 		<Unit filename="ImageProcessing/ImageIO/lodepng/lodepng.cpp" />
@@ -75,6 +77,10 @@
 		<Unit filename="ImageProcessing/snake.hpp" />
 		<Unit filename="MachineLearning/Clustering/affinitypropagation.cpp" />
 		<Unit filename="MachineLearning/Clustering/affinitypropagation.hpp" />
+		<Unit filename="MachineLearning/Clustering/birch.cpp" />
+		<Unit filename="MachineLearning/Clustering/birch.hpp" />
+		<Unit filename="MachineLearning/Clustering/clusteringfeature.cpp" />
+		<Unit filename="MachineLearning/Clustering/clusteringfeature.hpp" />
 		<Unit filename="MachineLearning/Clustering/gmm.cpp" />
 		<Unit filename="MachineLearning/Clustering/gmm.hpp" />
 		<Unit filename="MachineLearning/Clustering/hierarchicalclustering.cpp" />

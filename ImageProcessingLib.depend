@@ -29,7 +29,7 @@
 	<iostream>
 	"matrix.tcc"
 
-1468141211 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.tcc
+1471033584 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.tcc
 	<algorithm>
 	<chrono>
 	<cmath>
@@ -337,7 +337,7 @@
 1466114168 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\knn.hpp
 	"../../matrix.hpp"
 
-1469045832 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\mlp.cpp
+1471024789 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\mlp.cpp
 	<fstream>
 	<sstream>
 	<string>
@@ -354,7 +354,7 @@
 1464548035 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\perceptron.hpp
 	"../../matrix.hpp"
 
-1469045619 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
+1471027228 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
 	<SDL2/SDL.h>
 	<cfloat>
 	"csvIO.hpp"
@@ -387,6 +387,7 @@
 	"ImageProcessing/nonlinear_filtering.hpp"
 	"ImageProcessing/morphology.hpp"
 	"ImageProcessing/snake.hpp"
+	"ImageProcessing/ImageIO/imageIO.hpp"
 	"ImageProcessing/ImageIO/bmpIO.hpp"
 	"ImageProcessing/ImageIO/gifIO.hpp"
 	"ImageProcessing/ImageIO/icoIO.hpp"
@@ -759,4 +760,35 @@
 
 1467903202 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\affinitypropagation.hpp
 	"../../matrix.hpp"
+
+1470148051 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\clusteringfeature.cpp
+	"clusteringfeature.hpp"
+	"../../statistics.hpp"
+
+1470148706 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\clusteringfeature.hpp
+	"../../matrix.hpp"
+
+1471023641 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\birch.cpp
+	"birch.hpp"
+	<cfloat>
+
+1470150525 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\birch.hpp
+	"../../matrix.hpp"
+	"clusteringfeature.hpp"
+
+1471033307 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\imageio.cpp
+	"../imgconverter.hpp"
+	"imageIO.hpp"
+	"bmpIO.hpp"
+	"gifIO.hpp"
+	"icoIO.hpp"
+	"jpegIO.hpp"
+	"pngIO.hpp"
+	"pnmIO.hpp"
+	"tgaIO.hpp"
+	"tiffIO.hpp"
+
+1471032661 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\imageio.hpp
+	"../../matrix.hpp"
+	"../color.hpp"
 

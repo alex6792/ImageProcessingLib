@@ -633,9 +633,10 @@ template <class T> std::pair<Matrix<T>, Matrix<T> > meshgrid(int a, int b)
     Matrix<T> X(a, b);
     Matrix<T> Y(a, b);
     for(int i=0;i<a;++i)
+    {
         std::fill(X.begin()+i*b, X.begin()+(i+1)*b, T(i));
-    for(int i=0;i<a;++i)
         std::iota(Y.begin()+i*b, Y.begin()+(i+1)*b, T(0));
+    }
     return std::make_pair(X, Y);
 }
 
