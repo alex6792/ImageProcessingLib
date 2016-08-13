@@ -26,30 +26,30 @@ Matrix<float> AffinityPropagation::getCenters()
     return centers;
 }
 
-int AffinityPropagation::getMaxIteration()
+std::size_t AffinityPropagation::getMaxIteration()
 {
     return max_iteration;
 }
 
-void AffinityPropagation::setMaxIteration(int max_iteration_arg)
+void AffinityPropagation::setMaxIteration(std::size_t max_iteration_arg)
 {
     max_iteration = max_iteration_arg;
 }
 
 void AffinityPropagation::fit(const Matrix<float>& M)
 {
-    int nb_sample = M.rowNb();
+    std::size_t nb_sample = M.rowNb();
     nb_features = M.colNb();
 
     std::vector<Matrix<float> > rows(nb_sample);
-    for(int i=0;i<nb_sample;++i)
+    for(std::size_t i=0;i<nb_sample;++i)
         rows[i] = M.getRow(i);
     Matrix<float> dist = zeros<float>(nb_sample, nb_sample);
     std::vector<float> distances;
     distances.clear();
-    for(int i=0;i<nb_sample-1;++i)
+    for(std::size_t i=0;i<nb_sample-1;++i)
     {
-        for(int j=i+1;j<nb_sample;++j)
+        for(std::size_t j=i+1;j<nb_sample;++j)
         {
             dist(i, j) = -sum(pow(rows[i]-rows[j], 2.0f));
             dist(j, i) = dist(i, j);
@@ -58,30 +58,30 @@ void AffinityPropagation::fit(const Matrix<float>& M)
     }
     std::sort(distances.begin(), distances.end());
     float median;
-    int size = distances.size();
+    std::size_t size = distances.size();
     median= distances[(size-1)/2];
-    for(int i=0;i<nb_sample;++i)
+    for(std::size_t i=0;i<nb_sample;++i)
         dist(i, i) = median;
 
 
-    labels = arange<int>(0, nb_sample);
+    labels = arange<std::size_t>(0, nb_sample);
     float damping_factor = 0.8;
     responsibility = zeros<float>(nb_sample, nb_sample);
     availability = zeros<float>(nb_sample, nb_sample);
     Matrix<float> E;
 
-    int it=0;
+    std::size_t it=0;
     while(it++<max_iteration || nb_clusters<=0)
     {
 
         //update responsibility
         Matrix<float> old_R = responsibility;
-        for(int i=0;i<nb_sample;++i)
+        for(std::size_t i=0;i<nb_sample;++i)
         {
-            for(int k=0;k<nb_sample;++k)
+            for(std::size_t k=0;k<nb_sample;++k)
             {
                 float maximum = -FLT_MAX;
-                for(int kp=0;kp<nb_sample;++kp)
+                for(std::size_t kp=0;kp<nb_sample;++kp)
                 {
                     float temp = availability(i, kp)+dist(i, kp);
                     if(temp>maximum && kp!=k)
@@ -97,14 +97,14 @@ void AffinityPropagation::fit(const Matrix<float>& M)
 
         //update availability
         Matrix<float> old_A = availability;
-        for(int i=0;i<nb_sample;++i)
+        for(std::size_t i=0;i<nb_sample;++i)
         {
-            for(int k=0;k<nb_sample;++k)
+            for(std::size_t k=0;k<nb_sample;++k)
             {
                 if(i!=k)
                 {
                     float sum = 0.0f;
-                    for(int ip=0;ip<nb_sample;++ip)
+                    for(std::size_t ip=0;ip<nb_sample;++ip)
                     {
                         if(ip!=k && ip!=i)
                         {
@@ -116,7 +116,7 @@ void AffinityPropagation::fit(const Matrix<float>& M)
                 else
                 {
                     float sum = 0.0f;
-                    for(int ip=0;ip<nb_sample;++ip)
+                    for(std::size_t ip=0;ip<nb_sample;++ip)
                     {
                         if(ip!=k)
                         {
@@ -132,24 +132,24 @@ void AffinityPropagation::fit(const Matrix<float>& M)
         nb_clusters = count_nonzero(E>0);
     }
 
-    Matrix<int> cluster_idx = argwhere(E>0);
+    Matrix<std::size_t> cluster_idx = argwhere(E>0);
     centers = Matrix<float>(nb_clusters, nb_features);
-    for(int i=0;i<nb_clusters;++i)
+    for(std::size_t i=0;i<nb_clusters;++i)
         centers.setRow(i, M.getRow(cluster_idx(i, 0)));
 
 }
 
-Matrix<int> AffinityPropagation::fit_predict(const Matrix<float>& M)
+Matrix<std::size_t> AffinityPropagation::fit_predict(const Matrix<float>& M)
 {
     fit(M);
     return predict(M);
 }
 
-Matrix<int> AffinityPropagation::predict(const Matrix<float>& M)
+Matrix<std::size_t> AffinityPropagation::predict(const Matrix<float>& M)
 {
-    int nb_samples = M.rowNb();
-    labels = Matrix<int>(nb_samples, 1);
-    for(int i=0;i<M.rowNb();++i)
+    std::size_t nb_samples = M.rowNb();
+    labels = Matrix<std::size_t>(nb_samples, 1);
+    for(std::size_t i=0;i<M.rowNb();++i)
     {
         Matrix<float> distances = dot(ones<float>(nb_clusters, 1), M.getRow(i))-centers;
         distances *= distances;

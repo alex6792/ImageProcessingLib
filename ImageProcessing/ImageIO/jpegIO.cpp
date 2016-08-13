@@ -95,9 +95,9 @@ void save_jpeg(std::string filename, const Matrix<Color>& img)
     row_stride = img.colNb() * 3;
     unsigned char* image_buffer = (unsigned char*)malloc(3*img.size());
     int cpt = 0;
-    for(int i=0;i<img.rowNb();++i)
+    for(std::size_t i=0;i<img.rowNb();++i)
     {
-        for(int j=0;j<img.colNb();++j)
+        for(std::size_t j=0;j<img.colNb();++j)
         {
             Color cur_color = img(i, j);
             image_buffer[cpt++] = cur_color.red();

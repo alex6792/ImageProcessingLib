@@ -17,7 +17,7 @@ Matrix<bool> hysteresis(const Matrix<unsigned char>& img, unsigned char low_thre
 
 Matrix<bool> otsu(const Matrix<unsigned char>& img)
 {
-    Matrix<int> hist = histogram(img);
+    Matrix<std::size_t> hist = histogram(img);
 
     // BG
     Matrix<float> hist_normalized = Matrix<float>(hist)/float(img.size());
@@ -53,7 +53,7 @@ Matrix<bool> otsu(const Matrix<unsigned char>& img)
 
     Matrix<float> weigthed_sum = cum_hist*var_BG+cum_hist_inv*var_FG;
     std::replace_if(weigthed_sum.begin(), weigthed_sum.end(), [](float value){return std::isnan(value);}, FLT_MAX);
-    Matrix<int> results = argmin(weigthed_sum);
+    Matrix<std::size_t> results = argmin(weigthed_sum);
     return img>results(0, 1);
 }
 
@@ -82,11 +82,11 @@ Matrix<Color> gray2colorimage(const Matrix<unsigned char>& img)
     return apply<unsigned char, Color>(img, [](unsigned char g){return Color(g, g, g);});
 }
 
-Matrix<Color> array2colorimage(const Matrix<int>& img)
+Matrix<Color> array2colorimage(const Matrix<std::size_t>& img)
 {
-    int minimum = min(img), maximum = max(img);
+    std::size_t minimum = min(img), maximum = max(img);
     Matrix<Color> new_img(img.rowNb(), img.colNb());
-    Matrix<int> normalized_img = 360*(img-minimum)/(maximum-minimum);
+    Matrix<std::size_t> normalized_img = 360u*(img-minimum)/(maximum-minimum);
     auto it = normalized_img.cbegin();
     std::for_each(new_img.begin(),
                   new_img.end(),
@@ -94,25 +94,25 @@ Matrix<Color> array2colorimage(const Matrix<int>& img)
     return new_img;
 }
 
-Matrix<int> histogram(const Matrix<bool>& img)
+Matrix<std::size_t> histogram(const Matrix<bool>& img)
 {
-    Matrix<int> hist(1, 2);
+    Matrix<std::size_t> hist(1, 2);
     hist(0, 0) = count(img, false);
     hist(0, 1) = img.size()-hist(0, 0);
     return hist;
 }
 
-Matrix<int> histogram(const Matrix<unsigned char>& img)
+Matrix<std::size_t> histogram(const Matrix<unsigned char>& img)
 {
-    Matrix<int> hist = zeros<int>(1, 256);
-    std::for_each(img.cbegin(), img.cend(), [&hist](unsigned char value){++hist(0, (int)value);});
+    Matrix<std::size_t> hist = zeros<std::size_t>(1, 256);
+    std::for_each(img.cbegin(), img.cend(), [&hist](unsigned char value){++hist(0, (std::size_t)value);});
     return hist;
 }
 
-Matrix<int> histogram(const Matrix<int>& img)
+Matrix<std::size_t> histogram(const Matrix<std::size_t>& img)
 {
-    int maximum = max(img);
-    Matrix<int> hist = zeros<int>(1, maximum+1);
+    std::size_t maximum = max(img);
+    Matrix<std::size_t> hist = zeros<std::size_t>(1, maximum+1);
     std::for_each(img.cbegin(), img.cend(), [&hist](unsigned char value){++hist(0, value);});
     return hist;
 }

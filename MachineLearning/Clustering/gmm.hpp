@@ -25,19 +25,19 @@ class GMM
         Matrix<float> vars;// cluster standard deviation
         Matrix<float> weights;// cluster weights
         Matrix<float> responsibilities;
-        Matrix<int> labels;// labels
-        int nb_clusters;// number of cluster
-        int nb_features;// number of features
-        int max_iteration;// max iteration
+        Matrix<std::size_t> labels;// labels
+        std::size_t nb_clusters;// number of cluster
+        std::size_t nb_features;// number of features
+        std::size_t max_iteration;// max iteration
 
     public :
-        explicit GMM(int);
+        explicit GMM(std::size_t);
         Matrix<float> getCenters();
         Matrix<float> getStddevs();
         Matrix<float> getWeights();
         void fit(const Matrix<float>&);
-        Matrix<int> fit_predict(const Matrix<float>&);
-        Matrix<int> predict(const Matrix<float>&);
+        Matrix<std::size_t> fit_predict(const Matrix<float>&);
+        Matrix<std::size_t> predict(const Matrix<float>&);
 
     private :
         void expectation(const Matrix<float>&);

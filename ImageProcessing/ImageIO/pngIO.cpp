@@ -20,9 +20,9 @@ Matrix<Color> read_png(std::string filename)
     else
     {
         Matrix<Color> img(h, w);
-        for(unsigned int i=0;i<h;++i)
+        for(std::size_t i=0;i<h;++i)
         {
-            for(unsigned int j=0;j<w;++j)
+            for(std::size_t j=0;j<w;++j)
                 img(i, j) = Color(image[(i*w+j)*4], image[(i*w+j)*4+1], image[(i*w+j)*4+2], image[(i*w+j)*4+3]);
         }
         return img;
@@ -31,13 +31,13 @@ Matrix<Color> read_png(std::string filename)
 
 void save_png(std::string filename, const Matrix<Color>& img)
 {
-    int W = img.colNb();
-    int H = img.rowNb();
+    std::size_t W = img.colNb();
+    std::size_t H = img.rowNb();
     unsigned char* data2 = (unsigned char*) malloc(4*H*W);
-    int cpt = 0;
-    for(int i=0;i<H;++i)
+    std::size_t cpt = 0;
+    for(std::size_t i=0;i<H;++i)
     {
-        for(int j=0;j<W;++j)
+        for(std::size_t j=0;j<W;++j)
         {
             data2[cpt++] = img(i, j).red();
             data2[cpt++] = img(i, j).green();
@@ -46,4 +46,6 @@ void save_png(std::string filename, const Matrix<Color>& img)
         }
     }
     unsigned error = lodepng_encode32_file(filename.c_str(), data2, W, H);
+    if(error)
+        std::cout << "encoder error " << error << ": "<< lodepng_error_text(error) << std::endl;
 }

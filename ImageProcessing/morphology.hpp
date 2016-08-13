@@ -16,12 +16,12 @@
 
 typedef Matrix<bool> Mask;
 
-Mask circle(int);
-Mask cross(int);
-Mask ellipse(int, int);
-Mask diamond(int);
-Mask rect(int, int);
-Mask square(int);
+Mask circle(std::size_t);
+Mask cross(std::size_t);
+Mask ellipse(std::size_t, std::size_t);
+Mask diamond(std::size_t);
+Mask rect(std::size_t, std::size_t);
+Mask square(std::size_t);
 
 
 Matrix<bool> BTH(const Matrix<bool>&, const Mask& = square(3));
@@ -41,7 +41,7 @@ Matrix<bool> outer_gradient(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> skeleton(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> WTH(const Matrix<bool>&, const Mask& = square(3));
 
-Matrix<int> label(const Matrix<bool>&, const Mask& = square(3));
+Matrix<std::size_t> label(const Matrix<bool>&, const Mask& = square(3));
 
 
 Matrix<unsigned char> BTH(const Matrix<unsigned char>&, const Mask& = square(3));
@@ -61,7 +61,7 @@ Matrix<unsigned char> reconstruct(const Matrix<unsigned char>&, const Matrix<uns
 Matrix<unsigned char> skeleton(const Matrix<unsigned char>&, const Mask& = square(3));
 Matrix<unsigned char> WTH(const Matrix<unsigned char>&, const Mask& = square(3));
 
-Matrix<int> label(const Matrix<unsigned char>&, const Mask& = square(3));
+Matrix<std::size_t> label(const Matrix<unsigned char>&, const Mask& = square(3));
 
 
 #endif // MORPHOLOGY_HPP

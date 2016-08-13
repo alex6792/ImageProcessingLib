@@ -23,8 +23,8 @@ class Snake
     private :
         Matrix<float> Vx; /*!< x coordinates*/
         Matrix<float> Vy; /*!< y coordinates*/
-        int max_iteration; /*!< max iterations*/
-        int nb_points; /*!< number of points*/
+        std::size_t max_iteration; /*!< max iterations*/
+        std::size_t nb_points; /*!< number of points*/
         float dt; /*!< step*/
         float lambda1, lambda2, lambda3; /*!< energy weights*/
         Matrix<float> D2, D4; /*!< derivative matrices*/
@@ -36,8 +36,8 @@ class Snake
         Snake();
 
         std::pair<Matrix<float>, Matrix<float> > getcoordinates();
-        int getMaxIteration();
-        int getNbPoints();
+        std::size_t getMaxIteration();
+        std::size_t getNbPoints();
         float getDeltaT();
         float getLambda1();
         float getLambda2();

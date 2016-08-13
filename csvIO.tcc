@@ -27,16 +27,16 @@ template <class T> Matrix<T> read_csv(std::string filename, char separator)
 
         // find the number of column
         std::size_t found = content.find(separator);
-        int sizey = 1;
+        std::size_t sizey = 1;
         while(found!=std::string::npos)
         {
             content = content.substr(found+1);
             found = content.find(separator);
             ++sizey;
         }
-        int i = 0;
+        std::size_t i = 0;
         Matrix<T> M(1,sizey);
-        for(int j=0;j<sizey;++j)
+        for(std::size_t j=0;j<sizey;++j)
         {
             char sep;
             temp.get(sep);
@@ -56,7 +56,7 @@ template <class T> Matrix<T> read_csv(std::string filename, char separator)
                 M.newRow();
                 ++i;
                 std::istringstream temp(content);
-                for(int j=0;j<sizey;++j)
+                for(std::size_t j=0;j<sizey;++j)
                 {
                     char sep;
                     temp.get(sep);
@@ -91,9 +91,9 @@ template <class T> void save_csv(std::string filename, const Matrix<T>& M, char 
     std::ofstream myfile(filename, std::ios::out | std::ios::trunc);
     if(myfile)
     {
-        for(int i=0;i<M.rowNb();++i)
+        for(std::size_t i=0;i<M.rowNb();++i)
         {
-            for(int j=0;j<M.colNb()-1;++j)
+            for(std::size_t j=0;j<M.colNb()-1;++j)
                 myfile<<M(i, j)<<separator;
             myfile<<M(i, M.colNb()-1)<<'\n';
         }

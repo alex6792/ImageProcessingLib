@@ -1,6 +1,4 @@
-#define SDL_MAIN_HANDLED
-#include <SDL2/SDL.h>
-#include <cfloat>
+#include "SDL_interface.hpp"
 
 #include "csvIO.hpp"
 #include "file_explorer.hpp"
@@ -59,66 +57,6 @@ char fctbidon(bool a)
 }
 
 
-SDL_Window* init_SDL()
-{
-    SDL_Init(SDL_INIT_VIDEO);
-    return SDL_CreateWindow("hello", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
-}
-
-SDL_Renderer* get_SDL_renderer(SDL_Window* screen)
-{
-    return SDL_CreateRenderer(screen, -1, SDL_RENDERER_PRESENTVSYNC);
-}
-
-void pause()
-{
-    bool done = false;
-    SDL_Event event;
-    while(!done)
-    {
-        while(SDL_PollEvent(&event))
-        {
-            if(event.type==SDL_QUIT)
-                done = true;
-        }
-    }
-}
-
-void show_matrix(SDL_Renderer* renderer, const Matrix<Color>& img)
-{
-    SDL_RenderClear(renderer);
-    SDL_Texture* tex = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, img.colNb(), img.rowNb());
-    Color* pColor = NULL;
-
-    pColor = (Color*) malloc(sizeof(Color)*img.size());
-    std::copy(img.cbegin(), img.cend(), pColor);
-
-    SDL_UpdateTexture(tex, NULL, pColor, img.colNb()*sizeof(Color));
-    SDL_RenderCopy(renderer, tex, NULL, NULL);
-    SDL_RenderPresent(renderer);
-    SDL_DestroyTexture(tex);
-    free(pColor);
-    pause();
-}
-
-
-
-void show_matrix(SDL_Renderer* renderer, const Matrix<unsigned char>& img)
-{
-    show_matrix(renderer, gray2colorimage(img));
-}
-
-void show_matrix(SDL_Renderer* renderer, const Matrix<bool>& img)
-{
-    show_matrix(renderer, bw2colorimage(img));
-}
-
-void show_matrix(SDL_Renderer* renderer, const Matrix<int>& img)
-{
-    show_matrix(renderer, array2colorimage(img));
-}
-
-
 int main()
 {
 
@@ -170,11 +108,11 @@ int main()
     ///////////test clustering
 
     //create data
-    int n_samples = 100;
-    int n_features = 2;
-    int n_classes = 4;
+    std::size_t n_samples = 200;
+    std::size_t n_features = 2;
+    std::size_t n_classes = 4;
     Matrix<float> Data(n_samples, n_features);
-    Matrix<int> Labels(n_samples, 1);
+    Matrix<std::size_t> Labels(n_samples, 1);
     Matrix<float> means = {{10.0f, 20.0f, 30.0f, 40.0f},
                             {15.0f, 40.0f, 5.0f, 30.0f}};
     Matrix<float> stddevs = {{1.0f, 2.0f, 3.0f, 4.0f},
@@ -188,23 +126,23 @@ int main()
                             {2.5f, 1.5f}};*/
 
     stddevs = full<float>(n_features, n_classes, 1.0f);
-    for(int i=0;i<n_classes;++i)
+    for(std::size_t i=0;i<n_classes;++i)
     {
-        for(int j=0;j<n_features;++j)
+        for(std::size_t j=0;j<n_features;++j)
             Data.setSubmat(i*n_samples/n_classes, j, randn(n_samples/n_classes, 1, means(j, i), stddevs(j, i)));
-        Labels.setSubmat(i*n_samples/n_classes, 0, full<int>(n_samples/n_classes, 1, i));
+        Labels.setSubmat(i*n_samples/n_classes, 0, full<std::size_t>(n_samples/n_classes, 1, i));
     }
 
 
     // test Affinity Propagation
-    std::cout<<"Affinity Propagation"<<std::endl;
+    /*std::cout<<"Affinity Propagation"<<std::endl;
     AffinityPropagation clf_affpro;
     results = Matrix<float>(clf_affpro.fit_predict(Data));
     results.reshape(n_classes, n_samples/n_classes);
     std::cout<<histogram(Matrix<unsigned char>(results)).getCols(0, n_classes)<<std::endl;
     std::cout<<axismean(results, 1)<<std::endl;
     std::cout<<axisstdev(results, 1)<<std::endl;
-    std::cout<<clf_affpro.getCenters()<<std::endl;
+    std::cout<<clf_affpro.getCenters()<<std::endl;*/
 
     // test Kmeans
     std::cout<<"Kmeans"<<std::endl;
@@ -263,7 +201,7 @@ int main()
     GaussianNaiveBayes clf_gnb;
     clf_gnb.fit(Data, Labels);
     results = Matrix<float>(clf_gnb.fit_predict(Data, Labels));
-    std::cout<<count_nonzero(Matrix<int>(results) == Labels)<<std::endl;
+    std::cout<<count_nonzero(Matrix<std::size_t>(results) == Labels)<<std::endl;
     std::cout<<clf_gnb.getCenters()<<std::endl;
     std::cout<<clf_gnb.getStddevs()<<std::endl;
     std::cout<<clf_gnb.getPriors()<<std::endl;
@@ -272,7 +210,7 @@ int main()
     std::cout<<"Dtree"<<std::endl;
     Dtree tree;
     results = Matrix<float>(tree.fit_predict(Data, Labels));
-    std::cout<<count_nonzero(Matrix<int>(results) == Labels)<<std::endl;
+    std::cout<<count_nonzero(Matrix<std::size_t>(results) == Labels)<<std::endl;
     tree.export_graphviz("tree.dot");
 
     ///// test k-NN
@@ -280,19 +218,18 @@ int main()
     KNN clf_knn(5);
     clf_knn.fit(Data, Labels);
     results = Matrix<float>(clf_knn.fit_predict(Data, Labels));
-    std::cout<<count_nonzero(Matrix<int>(results) == Labels)<<std::endl;
+    std::cout<<count_nonzero(Matrix<std::size_t>(results) == Labels)<<std::endl;
 
     ///// test MLP
     std::cout<<"MLP"<<std::endl;
     StandardScaler ssc(1,1, 2);
     Data = ssc.fit_transform(Data);
-    std::vector<int> param = {};
+    std::vector<std::size_t> param = {};
     MLP clf_mlp(param);
     results = Matrix<float>(clf_mlp.fit_predict(Data, Labels));
     clf_mlp.export_graphviz("test.dot");
-    std::cout<<count_nonzero(Matrix<int>(results) == Labels)<<std::endl;
+    std::cout<<count_nonzero(Matrix<std::size_t>(results) == Labels)<<std::endl;
 
-    return 0;
 
     ///// test Otsu
     Matrix<unsigned char> testimg = {{0,0,1,4,4,5},
@@ -330,40 +267,43 @@ int main()
     SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 
     std::string extensions[] = {"bmp"};//, "bmp", "tga", "ico", "png", "pbm,"pgm", "ppm", "jpg", "gif", "tiff"};
-
+    /*
     std::for_each(
                   extensions,
                   extensions+1,
                   [renderer](std::string s){auto cur_list = get_files_recursively(".", s);
-                                    std::for_each(cur_list.rbegin()+12,
+                                    std::for_each(cur_list.rbegin()+10,
                                                   cur_list.rend(),
                                                   [renderer](std::string ss){std::cout<<ss<<std::endl;
                                                                             Matrix<Color> img = read_bmp(ss);
-                                                                            //img = img.getSubmat(200, 300, 200, 300);
+                                                                            //img = img.getSubmat(300, 400, 300, 400);
+
+                                                                            //Matrix<unsigned char> img_g = color2grayimage(img);
                                                                             show_matrix(renderer, img);
                                                                             Matrix<float> imgR = Matrix<float>(apply(img, &Color::red));
                                                                             Matrix<float> imgG = Matrix<float>(apply(img, &Color::green));
                                                                             Matrix<float> imgB = Matrix<float>(apply(img, &Color::blue));
-                                                                            int n = img.size();
+                                                                            std::size_t n = img.size();
                                                                             Matrix<float> img_data(n, 3);
+                                                                            //img_data = Matrix<float>(img);
+                                                                            img_data.reshape(n, 3);
                                                                             imgR.reshape(n, 1);imgG.reshape(n, 1);imgB.reshape(n, 1);
                                                                             img_data.setCol(0, imgR);
                                                                             img_data.setCol(1, imgG);
                                                                             img_data.setCol(2, imgB);
                                                                             std::cout<<"start"<<std::endl;
-                                                                            Kmeans kmeans_clf(3);
-                                                                            Matrix<int> labels = kmeans_clf.fit_predict(img_data);
+                                                                            Kmeans kmeans_clf(8);
+                                                                            Matrix<std::size_t> labels = kmeans_clf.fit_predict(img_data);
                                                                             std::cout<<histogram(labels)<<std::endl;
                                                                             std::cout<<"finished"<<std::endl;
-                                                                            labels.reshape(img.rowNb(), img.colNb());
                                                                             Matrix<float> centers = kmeans_clf.getCenters();
                                                                             Matrix<unsigned char> centers_u = Matrix<unsigned char>(Matrix<int>(centers));
-                                                                            std::cout<<centers_u<<std::endl;
-                                                                            Matrix<Color> new_img(img.size(), 1);
-                                                                            for(int a=0;a<img.rowNb();++a)
+                                                                            std::cout<<centers<<std::endl;
+                                                                            Matrix<Color> new_img(n, 1);
+                                                                            for(std::size_t a=0;a<labels.rowNb();++a)
                                                                             {
-                                                                                    int lab = labels(a, 0);
-                                                                                    new_img(a, 0) = Color(centers_u(lab, 0), centers_u(lab, 1), centers_u(lab, 2));
+                                                                                std::size_t lab = labels(a, 0);
+                                                                                new_img(a, 0) = Color(centers_u(lab, 0), centers_u(lab, 1), centers_u(lab, 2));
                                                                             }
                                                                             new_img.reshape(img.rowNb(), img.colNb());
                                                                             labels.reshape(img.rowNb(), img.colNb());
@@ -375,11 +315,10 @@ int main()
 
 
 
-
+    */
 
     //Test writer
     Matrix<Color> img = read_png("Images/Detection_de_forme/bild4.png");
-    show_matrix(renderer, img);
     save_ppm("testwriter.ppm", img);
     save_pgm("testwriter.pgm", color2grayimage(img));
     save_pbm("testwriter.pbm", color2bwimage(img, 127));
@@ -387,17 +326,33 @@ int main()
     save_jpeg("testwriter.jpg", img);
     save_tga("testwriter.tga", img);
     save_bmp("testwriter.bmp", img);
+    show_matrix(renderer, img);
 
     // test filtres non linéaires
     img = read_png("Images/Filtrage/phare_bruit_ps.png");
     Matrix<unsigned char> gray_img = color2grayimage(img);
+
+    SDL_SetWindowTitle(pWindow, "original");
     show_matrix(renderer, gray_img);
+    SDL_SetWindowTitle(pWindow, "bilateral");
     show_matrix(renderer, bilateral(gray_img, 5, 1000, 5));
+    SDL_SetWindowTitle(pWindow, "despeckle");
     show_matrix(renderer, despeckle(gray_img));
+    SDL_SetWindowTitle(pWindow, "nagao");
     show_matrix(renderer, nagao(gray_img));
+    SDL_SetWindowTitle(pWindow, "erode");
+    show_matrix(renderer, erode(gray_img));
+    SDL_SetWindowTitle(pWindow, "dilate");
+    show_matrix(renderer, dilate(gray_img));
+    SDL_SetWindowTitle(pWindow, "median");
+    show_matrix(renderer, median_filter(gray_img));
+    SDL_SetWindowTitle(pWindow, "conservative smoothing");
     show_matrix(renderer, conservative_smoothing(gray_img));
-    //gray_img = opening_by_reconstruction(gray_img);
-    //gray_img = closing_by_reconstruction(gray_img);
+    SDL_SetWindowTitle(pWindow, "opening by reconstruction");
+    show_matrix(renderer, opening_by_reconstruction(gray_img));
+    SDL_SetWindowTitle(pWindow, "closing by reconstruction");
+    show_matrix(renderer, closing_by_reconstruction(gray_img));
+
 
     // test binarisation
     Matrix<unsigned char> G = gradient(gray_img);

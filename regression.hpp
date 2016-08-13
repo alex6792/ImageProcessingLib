@@ -14,7 +14,7 @@
 #include "matrix.hpp"
 
 
-template <class T> Matrix<T> poly_regression(const Matrix<T>&, const Matrix<T>&, int);
+template <class T> Matrix<T> poly_regression(const Matrix<T>&, const Matrix<T>&, std::size_t);
 
 
 #include "regression.tcc"

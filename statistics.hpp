@@ -14,9 +14,9 @@
 #include "matrix.hpp"
 
 
-template <class T> Matrix<int> argmax(const Matrix<T>&);
-template <class T> Matrix<int> argmin(const Matrix<T>&);
-template <class T> Matrix<int> argsort(const Matrix<T>&);
+template <class T> Matrix<std::size_t> argmax(const Matrix<T>&);
+template <class T> Matrix<std::size_t> argmin(const Matrix<T>&);
+template <class T> Matrix<std::size_t> argsort(const Matrix<T>&);
 template <class T> Matrix<T> axismax(const Matrix<T>&, int);
 template <class T> Matrix<T> axismean(const Matrix<T>&, int);
 template <class T> Matrix<T> axismin(const Matrix<T>&, int);
@@ -31,7 +31,7 @@ template <class T> T max(const Matrix<T>&);
 template <class T> T mean(const Matrix<T>&);
 template <class T> T median(const Matrix<T>&);
 template <class T> T min(const Matrix<T>&);
-template <class T> T moment(const Matrix<T>&, int order);
+template <class T> T moment(const Matrix<T>&, int);
 template <class T> T moment(const Matrix<T>&, int, int);
 template <class T> T prod(const Matrix<T>&);
 template <class T> T stdev(const Matrix<T>&);

@@ -8,14 +8,15 @@
 
 DtreeNode::DtreeNode()
 {
-    feature = -1;
+    feature = 0;
     thresh = 0.0f;
     gini = 1.0f;
     samples = 0;
-    label = -1;
+    label = 0;
     value = Matrix<float>();
     left_child = 0;
     right_child = 0;
+    is_a_leaf = true;
 }
 
 void DtreeNode::show()
@@ -33,8 +34,8 @@ void DtreeNode::show()
 
 Dtree::Dtree()
 {
-    nb_clusters = -1;
-    nb_features = -1;
+    nb_clusters = 0;
+    nb_features = 0;
     tree = std::vector<DtreeNode>(1);
 }
 
@@ -45,12 +46,12 @@ void Dtree::export_graphviz(std::string filename)
     {
         myfile<<"digraph Tree {"<<std::endl;
         myfile<<"node [shape=box]"<<std::endl;
-        int n = tree.size();
-        for(int i=0;i<n;++i)
+        std::size_t n = tree.size();
+        for(std::size_t i=0;i<n;++i)
         {
             myfile<<i;
             myfile<<" [label=\"";
-            if(tree[i].feature>-1)
+            if(!tree[i].is_a_leaf)
             {
                 myfile<<"X["<<tree[i].feature<<"]";
                 myfile<<" <= "<<tree[i].thresh<<"\\n";
@@ -61,7 +62,7 @@ void Dtree::export_graphviz(std::string filename)
             myfile<<"\"] ;";
             myfile<<std::endl;
 
-            if(tree[i].feature>-1)
+            if(!tree[i].is_a_leaf)
             {
                 myfile<<i<<" -> "<<tree[i].left_child;
                 //if(i==0)
@@ -82,7 +83,7 @@ void Dtree::export_graphviz(std::string filename)
 }
 
 
-void Dtree::fit(const Matrix<float>& M, const Matrix<int>& label)
+void Dtree::fit(const Matrix<float>& M, const Matrix<std::size_t>& label)
 {
     nb_features = M.colNb();
     nb_clusters = max(label)+1;
@@ -90,20 +91,20 @@ void Dtree::fit(const Matrix<float>& M, const Matrix<int>& label)
     split_node(tree[0], M, label);
 }
 
-Matrix<int> Dtree::fit_predict(const Matrix<float>& M, const Matrix<int>& label)
+Matrix<std::size_t> Dtree::fit_predict(const Matrix<float>& M, const Matrix<std::size_t>& label)
 {
     fit(M, label);
     return predict(M);
 }
 
-Matrix<int> Dtree::predict(const Matrix<float>& M)
+Matrix<std::size_t> Dtree::predict(const Matrix<float>& M)
 {
-    int nb_samples = M.rowNb();
-    Matrix<int> labels(nb_samples, 1);
-    for(int i=0;i<nb_samples;++i)
+    std::size_t nb_samples = M.rowNb();
+    Matrix<std::size_t> labels(nb_samples, 1);
+    for(std::size_t i=0;i<nb_samples;++i)
     {
         const DtreeNode* cur_node = tree.data();
-        while(cur_node->feature!=-1)
+        while(!cur_node->is_a_leaf)
         {
             if(M(i, cur_node->feature) > cur_node->thresh)
                 cur_node = &tree[cur_node->left_child];
@@ -115,32 +116,32 @@ Matrix<int> Dtree::predict(const Matrix<float>& M)
     return labels;
 }
 
-std::pair<int, float> Dtree::find_best_split(const Matrix<float>& M, const Matrix<int>& label)
+std::pair<std::size_t, float> Dtree::find_best_split(const Matrix<float>& M, const Matrix<std::size_t>& label)
 {
-    Matrix<int> unique_labels = unique(label);
+    Matrix<std::size_t> unique_labels = unique(label);
     Matrix<float> priors(unique_labels.rowNb(), 1);
-    for(int i=0;i<unique_labels.rowNb();++i)
+    for(std::size_t i=0;i<unique_labels.rowNb();++i)
         priors(i, 0) = count(label, unique_labels(i, 0));
     priors/=sum(priors);
     float gini = prod(priors);
-    int best_feature = 0;
+    std::size_t best_feature = 0;
     float best_thresh = 0.0f;
     float best_gini = 0.0f;
-    for(int i=0;i<nb_features;++i)
+    for(std::size_t i=0;i<nb_features;++i)
     {
         Matrix<float> cur_feature = M.getCol(i);
         Matrix<float> sorted_feature = unique(cur_feature);
         Matrix<float> threshes(sorted_feature.rowNb(), 1);
         std::adjacent_difference(sorted_feature.cbegin(), sorted_feature.cend(), threshes.begin(), std::plus<float>());
         threshes/=2.0f;
-        for(int j=1;j<threshes.rowNb();++j)
+        for(std::size_t j=1;j<threshes.rowNb();++j)
         {
             Matrix<bool> A = cur_feature>threshes(j, 0);
             Matrix<bool> NOTA = NOT(A);
             Matrix<float> cur_hist = Matrix<float>(histogram(A));
             Matrix<float> proba_0(unique_labels.rowNb(), 1);
             Matrix<float> proba_1(unique_labels.rowNb(), 1);
-            for(int k=0;k<unique_labels.rowNb();++k)
+            for(std::size_t k=0;k<unique_labels.rowNb();++k)
             {
                 proba_0(k, 0) = count_nonzero(NOTA*(label==unique_labels(k, 0)));
                 proba_1(k, 0) = count_nonzero(A*(label==unique_labels(k, 0)));
@@ -160,18 +161,19 @@ std::pair<int, float> Dtree::find_best_split(const Matrix<float>& M, const Matri
     return std::make_pair(best_feature, best_thresh);
 }
 
-void Dtree::split_node(DtreeNode& node, const Matrix<float>& M, const Matrix<int>& label)
+void Dtree::split_node(DtreeNode& node, const Matrix<float>& M, const Matrix<std::size_t>& label)
 {
-    Matrix<int> unique_label = unique(label);
+    Matrix<std::size_t> unique_label = unique(label);
     if(unique_label.size()>1)
     {
-        std::pair<int, float> split = find_best_split(M, label);
-        int n = tree.size();
+        std::pair<std::size_t, float> split = find_best_split(M, label);
+        std::size_t n = tree.size();
         node.feature = split.first;
         node.thresh = split.second;
         node.samples = M.rowNb();
         node.left_child = n;
         node.right_child = n+1;
+        node.is_a_leaf = false;
         Matrix<float> H = Matrix<float>(histogram(label));
         node.value = H;
         H/=node.samples;
@@ -181,8 +183,8 @@ void Dtree::split_node(DtreeNode& node, const Matrix<float>& M, const Matrix<int
         Matrix<bool> not_cdt = NOT(cdt);
         Matrix<float> A = compress(cdt, M, 1);
         Matrix<float> B = compress(not_cdt, M, 1);
-        Matrix<int> C = compress(cdt, label, 1);
-        Matrix<int> D = compress(not_cdt, label, 1);
+        Matrix<std::size_t> C = compress(cdt, label, 1);
+        Matrix<std::size_t> D = compress(not_cdt, label, 1);
         tree.push_back(DtreeNode());
         tree.push_back(DtreeNode());
         split_node(tree[n], A, C);

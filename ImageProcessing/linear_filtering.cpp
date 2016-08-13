@@ -2,17 +2,17 @@
 #include "../statistics.hpp"
 
 
-Matrix<float> average(int filtersize)
+Matrix<float> average(std::size_t filtersize)
 {
     return ones<float>(filtersize)/float(filtersize*filtersize);
 }
 
-Matrix<float> disk(int radius)
+Matrix<float> disk(std::size_t radius)
 {
     Matrix<float> new_disk = zeros<float>(2*radius+1);
-    for(int i=0;i<new_disk.rowNb();++i)
+    for(std::size_t i=0;i<new_disk.rowNb();++i)
     {
-        for(int j=0;j<new_disk.colNb();++j)
+        for(std::size_t j=0;j<new_disk.colNb();++j)
         {
             if((i-radius)*(i-radius)+(j-radius)*(j-radius)<=radius*radius)
                 new_disk(i, j) = 1.0f;
@@ -21,7 +21,7 @@ Matrix<float> disk(int radius)
     return new_disk/sum(new_disk);
 }
 
-Matrix<float> gaussian(int filtersize, float stddev)
+Matrix<float> gaussian(std::size_t filtersize, float stddev)
 {
     std::pair<Matrix<float>, Matrix<float> > XY = meshgrid<float>(filtersize);
     Matrix<float>& X = XY.first;
@@ -64,7 +64,7 @@ Matrix<float> laplacian(float alpha)
     return lap/4.0f;
 }
 
-Matrix<float> log(int filtersize, float stddev)
+Matrix<float> log(std::size_t filtersize, float stddev)
 {
     std::pair<Matrix<float>, Matrix<float> > XY = meshgrid<float>(filtersize);
     Matrix<float>& X = XY.first;
@@ -153,24 +153,21 @@ Matrix<unsigned char> gradient(Matrix<unsigned char> M, std::string method)
 Matrix<unsigned char> filter(Matrix<unsigned char> M, Matrix<float> f, int mode)
 {
     Matrix<unsigned char> filtered_img(M.rowNb(), M.colNb());
-    for(int i=0, I=M.rowNb();i<I;++i)
+    for(std::size_t i=0, I=M.rowNb();i<I;++i)
     {
-        for(int j=0, J=M.colNb();j<J;++j)
+        for(std::size_t j=0, J=M.colNb();j<J;++j)
         {
             float weighted_sum = 0;
-            for(int k=0;k<f.rowNb();++k)
+            for(std::size_t k=0, K=f.rowNb();k<K;++k)
             {
-                for(int l=0;l<f.colNb();++l)
+                for(std::size_t l=0, L=f.colNb();l<L;++l)
                 {
-                    int x = i+k-f.rowNb()/2;
-                    int y = j+l-f.colNb()/2;
-                    if(x<0)
-                        x = 0;
-                    else if(x>=I)
+                    std::size_t x = i+k>K/2?i+k-K/2:0;
+                    std::size_t y = j+l>L/2?j+l-L/2:0;
+
+                    if(x>=I)
                         x = I-1;
-                    if(y<0)
-                        y = 0;
-                    else if(y>=J)
+                    if(y>=J)
                         y = J-1;
                     weighted_sum+=f(k, l)*M(x, y);
                 }
@@ -183,32 +180,32 @@ Matrix<unsigned char> filter(Matrix<unsigned char> M, Matrix<float> f, int mode)
 
 Matrix<float> conv(Matrix<float> M, Matrix<float> f, int mode)
 {
-    int H = f.rowNb(), W = f.colNb();
+    std::size_t H = f.rowNb(), W = f.colNb();
     Matrix<float> filtered_img = zeros<float>(M.rowNb(), M.colNb());
-    for(int i=0;i<H;++i)
+    for(std::size_t i=0;i<H;++i)
     {
-        for(int j=0;j<W;++j)
+        for(std::size_t j=0;j<W;++j)
         {
             Matrix<float> temp = f(i, j)*M;
-            for(int k=0;k<i-H/2;++k)
+            for(std::size_t k=H/2;k<i;++k)
             {
                 temp.newRow();
                 temp.setRow(temp.rowNb()-1, temp.getRow(temp.rowNb()-2));
                 temp.delRow(0);
             }
-            for(int k=0;k<H/2-i;++k)
+            for(std::size_t k=i;k<H/2;++k)
             {
                 temp.newRow(0);
                 temp.setRow(0, temp.getRow(1));
                 temp.delRow(temp.rowNb()-1);
             }
-            for(int k=0;k<j-W/2;++k)
+            for(std::size_t k=W/2;k<j;++k)
             {
                 temp.newCol();
                 temp.setCol(temp.colNb()-1, temp.getCol(temp.colNb()-2));
                 temp.delCol(0);
             }
-            for(int k=0;k<W/2-j;++k)
+            for(std::size_t k=j;k<W/2;++k)
             {
                 temp.newCol(0);
                 temp.setCol(0, temp.getCol(1));

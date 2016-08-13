@@ -6,7 +6,7 @@ Matrix<std::complex<float> > FFT(const Matrix<float>& M)
 {
     std::complex<float> cste = std::complex<float>(0.0f, -2.0f*PI);
     Matrix<std::complex<float> > M_copy = Matrix<std::complex<float> >(M);
-    std::pair<Matrix<int>, Matrix<int> > XY = meshgrid<int>(M.rowNb(), M.colNb());
+    std::pair<Matrix<std::size_t>, Matrix<std::size_t> > XY = meshgrid<std::size_t>(M.rowNb(), M.colNb());
     Matrix<std::complex<float> > X = Matrix<std::complex<float> >(XY.first);
     Matrix<std::complex<float> > Y = Matrix<std::complex<float> >(XY.second);
     Matrix<std::complex<float> > fft(M.rowNb(), M.colNb());

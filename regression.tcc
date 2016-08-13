@@ -2,7 +2,7 @@
 #include "statistics.hpp"
 
 
-template <class T> Matrix<T> poly_regression(const Matrix<T>& Y, const Matrix<T>& X, int degree)
+template <class T> Matrix<T> poly_regression(const Matrix<T>& Y, const Matrix<T>& X, std::size_t degree)
 {
     if(X.colNb()==1 && X.rowNb()==Y.rowNb() && X.colNb()==Y.colNb())
     {
@@ -13,10 +13,10 @@ template <class T> Matrix<T> poly_regression(const Matrix<T>& Y, const Matrix<T>
                 Matrix<T> Sn(degree+1);
                 Sn(0, 0) = X.rowNb();
                 Matrix<T> copy_matX = X;
-                for(int i=1;i<=2*degree;++i)
+                for(std::size_t i=1;i<=2*degree;++i)
                 {
                     T cur_s = sum(copy_matX);
-                    for(int j=0;j<degree+1;++j)
+                    for(std::size_t j=0;j<degree+1;++j)
                     {
                         if(j<Sn.rowNb() && i-j<Sn.colNb() && i>=j)
                             Sn(j, i-j) = cur_s;
@@ -26,7 +26,7 @@ template <class T> Matrix<T> poly_regression(const Matrix<T>& Y, const Matrix<T>
                 Matrix<T> Tn(degree+1, 1);
                 Tn(0, 0) = sum(Y);
                 Matrix<T> copy_matXY = Y;
-                for(int j=1;j<degree+1;++j)
+                for(std::size_t j=1;j<degree+1;++j)
                 {
                     copy_matXY*=X;
                     Tn(j, 0) = sum(copy_matXY);

@@ -14,9 +14,9 @@
 #include "../matrix.hpp"
 
 
-Matrix<unsigned char> bilateral(Matrix<unsigned char>, int = 3, float = 1.0f, float = 1.0f);
-Matrix<unsigned char> despeckle(Matrix<unsigned char>, int = 3);
-Matrix<unsigned char> nagao(Matrix<unsigned char>, int = 3);
+Matrix<unsigned char> bilateral(Matrix<unsigned char>, std::size_t = 3, float = 1.0f, float = 1.0f);
+Matrix<unsigned char> despeckle(Matrix<unsigned char>, std::size_t = 3);
+Matrix<unsigned char> nagao(Matrix<unsigned char>, std::size_t = 3);
 
 
 #endif // NONLINEAR_FILTERING_HPP

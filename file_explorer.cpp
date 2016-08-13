@@ -113,7 +113,7 @@ std::vector<std::string> get_files_recursively(std::string directory, std::strin
             else if(is_folder(directory+"/"+cur_filname) && cur_filname.compare("..") && cur_filname.compare("."))
             {
                 std::vector<std::string > subfolders_list = get_files_recursively(directory+"/"+cur_filname,extension);
-                for(unsigned int i=0;i<subfolders_list.size();++i)
+                for(std::size_t i=0;i<subfolders_list.size();++i)
                 {
                     file_list.push_back(subfolders_list[i]);
                 }

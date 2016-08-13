@@ -21,7 +21,7 @@
 class GaussianNaiveBayes
 {
     private :
-        int nb_class;
+        std::size_t nb_class;
         Matrix<float> means;
         Matrix<float> stdevs;
         Matrix<float> priors;
@@ -31,9 +31,9 @@ class GaussianNaiveBayes
         Matrix<float> getCenters();
         Matrix<float> getStddevs();
         Matrix<float> getPriors();
-        void fit(const Matrix<float>&, const Matrix<int>&);
-        Matrix<int> fit_predict(const Matrix<float>&, const Matrix<int>&);
-        Matrix<int> predict(const Matrix<float>&);
+        void fit(const Matrix<float>&, const Matrix<std::size_t>&);
+        Matrix<std::size_t> fit_predict(const Matrix<float>&, const Matrix<std::size_t>&);
+        Matrix<std::size_t> predict(const Matrix<float>&);
         Matrix<float> predict_proba(const Matrix<float>&);
 };
 

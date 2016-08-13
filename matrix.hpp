@@ -23,8 +23,8 @@ template <class T> class Matrix
 {
 
     private :
-        int sizex; /*!< number of rows*/
-        int sizey; /*!< number of columns*/
+        std::size_t sizex; /*!< number of rows*/
+        std::size_t sizey; /*!< number of columns*/
         std::deque<T> mat; /*!< data*/
 
     public :
@@ -38,14 +38,14 @@ template <class T> class Matrix
          * \brief Square NxN matrix constructor
          * \param N the size of the matrix
          */
-        explicit Matrix(int N);
+        explicit Matrix(std::size_t N);
 
         /*!
          * \brief MxN matrix constructor
          * \param M number of rows
          * \param N number of columns
          */
-        Matrix(int M, int N);
+        Matrix(std::size_t M, std::size_t N);
 
         /*!
          * \brief cast a matrix of type T1 to a matrix of type T2
@@ -87,7 +87,7 @@ template <class T> class Matrix
          * \param j column index
          * \return the value of M(i,j)
          */
-        T operator()(int i, int j) const;
+        T operator()(std::size_t i, std::size_t j) const;
 
         /*!
          * \brief setter for the element on the i-th row and the j-th column
@@ -95,43 +95,43 @@ template <class T> class Matrix
          * \param j column index
          * \return a reference on M(i,j)
          */
-        T& operator()(int i, int j);
+        T& operator()(std::size_t i, std::size_t j);
 
         // accessors submatrix
-        Matrix<T> getCol(int) const;
-        Matrix<T> getCols(int, int) const;
-        Matrix<T> getRow(int) const;
-        Matrix<T> getRows(int, int) const;
-        Matrix<T> getSubmat(int, int, int, int) const;
-        void setCol(int, const Matrix<T>&);
-        void setCols(int, const Matrix<T>&);
-        void setRow(int, const Matrix<T>&);
-        void setRows(int, const Matrix<T>&);
-        void setSubmat(int, int, const Matrix<T>&);
+        Matrix<T> getCol(std::size_t) const;
+        Matrix<T> getCols(std::size_t, std::size_t) const;
+        Matrix<T> getRow(std::size_t) const;
+        Matrix<T> getRows(std::size_t, std::size_t) const;
+        Matrix<T> getSubmat(std::size_t, std::size_t, std::size_t, std::size_t) const;
+        void setCol(std::size_t, const Matrix<T>&);
+        void setCols(std::size_t, const Matrix<T>&);
+        void setRow(std::size_t, const Matrix<T>&);
+        void setRows(std::size_t, const Matrix<T>&);
+        void setSubmat(std::size_t, std::size_t, const Matrix<T>&);
 
         // size
-        int colNb() const;
-        int rowNb() const;
-        int size() const;
+        std::size_t colNb() const;
+        std::size_t rowNb() const;
+        std::size_t size() const;
 
         // matrix transformation
         void fliplr();
         void flipud();
-        void reshape(int, int);
+        void reshape(std::size_t, std::size_t);
         void rot90();
         void rot180();
         void rot270();
-        void swapcol(int, int);
-        void swaprow(int, int);
+        void swapcol(std::size_t, std::size_t);
+        void swaprow(std::size_t, std::size_t);
         void transpose();
 
         // add/remove a row/column
-        void delCol(int);
-        void delRow(int);
+        void delCol(std::size_t);
+        void delRow(std::size_t);
         void newCol();
-        void newCol(int);
+        void newCol(std::size_t);
         void newRow();
-        void newRow(int);
+        void newRow(std::size_t);
 
         // operators
         void operator+=(const Matrix<T>&);
@@ -174,20 +174,20 @@ template <class T> class Matrix
 
 // specific constructors
 template <class T> Matrix<T> arange(T, T, T = T(1));
-template <class T> Matrix<T> full(int, T);
-template <class T> Matrix<T> full(int, int, T);
-template <class T> Matrix<T> id(int);
-template <class T> Matrix<T> id(int, int);
-template <class T> std::pair<Matrix<T>, Matrix<T> > meshgrid(int);
-template <class T> std::pair<Matrix<T>, Matrix<T> > meshgrid(int, int);
-template <class T> Matrix<T> rand(int);
-template <class T> Matrix<T> rand(int, int);
-template <class T> Matrix<T> randn(int, T = T(0), T = T(1));
-template <class T> Matrix<T> randn(int, int, T = T(0), T = T(1));
-template <class T> Matrix<T> ones(int);
-template <class T> Matrix<T> ones(int, int);
-template <class T> Matrix<T> zeros(int);
-template <class T> Matrix<T> zeros(int, int);
+template <class T> Matrix<T> full(std::size_t, T);
+template <class T> Matrix<T> full(std::size_t, std::size_t, T);
+template <class T> Matrix<T> id(std::size_t);
+template <class T> Matrix<T> id(std::size_t, std::size_t);
+template <class T> std::pair<Matrix<T>, Matrix<T> > meshgrid(std::size_t);
+template <class T> std::pair<Matrix<T>, Matrix<T> > meshgrid(std::size_t, std::size_t);
+template <class T> Matrix<T> rand(std::size_t);
+template <class T> Matrix<T> rand(std::size_t, std::size_t);
+template <class T> Matrix<T> randn(std::size_t, T = T(0), T = T(1));
+template <class T> Matrix<T> randn(std::size_t, std::size_t, T = T(0), T = T(1));
+template <class T> Matrix<T> ones(std::size_t);
+template <class T> Matrix<T> ones(std::size_t, std::size_t);
+template <class T> Matrix<T> zeros(std::size_t);
+template <class T> Matrix<T> zeros(std::size_t, std::size_t);
 
 // apply any function
 template <class T, typename Type> Matrix<Type> apply(const Matrix<T>&, Type (*)(T));
@@ -201,15 +201,15 @@ template <class T> Matrix<T> where(const Matrix<bool>&, const Matrix<T>&, const 
 template <class T> Matrix<T> compress(const Matrix<bool>&, const Matrix<T>&, int);
 
 //count elements
-template <class T> int count(const Matrix<T>&, const T&);
-template <class T> int count_nonzero(const Matrix<T>&);
+template <class T> std::size_t count(const Matrix<T>&, const T&);
+template <class T> std::size_t count_nonzero(const Matrix<T>&);
 
 // replacement
 template <class T> void replace(Matrix<T>&, const T&, const T&);
 template <class T> void replace_if(Matrix<T>&, const Matrix<bool>&, const T&);
 
 //argwhere
-template <class T = int> Matrix<int> argwhere(const Matrix<bool>&);
+template <class T = std::size_t> Matrix<std::size_t> argwhere(const Matrix<bool>&);
 
 // unique
 template <class T> Matrix<T> unique(const Matrix<T>&);
@@ -226,7 +226,7 @@ template <class T> Matrix<T> operator-(const T&, const Matrix<T>&);
 template <class T> Matrix<T> operator*(const T&, const Matrix<T>&);
 template <class T> Matrix<T> operator/(const T&, const Matrix<T>&);
 
-//print
+//prstd::size_t
 template <class T> std::ostream& operator<<(std::ostream&, const Matrix<T>&);
 
 

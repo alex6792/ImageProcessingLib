@@ -19,12 +19,12 @@ std::pair<Matrix<float>, Matrix<float> > Snake::getcoordinates()
     return std::make_pair(Vx, Vy);
 }
 
-int Snake::getMaxIteration()
+std::size_t Snake::getMaxIteration()
 {
     return max_iteration;
 }
 
-int Snake::getNbPoints()
+std::size_t Snake::getNbPoints()
 {
     return nb_points;
 }
@@ -62,7 +62,7 @@ void Snake::setCoordinates(const Matrix<float>& Vx_arg, const Matrix<float>& Vy_
         Vy = Vy_arg;
         nb_points = Vx_arg.rowNb();
         D2 = -2.0f*id<float>(nb_points);
-        for(int i=0;i<nb_points-1;++i)
+        for(std::size_t i=0;i<nb_points-1;++i)
         {
             D2(i, i+1) = 1.0f;
             D2(i+1, i) = 1.0f;
@@ -134,7 +134,7 @@ void Snake::iterate()
 {
     Matrix<float> Gx(Vx.rowNb(), Vx.colNb());
     Matrix<float> Gy(Vy.rowNb(), Vy.colNb());
-    for(int i=0;i<Vx.rowNb();++i)
+    for(std::size_t i=0;i<Vx.rowNb();++i)
     {
         Gx(i, 0) = Px((int)Vx(i, 0), (int)Vy(i, 0));
         Gy(i, 0) = Py((int)Vx(i, 0), (int)Vy(i, 0));
@@ -151,7 +151,7 @@ void Snake::iterate()
 
 void Snake::run()
 {
-    for(int i=0;i<max_iteration;++i)
+    for(std::size_t i=0;i<max_iteration;++i)
     {
         iterate();
     }

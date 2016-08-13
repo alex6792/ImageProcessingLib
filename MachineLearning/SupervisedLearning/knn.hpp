@@ -21,16 +21,16 @@
 class KNN
 {
     private :
-        int k;
-        int nb_class;
+        std::size_t k;
+        std::size_t nb_class;
         Matrix<float> training_data;
-        Matrix<int> labels;
+        Matrix<std::size_t> labels;
 
     public :
-        explicit KNN(int);
-        void fit(const Matrix<float>&, const Matrix<int>&);
-        Matrix<int> fit_predict(const Matrix<float>&, const Matrix<int>&);
-        Matrix<int> predict(const Matrix<float>&);
+        explicit KNN(std::size_t);
+        void fit(const Matrix<float>&, const Matrix<std::size_t>&);
+        Matrix<std::size_t> fit_predict(const Matrix<float>&, const Matrix<std::size_t>&);
+        Matrix<std::size_t> predict(const Matrix<float>&);
         Matrix<float> predict_proba(const Matrix<float>&);
 };
 

@@ -23,26 +23,26 @@ class MLP
     private :
 
         float alpha;// learning rate
-        int max_iteration;// maximum iteration allowed
+        std::size_t max_iteration;// maximum iteration allowed
 
         std::vector<Matrix<float> > A;
         std::vector<Matrix<float> > y, z;
         std::vector<Matrix<float> > biases;
-        std::vector<int> hidden_layers_sizes;
-        int nb_clusters;
-        int nb_hidden_layers;
-        int nb_features;
+        std::vector<std::size_t> hidden_layers_sizes;
+        std::size_t nb_clusters;
+        std::size_t nb_hidden_layers;
+        std::size_t nb_features;
         float (*activation_fct)(float);
         float (*activation_fct_der)(float);
 
     public :
-        explicit MLP(const std::vector<int>&);
+        explicit MLP(const std::vector<std::size_t>&);
         void export_graphviz(std::string);
         void set_alpha(float);
-        void set_max_iteration(int);
-        void fit(const Matrix<float>&, const Matrix<int>&);
-        Matrix<int> fit_predict(const Matrix<float>&, const Matrix<int>&);
-        Matrix<int> predict(const Matrix<float>&);
+        void set_max_iteration(std::size_t);
+        void fit(const Matrix<float>&, const Matrix<std::size_t>&);
+        Matrix<std::size_t> fit_predict(const Matrix<float>&, const Matrix<std::size_t>&);
+        Matrix<std::size_t> predict(const Matrix<float>&);
 };
 
 

@@ -5,7 +5,7 @@
 #include "mlp.hpp"
 
 
-MLP::MLP(const std::vector<int>& hidden_layers_sizes_arg)
+MLP::MLP(const std::vector<std::size_t>& hidden_layers_sizes_arg)
 {
     alpha = 0.01;
     max_iteration = 200;
@@ -29,20 +29,20 @@ void MLP::export_graphviz(std::string filename)
     {
         myfile<<"digraph G {"<<std::endl;
         hidden_layers_sizes.insert(hidden_layers_sizes.begin(), nb_features);
-        for(int i=0;i<nb_hidden_layers+1;++i)
+        for(std::size_t i=0;i<nb_hidden_layers+1;++i)
         {
             myfile<<'\t'<<"subgraph cluster_"<<i<<" {"<<std::endl;
-            for(int j=0;j<hidden_layers_sizes[i];++j)
+            for(std::size_t j=0;j<hidden_layers_sizes[i];++j)
                 myfile<<'\t'<<'\t'<<"L"<<i<<"_"<<j<<";"<<std::endl;
             if(i!=nb_hidden_layers)
                 myfile<<'\t'<<'\t'<<"L"<<i<<"_b"<<";"<<std::endl;
             myfile<<'\t'<<"}"<<std::endl;
         }
-        for(int i=0;i<nb_hidden_layers;++i)
+        for(std::size_t i=0;i<nb_hidden_layers;++i)
         {
-            for(int k=0;k<hidden_layers_sizes[i+1];++k)
+            for(std::size_t k=0;k<hidden_layers_sizes[i+1];++k)
             {
-                for(int j=0;j<hidden_layers_sizes[i];++j)
+                for(std::size_t j=0;j<hidden_layers_sizes[i];++j)
                     myfile<<'\t'<<"L"<<i<<"_"<<j<<"->"<<"L"<<i+1<<"_"<<k<<" [label = \""<<"A"<<j<<","<<k<<" : "<<A[i](j, k)<<"\" ];"<<std::endl;
                 myfile<<'\t'<<"L"<<i<<"_b"<<"->"<<"L"<<i+1<<"_"<<k<<" [label = \""<<"b"<<k<<" : "<<biases[i](0, k)<<"\" ];"<<std::endl;
             }
@@ -60,21 +60,21 @@ void MLP::set_alpha(float a)
     alpha = a;
 }
 
-void MLP::set_max_iteration(int new_max_iteration)
+void MLP::set_max_iteration(std::size_t new_max_iteration)
 {
     max_iteration = new_max_iteration;
 }
 
-void MLP::fit(const Matrix<float>& M, const Matrix<int>& label)
+void MLP::fit(const Matrix<float>& M, const Matrix<std::size_t>& label)
 {
-    int nb_samples = M.rowNb();
+    std::size_t nb_samples = M.rowNb();
     nb_features = M.colNb();
     nb_clusters = max(label)+1;
     hidden_layers_sizes.push_back(nb_clusters);
     nb_hidden_layers = hidden_layers_sizes.size();
 
     Matrix<float> true_labels = zeros<float>(nb_samples, nb_clusters);
-    for(int i=0;i<nb_samples;++i)
+    for(std::size_t i=0;i<nb_samples;++i)
         true_labels(i, label(i, 0)) = 1.0f;
 
     y = std::vector<Matrix<float> >(nb_hidden_layers);
@@ -82,24 +82,24 @@ void MLP::fit(const Matrix<float>& M, const Matrix<int>& label)
     A = std::vector<Matrix<float> >(nb_hidden_layers);
     biases = std::vector<Matrix<float> >(nb_hidden_layers);
 
-    A[0] = Matrix<float>(rand<int>(nb_features, hidden_layers_sizes[0])%10)/10.0f;
-    for(int i=1;i<nb_hidden_layers;++i)
-        A[i] = Matrix<float>(rand<int>(hidden_layers_sizes[i-1], hidden_layers_sizes[i])%10)/10.0f;
-    for(int i=0;i<nb_hidden_layers;++i)
+    A[0] = Matrix<float>(rand<std::size_t>(nb_features, hidden_layers_sizes[0])%10)/10.0f;
+    for(std::size_t i=1;i<nb_hidden_layers;++i)
+        A[i] = Matrix<float>(rand<std::size_t>(hidden_layers_sizes[i-1], hidden_layers_sizes[i])%10)/10.0f;
+    for(std::size_t i=0;i<nb_hidden_layers;++i)
         biases[i] = zeros<float>(1, hidden_layers_sizes[i]);
 
-    for(int it=0;it<max_iteration;++it)
+    for(std::size_t it=0;it<max_iteration;++it)
     {
         std::vector<Matrix<float> > delta_A(nb_hidden_layers);
         std::vector<Matrix<float> > delta_B(nb_hidden_layers);
         float sse = 0.0f;
 
-        for(int i=0;i<nb_samples;++i)
+        for(std::size_t i=0;i<nb_samples;++i)
         {
 
             Matrix<float> cur_label = true_labels.getRow(i);
             Matrix<float> cur_sample = M.getRow(i);
-            Matrix<int> cur_prediction = predict(cur_sample);
+            Matrix<std::size_t> cur_prediction = predict(cur_sample);
 
             std::vector<Matrix<float> > y_der(nb_hidden_layers);
             std::vector<Matrix<float> > z_der(nb_hidden_layers+1);
@@ -108,13 +108,13 @@ void MLP::fit(const Matrix<float>& M, const Matrix<int>& label)
             y_der[nb_hidden_layers-1] = apply<float, float>(y[nb_hidden_layers-1], activation_fct_der)*z_der[nb_hidden_layers];
 
             sse+=sum(pow(z_der[nb_hidden_layers], 2.0f));
-            for(int j=nb_hidden_layers-2;j>=0;--j)
+            for(std::size_t j=nb_hidden_layers-1;j>0;--j)
             {
-                z_der[j+1] = dot(y_der[j+1], transpose(A[j+1]));
-                y_der[j] = apply<float, float>(y[j], activation_fct_der)*z_der[j+1];
+                z_der[j] = dot(y_der[j], transpose(A[j]));
+                y_der[j-1] = apply<float, float>(y[j-1], activation_fct_der)*z_der[j];
             }
 
-            for(int j=0;j<nb_hidden_layers;++j)
+            for(std::size_t j=0;j<nb_hidden_layers;++j)
             {
                 if(i==0)
                 {
@@ -128,7 +128,7 @@ void MLP::fit(const Matrix<float>& M, const Matrix<int>& label)
                 }
             }
         }
-        for(int j=0;j<nb_hidden_layers;++j)
+        for(std::size_t j=0;j<nb_hidden_layers;++j)
         {
             A[j]-=delta_A[j];
             biases[j]-=delta_B[j];
@@ -136,20 +136,20 @@ void MLP::fit(const Matrix<float>& M, const Matrix<int>& label)
     }
 }
 
-Matrix<int> MLP::fit_predict(const Matrix<float>& M, const Matrix<int>& label)
+Matrix<std::size_t> MLP::fit_predict(const Matrix<float>& M, const Matrix<std::size_t>& label)
 {
     fit(M, label);
     return predict(M);
 }
 
-Matrix<int> MLP::predict(const Matrix<float>& M)
+Matrix<std::size_t> MLP::predict(const Matrix<float>& M)
 {
-    int nb_samples = M.rowNb();
-    Matrix<int> labels(nb_samples, 1);
-    for(int i=0;i<nb_samples;++i)
+    std::size_t nb_samples = M.rowNb();
+    Matrix<std::size_t> labels(nb_samples, 1);
+    for(std::size_t i=0;i<nb_samples;++i)
     {
         z[0] = M.getRow(i);
-        for(int j=0;j<nb_hidden_layers;++j)
+        for(std::size_t j=0;j<nb_hidden_layers;++j)
         {
             y[j] = dot(z[j], A[j])+biases[j];
             z[j+1] = apply<float, float>(y[j], activation_fct);

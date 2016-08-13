@@ -24,7 +24,7 @@ void Perceptron::set_alpha(float a)
     alpha = a;
 }
 
-void Perceptron::set_max_iteration(int new_max_iteration)
+void Perceptron::set_max_iteration(std::size_t new_max_iteration)
 {
     max_iteration = new_max_iteration;
 }
@@ -32,12 +32,12 @@ void Perceptron::set_max_iteration(int new_max_iteration)
 void Perceptron::fit(const Matrix<float>& M, const Matrix<bool>& label)
 {
     coeff = zeros<float>(M.colNb(), 1);
-    int cpt = 0;
+    std::size_t cpt = 0;
     bool coeff_changed = true;
     while(coeff_changed && cpt<max_iteration)
     {
         coeff_changed = false;
-        for(int i=0;i<M.rowNb();++i)
+        for(std::size_t i=0;i<M.rowNb();++i)
         {
             Matrix<float> X = M.getRow(i);
             bool res = predict(X)(0, 0);

@@ -21,15 +21,15 @@
 class BernoulliNaiveBayes
 {
     private :
-        int nb_class;
+        std::size_t nb_class;
         Matrix<float> proba;
         Matrix<float> priors;
 
     public :
         BernoulliNaiveBayes();
-        void fit(const Matrix<bool>&, const Matrix<int>&);
-        Matrix<int> fit_predict(const Matrix<bool>&, const Matrix<int>&);
-        Matrix<int> predict(const Matrix<bool>&);
+        void fit(const Matrix<bool>&, const Matrix<std::size_t>&);
+        Matrix<std::size_t> fit_predict(const Matrix<bool>&, const Matrix<std::size_t>&);
+        Matrix<std::size_t> predict(const Matrix<bool>&);
         Matrix<float> predict_proba(const Matrix<bool>&);
 };
 

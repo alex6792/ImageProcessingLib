@@ -24,21 +24,21 @@ class AffinityPropagation
         Matrix<float> centers;
         Matrix<float> availability;
         Matrix<float> responsibility;
-        Matrix<int> labels;
-        int nb_clusters;
-        int nb_features;
-        int max_iteration;
+        Matrix<std::size_t> labels;
+        std::size_t nb_clusters;
+        std::size_t nb_features;
+        std::size_t max_iteration;
 
     public :
         AffinityPropagation();
         Matrix<float> getAvailability();
         Matrix<float> getResponsibility();
         Matrix<float> getCenters();
-        int getMaxIteration();
-        void setMaxIteration(int);
+        std::size_t getMaxIteration();
+        void setMaxIteration(std::size_t);
         void fit(const Matrix<float>&);
-        Matrix<int> fit_predict(const Matrix<float>&);
-        Matrix<int> predict(const Matrix<float>&);
+        Matrix<std::size_t> fit_predict(const Matrix<float>&);
+        Matrix<std::size_t> predict(const Matrix<float>&);
 };
 
 

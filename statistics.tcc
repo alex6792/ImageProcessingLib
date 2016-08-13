@@ -3,35 +3,35 @@
 #include "mmath.hpp"
 
 
-template <class T> Matrix<int> argmax(const Matrix<T>& M)
+template <class T> Matrix<std::size_t> argmax(const Matrix<T>& M)
 {
-    Matrix<int> argmaxM = zeros<int>(1, 2);
+    Matrix<std::size_t> argmaxM = zeros<std::size_t>(1, 2);
     auto it = std::max_element(M.cbegin(), M.cend());
-    int argmax_idx = it-M.cbegin();
-    int w = M.colNb();
+    std::size_t argmax_idx = it-M.cbegin();
+    std::size_t w = M.colNb();
     argmaxM(0, 0) = argmax_idx/w;
     argmaxM(0, 1) = argmax_idx%w;
     return argmaxM;
 }
 
-template <class T> Matrix<int> argmin(const Matrix<T>& M)
+template <class T> Matrix<std::size_t> argmin(const Matrix<T>& M)
 {
-    Matrix<int> argminM = zeros<int>(1, 2);
+    Matrix<std::size_t> argminM = zeros<std::size_t>(1, 2);
     auto it = std::min_element(M.cbegin(), M.cend());
-    int argmin_idx = it-M.cbegin();
-    int w = M.colNb();
+    std::size_t argmin_idx = it-M.cbegin();
+    std::size_t w = M.colNb();
     argminM(0, 0) = argmin_idx/w;
     argminM(0, 1) = argmin_idx%w;
     return argminM;
 }
 
-template <class T> Matrix<int> argsort(const Matrix<T>& M)
+template <class T> Matrix<std::size_t> argsort(const Matrix<T>& M)
 {
-    Matrix<int> temp = arange<int>(0, M.size());
-    int w = M.colNb();
+    Matrix<std::size_t> temp = arange<std::size_t>(0, M.size());
+    std::size_t w = M.colNb();
     auto it = M.cbegin();
     std::sort(temp.begin(), temp.end(), [it](int i1, int i2) {return *(it+i1) < *(it+i2);});
-    Matrix<int> args = Matrix<int>(M.size(), 2);
+    Matrix<std::size_t> args = Matrix<std::size_t>(M.size(), 2);
     args.setCol(0, temp/w);
     args.setCol(1, temp%w);
     return args;
@@ -44,9 +44,9 @@ template <class T> Matrix<T> axismax(const Matrix<T>& M, int axis)
     else if(axis==1)
     {
         Matrix<T> maximum = M.getCol(0);
-        for(int i=0;i<M.rowNb();++i)
+        for(std::size_t i=0;i<M.rowNb();++i)
         {
-            for(int j=1;j<M.colNb();++j)
+            for(std::size_t j=1;j<M.colNb();++j)
                 maximum(i, 0) = maximum(i, 0)>=M(i, j)?maximum(i, 0):M(i, j);
         }
         return maximum;
@@ -54,9 +54,9 @@ template <class T> Matrix<T> axismax(const Matrix<T>& M, int axis)
     else if(axis==2)
     {
         Matrix<T> maximum = M.getRow(0);
-        for(int i=1;i<M.rowNb();++i)
+        for(std::size_t i=1;i<M.rowNb();++i)
         {
-            for(int j=0;j<M.colNb();++j)
+            for(std::size_t j=0;j<M.colNb();++j)
                 maximum(0, j) = maximum(0, j)>=M(i, j)?maximum(0, j):M(i, j);
         }
         return maximum;
@@ -90,9 +90,9 @@ template <class T> Matrix<T> axismin(const Matrix<T>& M, int axis)
     else if(axis==1)
     {
         Matrix<T> minimum = M.getCol(0);
-        for(int i=0;i<M.rowNb();++i)
+        for(std::size_t i=0;i<M.rowNb();++i)
         {
-            for(int j=1;j<M.colNb();++j)
+            for(std::size_t j=1;j<M.colNb();++j)
                 minimum(i, 0) = minimum(i, 0)<M(i, j)?minimum(i, 0):M(i, j);
         }
         return minimum;
@@ -100,9 +100,9 @@ template <class T> Matrix<T> axismin(const Matrix<T>& M, int axis)
     else if(axis==2)
     {
         Matrix<T> minimum = M.getRow(0);
-        for(int i=1;i<M.rowNb();++i)
+        for(std::size_t i=1;i<M.rowNb();++i)
         {
-            for(int j=0;j<M.colNb();++j)
+            for(std::size_t j=0;j<M.colNb();++j)
                 minimum(0, j) = minimum(0, j)<M(i, j)?minimum(0, j):M(i, j);
         }
         return minimum;
@@ -121,9 +121,9 @@ template <class T> Matrix<T> axisprod(const Matrix<T>& M, int axis)
     else if(axis==1)
     {
         Matrix<T> prod = M.getCol(0);
-        for(int i=0;i<M.rowNb();++i)
+        for(std::size_t i=0;i<M.rowNb();++i)
         {
-            for(int j=1;j<M.colNb();++j)
+            for(std::size_t j=1;j<M.colNb();++j)
                 prod(i, 0)*=M(i, j);
         }
         return prod;
@@ -131,9 +131,9 @@ template <class T> Matrix<T> axisprod(const Matrix<T>& M, int axis)
     else if(axis==2)
     {
         Matrix<T> prod = M.getRow(0);
-        for(int i=1;i<M.rowNb();++i)
+        for(std::size_t i=1;i<M.rowNb();++i)
         {
-            for(int j=0;j<M.colNb();++j)
+            for(std::size_t j=0;j<M.colNb();++j)
                 prod(0, j)*=M(i, j);
         }
         return prod;
@@ -157,9 +157,9 @@ template <class T> Matrix<T> axissum(const Matrix<T>& M, int axis)
     else if(axis==1)
     {
         Matrix<T> sum = M.getCol(0);
-        for(int i=0;i<M.rowNb();++i)
+        for(std::size_t i=0;i<M.rowNb();++i)
         {
-            for(int j=1;j<M.colNb();++j)
+            for(std::size_t j=1;j<M.colNb();++j)
                 sum(i, 0)+=M(i, j);
         }
         return sum;
@@ -167,9 +167,9 @@ template <class T> Matrix<T> axissum(const Matrix<T>& M, int axis)
     else if(axis==2)
     {
         Matrix<T> sum = M.getRow(0);
-        for(int i=1;i<M.rowNb();++i)
+        for(std::size_t i=1;i<M.rowNb();++i)
         {
-            for(int j=0;j<M.colNb();++j)
+            for(std::size_t j=0;j<M.colNb();++j)
                 sum(0, j)+=M(i, j);
         }
         return sum;

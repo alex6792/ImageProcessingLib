@@ -21,20 +21,20 @@
 class Kmedoids
 {
     private :
-        Matrix<int> centers;// cluster centers
-        Matrix<int> labels;// labels
-        int nb_clusters;// number of clusters
-        int nb_features;
+        Matrix<std::size_t> centers;// cluster centers
+        Matrix<std::size_t> labels;// labels
+        std::size_t nb_clusters;// number of clusters
+        std::size_t nb_features;
         Matrix<float> distances;
         std::vector<Matrix<float> > data;
         float old_cost, cur_cost;
 
     public :
-        explicit Kmedoids(int);
+        explicit Kmedoids(std::size_t);
         Matrix<float> getCenters();
         void fit(const Matrix<float>&);
-        Matrix<int> fit_predict(const Matrix<float>&);
-        Matrix<int> predict(const Matrix<float>&);
+        Matrix<std::size_t> fit_predict(const Matrix<float>&);
+        Matrix<std::size_t> predict(const Matrix<float>&);
 };
 
 

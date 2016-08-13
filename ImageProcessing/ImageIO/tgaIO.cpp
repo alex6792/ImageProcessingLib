@@ -67,7 +67,7 @@ Matrix<Color> read_tga(std::string filename)
         }
         else if(compression == 10)
         {
-            int cpt = 0;
+            std::size_t cpt = 0;
             while(cpt<img.size())
             {
                 char chunkheader;

@@ -5,12 +5,12 @@
 #include "morphology.hpp"
 
 
-Mask circle(int r)
+Mask circle(std::size_t r)
 {
     return ellipse(r, r);
 }
 
-Mask cross(int a)
+Mask cross(std::size_t a)
 {
     Mask new_cross = zeros<bool>(2*a+1);
     new_cross.setCol(a, ones<bool>(new_cross.rowNb(), 1));
@@ -18,42 +18,42 @@ Mask cross(int a)
     return new_cross;
 }
 
-Mask ellipse(int a, int b)
+Mask ellipse(std::size_t a, std::size_t b)
 {
     Mask new_ellipse = zeros<bool>(2*a+1, 2*b+1);
-    for(int i=0;i<new_ellipse.rowNb();++i)
+    for(std::size_t i=0;i<new_ellipse.rowNb();++i)
     {
-        for(int j=0;j<new_ellipse.colNb();++j)
+        for(std::size_t j=0;j<new_ellipse.colNb();++j)
         {
-            if(b*b*(i-a)*(i-a)+a*a*(j-b)*(j-b)<=a*a*b*b)
+            if(b*b*(i*i+a*a-2*i*a)+a*a*(j*j+b*b-2*j*b)<=a*a*b*b)
                 new_ellipse(i, j) = true;
         }
     }
     return new_ellipse;
 }
 
-Mask diamond(int a)
+Mask diamond(std::size_t a)
 {
     Mask new_diamond = zeros<bool>(a);
-    for(int i=0;i<new_diamond.rowNb()/2;++i)
+    for(std::size_t i=0;i<(a-1)/2;++i)
     {
-        for(int j=-i+(a-1)/2;j<=i+a/2;++j)
+        for(std::size_t j=-i+(a-1)/2;j<=i+a/2;++j)
             new_diamond(i, j) = true;
     }
-    for(int i=new_diamond.rowNb()/2;i<new_diamond.rowNb();++i)
+    for(std::size_t i=a/2;i<a;++i)
     {
-        for(int j=i-a/2;j<-i+3*a/2;++j)
+        for(std::size_t j=i-a/2;j<-i+3*a/2;++j)
             new_diamond(i, j) = true;
     }
     return new_diamond;
 }
 
-Mask rect(int a, int b)
+Mask rect(std::size_t a, std::size_t b)
 {
     return ones<bool>(a, b);
 }
 
-Mask square(int a)
+Mask square(std::size_t a)
 {
     return rect(a, a);
 }
@@ -97,23 +97,24 @@ Matrix<bool> conservative_smoothing(const Matrix<bool>& M)
 
 Matrix<bool> dilate(const Matrix<bool>& M, const Mask& mask)
 {
-    Matrix<bool> res = zeros<bool>(M.rowNb(), M.colNb());
-    for(int k=0;k<mask.rowNb();++k)
+    std::size_t I = M.rowNb(), J = M.colNb();
+    Matrix<bool> res = zeros<bool>(I, J);
+    for(std::size_t k=0, K=mask.rowNb();k<K;++k)
     {
-        for(int l=0;l<mask.colNb();++l)
+        for(std::size_t l=0, L=mask.colNb();l<L;++l)
         {
             if(mask(k, l))
             {
-                int inf_bound_i = std::max(0, mask.rowNb()/2-k);
-                int sup_bound_i = std::min(res.rowNb(), res.rowNb()+mask.rowNb()/2-k);
-                int inf_bound_j = std::max(0, mask.colNb()/2-l);
-                int sup_bound_j = std::min(res.colNb(), res.colNb()+mask.colNb()/2-l);
-                for(int i=inf_bound_i;i<sup_bound_i;++i)
+                std::size_t sup_bound_i = std::min(I, I+K/2-k);
+                std::size_t inf_bound_i = sup_bound_i+k-I-K/2;
+                std::size_t sup_bound_j = std::min(J, J+L/2-l);
+                std::size_t inf_bound_j = sup_bound_j+l-J-L/2;
+                for(std::size_t i=inf_bound_i;i<sup_bound_i;++i)
                 {
-                    for(int j=inf_bound_j;j<sup_bound_j;++j)
+                    for(std::size_t j=inf_bound_j;j<sup_bound_j;++j)
                     {
-                        int x = i+k-mask.rowNb()/2;
-                        int y = j+l-mask.colNb()/2;
+                        std::size_t x = i+k-K/2;
+                        std::size_t y = j+l-L/2;
                         if(M(x, y))
                             res(i, j) = true;
                     }
@@ -126,23 +127,24 @@ Matrix<bool> dilate(const Matrix<bool>& M, const Mask& mask)
 
 Matrix<bool> erode(const Matrix<bool>& M, const Mask& mask)
 {
-    Matrix<bool> res = ones<bool>(M.rowNb(), M.colNb());
-    for(int k=0;k<mask.rowNb();++k)
+    std::size_t I = M.rowNb(), J = M.colNb();
+    Matrix<bool> res = ones<bool>(I, J);
+    for(std::size_t k=0, K=mask.rowNb();k<K;++k)
     {
-        for(int l=0;l<mask.colNb();++l)
+        for(std::size_t l=0, L=mask.colNb();l<L;++l)
         {
             if(mask(k, l))
             {
-                int inf_bound_i = std::max(0, mask.rowNb()/2-k);
-                int sup_bound_i = std::min(res.rowNb(), res.rowNb()+mask.rowNb()/2-k);
-                int inf_bound_j = std::max(0, mask.colNb()/2-l);
-                int sup_bound_j = std::min(res.colNb(), res.colNb()+mask.colNb()/2-l);
-                for(int i=inf_bound_i;i<sup_bound_i;++i)
+                std::size_t sup_bound_i = std::min(I, I+K/2-k);
+                std::size_t inf_bound_i = sup_bound_i+k-I-K/2;
+                std::size_t sup_bound_j = std::min(J, J+L/2-l);
+                std::size_t inf_bound_j = sup_bound_j+l-J-L/2;
+                for(std::size_t i=inf_bound_i;i<sup_bound_i;++i)
                 {
-                    for(int j=inf_bound_j;j<sup_bound_j;++j)
+                    for(std::size_t j=inf_bound_j;j<sup_bound_j;++j)
                     {
-                        int x = i+k-mask.rowNb()/2;
-                        int y = j+l-mask.colNb()/2;
+                        std::size_t x = i+k-K/2;
+                        std::size_t y = j+l-L/2;
                         if(!M(x, y))
                             res(i, j) = false;
                     }
@@ -171,20 +173,20 @@ Matrix<bool> inner_gradient(const Matrix<bool>& M, const Mask& mask)
 Matrix<bool> median_filter(const Matrix<bool>& M, const Mask& mask)
 {
     Matrix<bool> res = ones<bool>(M.rowNb(), M.colNb());
-    for(int i=0;i<M.rowNb();++i)
+    for(std::size_t i=0, I=M.rowNb();i<I;++i)
     {
-        for(int j=0;j<M.colNb();++j)
+        for(std::size_t j=0, J=M.colNb();j<J;++j)
         {
-            int cpt_white = 0;
-            int cpt_black = 0;
-            for(int k=0;k<mask.rowNb();++k)
+            std::size_t cpt_white = 0;
+            std::size_t cpt_black = 0;
+            for(std::size_t k=0, K=mask.rowNb();k<K;++k)
             {
-                for(int l=0;l<mask.colNb();++l)
+                for(std::size_t l=0, L=mask.colNb();l<L;++l)
                 {
-                    int x = i+k-mask.rowNb()/2;
-                    int y = j+l-mask.colNb()/2;
-                    if(mask(k, l) && x>=0 && x<M.rowNb() && y>=0 && y<M.colNb())
+                    if(k+i>=K/2 && k+i<I+K/2 && l+j>=L/2 && l+j<J+L/2)
                     {
+                        std::size_t x = i+k-K/2;
+                        std::size_t y = j+l-L/2;
                         if(M(x, y))
                             ++cpt_white;
                         else
@@ -260,13 +262,13 @@ Matrix<bool> WTH(const Matrix<bool>& M, const Mask& mask)
     return M-open(M, mask);
 }
 
-Matrix<int> label(const Matrix<bool>& M, const Mask& mask)
+Matrix<std::size_t> label(const Matrix<bool>& M, const Mask& mask)
 {
-    Matrix<int> labeledmap = zeros<int>(M.rowNb(), M.colNb());
-    int curlabel = 0;
-    for(int i=0;i<M.rowNb();++i)
+    Matrix<std::size_t> labeledmap = zeros<std::size_t>(M.rowNb(), M.colNb());
+    std::size_t curlabel = 0;
+    for(std::size_t i=0;i<M.rowNb();++i)
     {
-        for(int j=0;j<M.colNb();++j)
+        for(std::size_t j=0;j<M.colNb();++j)
         {
             if(M(i, j) && labeledmap(i, j)==0)
             {
@@ -319,23 +321,24 @@ Matrix<unsigned char> conservative_smoothing(const Matrix<unsigned char>& M)
 
 Matrix<unsigned char> erode(const Matrix<unsigned char>& M, const Mask& mask)
 {
-    Matrix<unsigned char> res = full<unsigned char>(M.rowNb(), M.colNb(), 255);
-    for(int k=0;k<mask.rowNb();++k)
+    std::size_t I = M.rowNb(), J = M.colNb();
+    Matrix<unsigned char> res = full<unsigned char>(I, J, 255);
+    for(std::size_t k=0, K=mask.rowNb();k<K;++k)
     {
-        for(int l=0;l<mask.colNb();++l)
+        for(std::size_t l=0, L=mask.colNb();l<L;++l)
         {
             if(mask(k, l))
             {
-                int inf_bound_i = std::max(0, mask.rowNb()/2-k);
-                int sup_bound_i = std::min(res.rowNb(), res.rowNb()+mask.rowNb()/2-k);
-                int inf_bound_j = std::max(0, mask.colNb()/2-l);
-                int sup_bound_j = std::min(res.colNb(), res.colNb()+mask.colNb()/2-l);
-                for(int i=inf_bound_i;i<sup_bound_i;++i)
+                std::size_t sup_bound_i = std::min(I, I+K/2-k);
+                std::size_t inf_bound_i = sup_bound_i+k-I-K/2;
+                std::size_t sup_bound_j = std::min(J, J+L/2-l);
+                std::size_t inf_bound_j = sup_bound_j+l-J-L/2;
+                for(std::size_t i=inf_bound_i;i<sup_bound_i;++i)
                 {
-                    for(int j=inf_bound_j;j<sup_bound_j;++j)
+                    for(std::size_t j=inf_bound_j;j<sup_bound_j;++j)
                     {
-                        int x = i+k-mask.rowNb()/2;
-                        int y = j+l-mask.colNb()/2;
+                        std::size_t x = i+k-K/2;
+                        std::size_t y = j+l-L/2;
                         if(M(x, y)<res(i, j))
                             res(i, j) = M(x, y);
                     }
@@ -348,23 +351,24 @@ Matrix<unsigned char> erode(const Matrix<unsigned char>& M, const Mask& mask)
 
 Matrix<unsigned char> dilate(const Matrix<unsigned char>& M, const Mask& mask)
 {
-    Matrix<unsigned char> res = zeros<unsigned char>(M.rowNb(), M.colNb());
-    for(int k=0;k<mask.rowNb();++k)
+    std::size_t I = M.rowNb(), J = M.colNb();
+    Matrix<unsigned char> res = zeros<unsigned char>(I, J);
+    for(std::size_t k=0, K=mask.rowNb();k<K;++k)
     {
-        for(int l=0;l<mask.colNb();++l)
+        for(std::size_t l=0, L=mask.colNb();l<L;++l)
         {
             if(mask(k, l))
             {
-                int inf_bound_i = std::max(0, mask.rowNb()/2-k);
-                int sup_bound_i = std::min(res.rowNb(), res.rowNb()+mask.rowNb()/2-k);
-                int inf_bound_j = std::max(0, mask.colNb()/2-l);
-                int sup_bound_j = std::min(res.colNb(), res.colNb()+mask.colNb()/2-l);
-                for(int i=inf_bound_i;i<sup_bound_i;++i)
+                std::size_t sup_bound_i = std::min(I, I+K/2-k);
+                std::size_t inf_bound_i = sup_bound_i+k-I-K/2;
+                std::size_t sup_bound_j = std::min(J, J+L/2-l);
+                std::size_t inf_bound_j = sup_bound_j+l-J-L/2;
+                for(std::size_t i=inf_bound_i;i<sup_bound_i;++i)
                 {
-                    for(int j=inf_bound_j;j<sup_bound_j;++j)
+                    for(std::size_t j=inf_bound_j;j<sup_bound_j;++j)
                     {
-                        int x = i+k-mask.rowNb()/2;
-                        int y = j+l-mask.colNb()/2;
+                        std::size_t x = i+k-K/2;
+                        std::size_t y = j+l-L/2;
                         if(M(x, y)>res(i, j))
                             res(i, j) = M(x, y);
                     }
@@ -392,21 +396,23 @@ Matrix<unsigned char> inner_gradient(const Matrix<unsigned char>& M, const Mask&
 
 Matrix<unsigned char> median_filter(const Matrix<unsigned char>& M, const Mask& mask)
 {
-    Matrix<unsigned char> res = full<unsigned char>(M.rowNb(), M.colNb(), 255);
-    for(int i=0;i<M.rowNb();++i)
+    Matrix<unsigned char> res(M.rowNb(), M.colNb());
+    for(std::size_t i=0, I=M.rowNb();i<I;++i)
     {
-        for(int j=0;j<M.colNb();++j)
+        for(std::size_t j=0, J=M.colNb();j<J;++j)
         {
             std::vector<unsigned char> vec;
             vec.clear();
-            for(int k=0;k<mask.rowNb();++k)
+            for(std::size_t k=0, K=mask.rowNb();k<K;++k)
             {
-                for(int l=0;l<mask.colNb();++l)
+                for(std::size_t l=0, L=mask.colNb();l<L;++l)
                 {
-                    int x = i+k-mask.rowNb()/2;
-                    int y = j+l-mask.colNb()/2;
-                    if(mask(k, l) && x>=0 && x<M.rowNb() && y>=0 && y<M.colNb())
+                    if(k+i>=K/2 && k+i<I+K/2 && l+j>=L/2 && l+j<J+L/2)
+                    {
+                        std::size_t x = i+k-K/2;
+                        std::size_t y = j+l-L/2;
                         vec.push_back(M(x, y));
+                    }
                 }
             }
             std::sort(vec.begin(), vec.end());
@@ -481,13 +487,13 @@ Matrix<unsigned char> WTH(const Matrix<unsigned char>& M, const Mask& mask)
     return M-open(M, mask);
 }
 
-Matrix<int> label(const Matrix<unsigned char>& M, const Mask& mask)
+Matrix<std::size_t> label(const Matrix<unsigned char>& M, const Mask& mask)
 {
-    Matrix<int> labeledmap = zeros<int>(M.rowNb(), M.colNb());
-    int curlabel = 0;
-    for(int i=0;i<M.rowNb();++i)
+    Matrix<std::size_t> labeledmap = zeros<std::size_t>(M.rowNb(), M.colNb());
+    std::size_t curlabel = 0;
+    for(std::size_t i=0;i<M.rowNb();++i)
     {
-        for(int j=0;j<M.colNb();++j)
+        for(std::size_t j=0;j<M.colNb();++j)
         {
             if(M(i, j) && labeledmap(i, j)==0)
             {
@@ -495,7 +501,7 @@ Matrix<int> label(const Matrix<unsigned char>& M, const Mask& mask)
                 Matrix<unsigned char> marker = zeros<unsigned char>(M.rowNb(), M.colNb());
                 marker(i, j) = 255;
                 marker = reconstruct(M, marker, mask);
-                labeledmap = where(marker>0, full<int>(M.rowNb(), M.colNb(), curlabel), labeledmap);
+                labeledmap = where(marker>0, full<std::size_t>(M.rowNb(), M.colNb(), curlabel), labeledmap);
             }
         }
     }

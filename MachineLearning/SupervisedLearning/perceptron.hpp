@@ -24,14 +24,14 @@ class Perceptron
         Matrix<float> coeff;// weight
         float thresh;// intercept, first coeff
         float alpha;// learning rate
-        int max_iteration;// maximum iteration allowed
+        std::size_t max_iteration;// maximum iteration allowed
 
     public :
         Perceptron();
         Matrix<float> get_coeff();
         float get_thresh();
         void set_alpha(float);
-        void set_max_iteration(int);
+        void set_max_iteration(std::size_t);
         void fit(const Matrix<float>&, const Matrix<bool>&);
         Matrix<bool> fit_predict(const Matrix<float>&, const Matrix<bool>&);
         Matrix<bool> predict(const Matrix<float>&);

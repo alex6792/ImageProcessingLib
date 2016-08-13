@@ -3,7 +3,7 @@
 #include "../../statistics.hpp"
 
 
-Kmedoids::Kmedoids(int nb_clusters_arg)
+Kmedoids::Kmedoids(std::size_t nb_clusters_arg)
 {
     nb_clusters = nb_clusters_arg;
     nb_features = -1;
@@ -14,7 +14,7 @@ Kmedoids::Kmedoids(int nb_clusters_arg)
 Matrix<float> Kmedoids::getCenters()
 {
     Matrix<float> centers_values(nb_clusters, nb_features);
-    for(int i=0;i<nb_clusters;++i)
+    for(std::size_t i=0;i<nb_clusters;++i)
         centers_values.setRow(i, data[centers(i, 0)]);
     return centers_values;
 }
@@ -23,26 +23,26 @@ Matrix<float> Kmedoids::getCenters()
 void Kmedoids::fit(const Matrix<float>& M)
 {
 
-    int nb_samples = M.rowNb();
+    std::size_t nb_samples = M.rowNb();
     nb_features = M.colNb();
     data = std::vector<Matrix<float> >(nb_samples);
-    for(int i=0;i<nb_samples;++i)
+    for(std::size_t i=0;i<nb_samples;++i)
         data[i] = M.getRow(i);
     distances = zeros<float>(nb_samples, nb_samples);
-    for(int i=0;i<nb_samples-1;++i)
+    for(std::size_t i=0;i<nb_samples-1;++i)
     {
-        for(int j=i+1;j<nb_samples;++j)
+        for(std::size_t j=i+1;j<nb_samples;++j)
         {
             distances(i, j) = sum(pow(data[i]-data[j], 2.0f));
             distances(j, i) = distances(i, j);
         }
     }
 
-    centers = rand<int>(nb_clusters, 1)%nb_samples;
+    centers = rand<std::size_t>(nb_clusters, 1)%nb_samples;
 
-    labels = zeros<int>(M.rowNb(), 1);
+    labels = zeros<std::size_t>(M.rowNb(), 1);
     Matrix<float> min_dist = distances.getCol(centers(0, 0));
-    for(int i=1;i<nb_clusters;++i)
+    for(std::size_t i=1;i<nb_clusters;++i)
     {
         Matrix<float> cur_dist = distances.getCol(centers(i, 0));
         replace_if(labels, cur_dist<min_dist, i);
@@ -56,19 +56,19 @@ void Kmedoids::fit(const Matrix<float>& M)
     while(!stop)
     {
         stop = true;
-        for(int i=0;i<nb_clusters;++i)
+        for(std::size_t i=0;i<nb_clusters;++i)
         {
 
-            int temp = centers(i, 0);
-            for(int j=0;j<nb_samples;++j)
+            std::size_t temp = centers(i, 0);
+            for(std::size_t j=0;j<nb_samples;++j)
             {
                 if(labels(j, 0)==i && j!=temp)
                 {
                     centers(i, 0) = j;
 
-                    labels = zeros<int>(nb_samples, 1);
+                    labels = zeros<std::size_t>(nb_samples, 1);
                     Matrix<float> min_dist = distances.getCol(centers(0, 0));
-                    for(int k=1;k<nb_clusters;++k)
+                    for(std::size_t k=1;k<nb_clusters;++k)
                     {
                         Matrix<float> cur_dist = distances.getCol(centers(k, 0));
                         Matrix<bool> cdt = cur_dist<min_dist;
@@ -91,22 +91,22 @@ void Kmedoids::fit(const Matrix<float>& M)
     }
 }
 
-Matrix<int> Kmedoids::fit_predict(const Matrix<float>& M)
+Matrix<std::size_t> Kmedoids::fit_predict(const Matrix<float>& M)
 {
     fit(M);
     return predict(M);
 }
 
-Matrix<int> Kmedoids::predict(const Matrix<float>& M)
+Matrix<std::size_t> Kmedoids::predict(const Matrix<float>& M)
 {
     Matrix<float> centers_values = getCenters();
-    int nb_samples = M.rowNb();
-    labels = zeros<int>(nb_samples, 1);
-    for(int i=0;i<nb_samples;++i)
+    std::size_t nb_samples = M.rowNb();
+    labels = zeros<std::size_t>(nb_samples, 1);
+    for(std::size_t i=0;i<nb_samples;++i)
     {
         Matrix<float> cur_row = M.getRow(i);
         float dist = FLT_MAX;
-        for(int j=0;j<nb_clusters;++j)
+        for(std::size_t j=0;j<nb_clusters;++j)
         {
             Matrix<float> cur_cl = centers_values.getRow(j);
             float cur_dist = sum(pow(cur_cl-cur_row, 2.0f));

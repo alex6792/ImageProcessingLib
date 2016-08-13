@@ -15,11 +15,11 @@ template <class T> Matrix<T> dot(const Matrix<T>& A, const Matrix<T>& B)
 
         auto A_begin = A.cbegin();
         auto B_begin = Bt.cbegin();
-        int n = A.colNb();
+        std::size_t n = A.colNb();
 
-        for(int i=0;i<my_matrix.rowNb();++i)
+        for(std::size_t i=0;i<my_matrix.rowNb();++i)
         {
-            for(int j=0;j<my_matrix.colNb();++j)
+            for(std::size_t j=0;j<my_matrix.colNb();++j)
                 my_matrix(i, j) = std::inner_product(A_begin+i*n, A_begin+(i+1)*n, B_begin+j*n, T(0));
         }
 
@@ -56,9 +56,9 @@ template <class T> Matrix<T> inv(const Matrix<T>& M)
         }
         else
         {
-            for(int i=0;i<M.rowNb();++i)
+            for(std::size_t i=0;i<M.rowNb();++i)
             {
-                for(int j=0;j<M.colNb();++j)
+                for(std::size_t j=0;j<M.colNb();++j)
                 {
                     Matrix<T> temp = M;
                     temp.delRow(i);
@@ -86,11 +86,11 @@ template <class T> T det(const Matrix<T>& M)
     {
         T determinant = T(1);
         Matrix<T> Mcopy = M;
-        for(int i=0;i<M.rowNb()-2;++i)
+        for(std::size_t i=0;i<M.rowNb()-2;++i)
         {
             Matrix<T> cur_col = Mcopy.getSubmat(i, Mcopy.rowNb(), i, Mcopy.rowNb());
             cur_col = abs(cur_col);
-            Matrix<int> maxidx = argmax(cur_col);
+            Matrix<std::size_t> maxidx = argmax(cur_col);
             if(cur_col(maxidx(0, 0), maxidx(0, 1)) == T(0))
                 return T(0);
             else
@@ -106,7 +106,7 @@ template <class T> T det(const Matrix<T>& M)
                     determinant = -determinant;
                 }
                 determinant*=Mcopy(i, i);
-                for(int j=i+1;j<Mcopy.rowNb();++j)
+                for(std::size_t j=i+1;j<Mcopy.rowNb();++j)
                     Mcopy.setRow(j, (Mcopy.getRow(j)*Mcopy(i, i)-Mcopy.getRow(i)*Mcopy(j, i))/Mcopy(i, i));
             }
         }
@@ -124,14 +124,14 @@ template <class T> Matrix<T> bwdsub(const Matrix<T>& U, const Matrix<T>& B)
     if(U.rowNb()==U.colNb() && B.rowNb()==U.rowNb())
     {
         Matrix<T> X(B.rowNb(), B.colNb());
-        int n = B.rowNb()-1;
+        std::size_t n = B.rowNb()-1;
         X.setRow(n, B.getRow(n)/U(n, n));
-        for(int i=n-1;i>=0;--i)
+        for(std::size_t i=n;i>0;--i)
         {
-            X.setRow(i, B.getRow(i));
-            for(int j=n;j>i;--j)
-                X.setRow(i, X.getRow(i)-X.getRow(j)*U(i, j));
-            X.setRow(i, X.getRow(i)/U(i, i));
+            Matrix<T> new_row = B.getRow(i-1);
+            for(std::size_t j=n;j>i-1;--j)
+                new_row -= X.getRow(j)*U(i-1, j);
+            X.setRow(i-1, new_row/U(i-1, i-1));
         }
         return X;
     }
@@ -145,10 +145,10 @@ template <class T> Matrix<T> fwdsub(const Matrix<T>& L, const Matrix<T>& B)
     {
         Matrix<T> X(B.rowNb(), B.colNb());
         X.setRow(0, B.getRow(0)/L(0,0));
-        for(int i=1;i<X.rowNb();++i)
+        for(std::size_t i=1;i<X.rowNb();++i)
         {
             X.setRow(i, B.getRow(i));
-            for(int j=0;j<i;++j)
+            for(std::size_t j=0;j<i;++j)
                 X.setRow(i, X.getRow(i)-X.getRow(j)*L(i, j));
             X.setRow(i, X.getRow(i)/L(i, i));
         }
@@ -163,10 +163,10 @@ template <class T> Matrix<T> cholesky(const Matrix<T>& M)
     if(M.rowNb()==M.colNb())
     {
         Matrix<T> L(M.rowNb(), M.colNb());
-        for(int j=0;j<M.colNb();++j)
+        for(std::size_t j=0;j<M.colNb();++j)
         {
             Matrix<T> V = M.getSubmat(j, M.rowNb(), j, j+1);
-            for(int i=0;i<j;++i)
+            for(std::size_t i=0;i<j;++i)
                 V-=L(j, i)*L.getSubmat(j, M.rowNb(), i, i+1);
             if(V(0, 0)>0)
                 L.setSubmat(j, j, V/sqrt(V(0, 0)));
@@ -190,10 +190,10 @@ template <class T> std::pair<Matrix<T>, Matrix<T> > crout(const Matrix<T>& M)
         Matrix<T> L = id<T>(M.rowNb(), M.colNb());
         D(0, 0) = M(0, 0);
         L.setSubmat(1, 0, (M.getSubmat(1, M.rowNb(), 0, 1))/M(0, 0));
-        for(int j=1;j<M.colNb();++j)
+        for(std::size_t j=1;j<M.colNb();++j)
         {
             Matrix<T> V(j+1, 1);
-            for(int i=0;i<j;++i)
+            for(std::size_t i=0;i<j;++i)
                 V(i, 0) = L(j, i)*D(i, i);
             V(j, 0) = M(j, j)-dot(L.getSubmat(j, j+1, 0, j+1), V.getRows(0, j+1))(0, 0);
             D(j, j) = V(j, 0);
@@ -211,16 +211,16 @@ template <class T> std::tuple<Matrix<T>, Matrix<T>, Matrix<T> > lu(const Matrix<
     Matrix<T> L(M.rowNb(), M.colNb());
     Matrix<T> U = M;
     Matrix<T> P = id<T>(M.rowNb(), M.colNb());
-    for(int i=0;i<M.rowNb()-1;++i)
+    for(std::size_t i=0;i<M.rowNb()-1;++i)
     {
         Matrix<T> cur_col = abs(U.getSubmat(i, M.rowNb(), i, i+1));
-        Matrix<int> maxidx = argmax(cur_col);
+        Matrix<std::size_t> maxidx = argmax(cur_col);
         P.swaprow(i, maxidx(0, 0)+i);
         U.swaprow(i, maxidx(0, 0)+i);
         L.swaprow(i, maxidx(0, 0)+i);
         L.setSubmat(i+1, i, U.getSubmat(i+1, M.rowNb(), i, i+1)/U(i, i));
         L(i, i) = T(1);
-        for(int j=i+1;j<M.rowNb();++j)
+        for(std::size_t j=i+1;j<M.rowNb();++j)
             U.setRow(j, (U.getRow(j)*U(i, i)-U.getRow(i)*U(j, i))/U(i, i));
     }
     L(M.rowNb()-1, M.colNb()-1) = T(1);
@@ -231,10 +231,10 @@ template <class T> std::pair<Matrix<T>, Matrix<T> > qr(const Matrix<T>& M)
 {
     Matrix<T> Q(M.rowNb(), M.colNb());
     Matrix<T> R(M.colNb(), M.colNb());
-    for(int i=0;i<M.colNb();++i)
+    for(std::size_t i=0;i<M.colNb();++i)
     {
         Matrix<T> U = M.getCol(i);
-        for(int j=0;j<i;++j)
+        for(std::size_t j=0;j<i;++j)
         {
             Matrix<T> cur_col = Q.getCol(j);
             R(j, i) = sum(U*cur_col);
@@ -255,9 +255,9 @@ template <class T> std::pair<Matrix<T>, Matrix<T> > svd(const Matrix<T>& M)
 
 template <class T> T trace(const Matrix<T>& M)
 {
-    T minimum = M.rowNb()>M.colNb()?M.colNb():M.rowNb();
+    std::size_t minimum = M.rowNb()>M.colNb()?M.colNb():M.rowNb();
     T tr = T(0);
-    for(int i=0;i<minimum;++i)
+    for(std::size_t i=0;i<minimum;++i)
         tr+=M(i, i);
     return tr;
 }
@@ -268,16 +268,16 @@ template <class T> std::pair<Matrix<T>, Matrix<T> > Jacobi(const Matrix<T>& M)
     Matrix<T> P = id<T>(M.rowNb(), M.colNb());
     while(true)
     {
-        Matrix<int> Sortedvalues = argsort(abs(A));
-        int i = Sortedvalues.rowNb()-1;
-        Matrix<int> cur_value = Sortedvalues.getRow(i);
+        Matrix<std::size_t> Sortedvalues = argsort(abs(A));
+        std::size_t i = Sortedvalues.rowNb()-1;
+        Matrix<std::size_t> cur_value = Sortedvalues.getRow(i);
         while(cur_value(0, 0) >= cur_value(0,1))
         {
             --i;
             cur_value = Sortedvalues.getRow(i);
         }
-        int p = cur_value(0, 0);
-        int q = cur_value(0, 1);
+        std::size_t p = cur_value(0, 0);
+        std::size_t q = cur_value(0, 1);
         if(std::abs(A(p,q))<10e-10)
         {
             A(p, q) = 0;
