@@ -104,6 +104,25 @@ unsigned char Color::value() const
         return B;
 }
 
+
+unsigned char Color::luma() const
+{
+    float l = 0.299*R+0.587*G+0.114*B;
+    return l;
+}
+
+unsigned char Color::chromab() const
+{
+    float cb = 128-0.168736*R-0.331264*G+0.5*B;
+    return cb;
+}
+
+unsigned char Color::chromar() const
+{
+    float cr = 128+0.5*R-0.418688*G-0.081312*B;
+    return cr;
+}
+
 void Color::red(unsigned char r)
 {
     R = r;
@@ -167,6 +186,13 @@ void Color::HSV2RGB(int H, int S, unsigned char V)
         G = std::round(l);
         B = std::round(m);
     }
+}
+
+void Color::YCbCr2RGB(unsigned char Y, unsigned char Cb, unsigned char Cr)
+{
+    R = Y+1.402*(Cr-128.0f);
+    G = Y-0.344136*(Cb-128.0f)-0.714136*(Cr-128.0f);
+    B = Y+1.772*(Cb-128.0f);
 }
 
 

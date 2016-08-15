@@ -36,7 +36,7 @@ void GMM::fit(const Matrix<float>& M)
     //Matrix<std::size_t> seeds = rand<std::size_t>(nb_clusters, 1);
     //for(std::size_t i=0;i<nb_clusters;++i)
         //centers.setRow(i, M.getRow(seeds(i, 0)%M.rowNb()));
-    centers = Kmeans::KmeansPlusPlusInit(M, nb_clusters);
+    centers = Kmeans::KmeansPlusPlusCenters(M, nb_clusters);
 
     weights = ones<float>(nb_clusters, 1)/nb_clusters;
     labels = zeros<std::size_t>(M.rowNb(), 1);

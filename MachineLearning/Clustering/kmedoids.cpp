@@ -1,5 +1,6 @@
 #include <cfloat>
 #include "kmedoids.hpp"
+#include "kmeans.hpp"
 #include "../../statistics.hpp"
 
 
@@ -38,7 +39,7 @@ void Kmedoids::fit(const Matrix<float>& M)
         }
     }
 
-    centers = rand<std::size_t>(nb_clusters, 1)%nb_samples;
+    centers = Kmeans::KmeansPlusPlusCentersIndices(M, nb_clusters);
 
     labels = zeros<std::size_t>(M.rowNb(), 1);
     Matrix<float> min_dist = distances.getCol(centers(0, 0));

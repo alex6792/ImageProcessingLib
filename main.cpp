@@ -1,5 +1,3 @@
-#include "SDL_interface.hpp"
-
 #include "csvIO.hpp"
 #include "file_explorer.hpp"
 #include "linalg.hpp"
@@ -8,6 +6,7 @@
 #include "mmath.hpp"
 #include "polynomial_equation_solver.hpp"
 #include "regression.hpp"
+#include "SDL_interface.hpp"
 #include "statistics.hpp"
 
 #include "MachineLearning/pca.hpp"
@@ -27,10 +26,11 @@
 
 #include "ImageProcessing/color.hpp"
 #include "ImageProcessing/fourier.hpp"
+#include "ImageProcessing/hough.hpp"
 #include "ImageProcessing/imgconverter.hpp"
 #include "ImageProcessing/linear_filtering.hpp"
-#include "ImageProcessing/nonlinear_filtering.hpp"
 #include "ImageProcessing/morphology.hpp"
+#include "ImageProcessing/nonlinear_filtering.hpp"
 #include "ImageProcessing/snake.hpp"
 
 #include "ImageProcessing/ImageIO/imageIO.hpp"
@@ -231,6 +231,18 @@ int main()
     std::cout<<count_nonzero(Matrix<std::size_t>(results) == Labels)<<std::endl;
 
 
+    //test image reader
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Window* pWindow = SDL_CreateWindow("Image Processing Library",
+                                            SDL_WINDOWPOS_UNDEFINED,
+                                            SDL_WINDOWPOS_UNDEFINED,
+                                            640,
+                                            480,
+                                            SDL_WINDOW_SHOWN);
+
+    SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
+
+
     ///// test Otsu
     Matrix<unsigned char> testimg = {{0,0,1,4,4,5},
                                     {0,1,3,4,3,4},
@@ -243,6 +255,113 @@ int main()
     std::cout<<otsu(testimg)<<std::endl;
     std::cout<< (testimg>(unsigned char)(4)) <<std::endl;
     std::cout<<argwhere(testimg>4)<<std::endl;
+
+
+
+    //// test hough
+    Matrix<bool> houghtest = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            };
+
+    Matrix<bool> houghtest1 = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            };
+
+    Matrix<bool> houghtest2 = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            };
+
+    Matrix<bool> houghtest3 = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            };
+
+    float phi_max = 2*(houghtest.rowNb()+houghtest.colNb())-1;
+
+    Matrix<bool> normed = ones<bool>(houghtest.rowNb(),houghtest.colNb());
+    Matrix<float> res2 = Matrix<float>(hough_transform(normed));
+
+    Matrix<float> res = Matrix<float>(hough_transform(houghtest));
+    std::transform(res.begin(), res.end(), res2.begin(), res.begin(), [](float v1, float v2){return v2>0.5?v1/v2:0.0f;});
+    std::cout<<argmax(res)<<std::endl;
+    std::cout<<Matrix<float>(argmax(res)).getCol(1)*2*PI/32.0f<<std::endl;
+    std::cout<<Matrix<float>(argmax(res)).getCol(0)-phi_max/2.0f<<std::endl;
+    show_matrix(renderer, houghtest);
+    show_matrix(renderer, Matrix<unsigned char>(res*255.0/max(res)));
+    show_matrix(renderer, label(Matrix<unsigned char>(res*255.0/max(res))));
+
+    res = Matrix<float>(hough_transform(houghtest1));
+    std::transform(res.begin(), res.end(), res2.begin(), res.begin(), [](float v1, float v2){return v2>0.5?v1/v2:0.0f;});
+    std::cout<<argmax(res)<<std::endl;
+    std::cout<<Matrix<float>(argmax(res)).getCol(1)*2*PI/32.0f<<std::endl;
+    std::cout<<Matrix<float>(argmax(res)).getCol(0)-phi_max/2.0f<<std::endl;
+    show_matrix(renderer, houghtest1);
+    show_matrix(renderer, Matrix<unsigned char>(res*255.0/max(res)));
+
+    res = Matrix<float>(hough_transform(houghtest2));
+    std::transform(res.begin(), res.end(), res2.begin(), res.begin(), [](float v1, float v2){return v2>0.5?v1/v2:0.0f;});
+    std::cout<<argmax(res)<<std::endl;
+    std::cout<<Matrix<float>(argmax(res)).getCol(1)*2*PI/32.0f<<std::endl;
+    std::cout<<Matrix<float>(argmax(res)).getCol(0)-phi_max/2.0f<<std::endl;
+    show_matrix(renderer, houghtest2);
+    show_matrix(renderer, Matrix<unsigned char>(res*255.0/max(res)));
+
+    res = Matrix<float>(hough_transform(houghtest3));
+    std::transform(res.begin(), res.end(), res2.begin(), res.begin(), [](float v1, float v2){return v2>0.5?v1/v2:0.0f;});
+    std::cout<<argmax(res)<<std::endl;
+    std::cout<<Matrix<float>(argmax(res)).getCol(1)*2*PI/32.0f<<std::endl;
+    std::cout<<Matrix<float>(argmax(res)).getCol(0)-phi_max/2.0f<<std::endl;
+    show_matrix(renderer, houghtest3);
+    show_matrix(renderer, Matrix<unsigned char>(res*255.0/max(res)));
+
+
     // test scaler
     std::cout<<"test scaler"<<std::endl;
     MinMaxScaler sc(0, 255, 0);
@@ -255,16 +374,7 @@ int main()
     std::cout<<sc.fit_transform(Matrix<float>(testimg))<<std::endl;
     std::cout<<sc.inverse_transform(sc.fit_transform(Matrix<float>(testimg)))<<std::endl;
 
-    //test image reader
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window* pWindow = SDL_CreateWindow("Image Processing Library",
-                                            SDL_WINDOWPOS_UNDEFINED,
-                                            SDL_WINDOWPOS_UNDEFINED,
-                                            640,
-                                            480,
-                                            SDL_WINDOW_SHOWN);
 
-    SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 
     std::string extensions[] = {"bmp"};//, "bmp", "tga", "ico", "png", "pbm,"pgm", "ppm", "jpg", "gif", "tiff"};
     /*
@@ -349,9 +459,11 @@ int main()
     SDL_SetWindowTitle(pWindow, "conservative smoothing");
     show_matrix(renderer, conservative_smoothing(gray_img));
     SDL_SetWindowTitle(pWindow, "opening by reconstruction");
-    show_matrix(renderer, opening_by_reconstruction(gray_img));
+    gray_img = opening_by_reconstruction(gray_img);
+    show_matrix(renderer, gray_img);
+    gray_img = closing_by_reconstruction(gray_img);
     SDL_SetWindowTitle(pWindow, "closing by reconstruction");
-    show_matrix(renderer, closing_by_reconstruction(gray_img));
+    show_matrix(renderer, gray_img);
 
 
     // test binarisation

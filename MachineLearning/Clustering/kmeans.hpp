@@ -35,7 +35,8 @@ class Kmeans
         Matrix<std::size_t> fit_predict(const Matrix<float>&);
         Matrix<std::size_t> predict(const Matrix<float>&);
 
-        static Matrix<float> KmeansPlusPlusInit(const Matrix<float>&, std::size_t);
+        static Matrix<float> KmeansPlusPlusCenters(const Matrix<float>&, std::size_t);
+        static Matrix<size_t> KmeansPlusPlusCentersIndices(const Matrix<float>&, std::size_t);
 
     private :
         void update_centers(const Matrix<float>&);

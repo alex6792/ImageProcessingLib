@@ -2,6 +2,7 @@
 #include "../mmath.hpp"
 #include "../statistics.hpp"
 
+
 Matrix<std::complex<float> > FFT(const Matrix<float>& M)
 {
     std::complex<float> cste = std::complex<float>(0.0f, -2.0f*PI);

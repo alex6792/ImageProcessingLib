@@ -65,6 +65,8 @@
 		<Unit filename="ImageProcessing/color.hpp" />
 		<Unit filename="ImageProcessing/fourier.cpp" />
 		<Unit filename="ImageProcessing/fourier.hpp" />
+		<Unit filename="ImageProcessing/hough.cpp" />
+		<Unit filename="ImageProcessing/hough.hpp" />
 		<Unit filename="ImageProcessing/imgconverter.cpp" />
 		<Unit filename="ImageProcessing/imgconverter.hpp" />
 		<Unit filename="ImageProcessing/linear_filtering.cpp" />
@@ -107,6 +109,8 @@
 		<Unit filename="MachineLearning/pca.hpp" />
 		<Unit filename="MachineLearning/scaler.cpp" />
 		<Unit filename="MachineLearning/scaler.hpp" />
+		<Unit filename="SDL_interface.cpp" />
+		<Unit filename="SDL_interface.hpp" />
 		<Unit filename="csvIO.hpp" />
 		<Unit filename="csvIO.tcc" />
 		<Unit filename="file_explorer.cpp" />

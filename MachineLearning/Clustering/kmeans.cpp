@@ -32,7 +32,7 @@ void Kmeans::fit(const Matrix<float>& M)
 {
     labels = zeros<std::size_t>(M.rowNb(), 1);
     //init_centers(M);
-    centers = KmeansPlusPlusInit(M, nb_clusters);
+    centers = KmeansPlusPlusCenters(M, nb_clusters);
     std::size_t cpt = 0;
     Matrix<std::size_t> old_labels = ones<std::size_t>(M.rowNb(), 1);
     while(cpt<max_iteration && any(old_labels!=labels))
@@ -64,7 +64,7 @@ Matrix<std::size_t> Kmeans::predict(const Matrix<float>& M)
     return labels;
 }
 
-Matrix<float> Kmeans::KmeansPlusPlusInit(const Matrix<float>& M, std::size_t nb_clusters)
+Matrix<float> Kmeans::KmeansPlusPlusCenters(const Matrix<float>& M, std::size_t nb_clusters)
 {
     std::size_t n_samples = M.rowNb();
     std::size_t n_features = M.colNb();
@@ -102,6 +102,50 @@ Matrix<float> Kmeans::KmeansPlusPlusInit(const Matrix<float>& M, std::size_t nb_
     for(std::size_t i=0, I=init_indices.size();i<I;++i)
     {
         centers.setRow(i, M.getRow(init_indices[i]));
+    }
+
+    return centers;
+}
+
+Matrix<size_t> Kmeans::KmeansPlusPlusCentersIndices(const Matrix<float>& M, std::size_t nb_clusters)
+{
+    std::size_t n_samples = M.rowNb();
+    std::size_t n_features = M.colNb();
+    Matrix<size_t> centers = Matrix<size_t>(nb_clusters, 1);
+    std::vector<std::size_t> init_indices;
+    init_indices.clear();
+    init_indices.push_back(rand()%n_samples);
+
+    Matrix<float> distances(n_samples, 1);
+
+    Matrix<float> cur_center = M.getRow(init_indices[0]);
+    for(std::size_t i=0;i<n_samples;++i)
+        distances(i, 0) = sum(pow(cur_center-M.getRow(i), 2.0f));
+
+    for(std::size_t i=1;i<nb_clusters;++i)
+    {
+        Matrix<float> cum_dist = cumsum(distances);
+        float sum_dist = cum_dist(n_samples-1, 0);
+        float rand_nb = rand()%1000;
+        rand_nb/=1000.0f/sum_dist;
+        for(std::size_t j=0;j<n_samples;++j)
+        {
+            if(rand_nb<cum_dist(j, 0))
+            {
+                init_indices.push_back(j);
+                cur_center = M.getRow(j);
+
+                for(std::size_t k=0;k<n_samples;++k)
+                    distances(k, 0) = std::min(sum(pow(cur_center-M.getRow(k), 2.0f)), distances(k, 0));
+                break;
+            }
+        }
+    }
+
+    for(std::size_t i=0, I=init_indices.size();i<I;++i)
+    {
+        //centers.setRow(i, M.getRow(init_indices[i]));
+        centers(i, 0) = init_indices[i];
     }
 
     return centers;

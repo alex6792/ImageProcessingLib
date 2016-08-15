@@ -14,15 +14,11 @@ SDL_Renderer* get_SDL_renderer(SDL_Window* screen)
 
 void pause()
 {
-    bool done = false;
     SDL_Event event;
-    while(!done)
+    while(SDL_WaitEvent(&event))
     {
-        while(SDL_PollEvent(&event))
-        {
-            if(event.type==SDL_QUIT)
-                done = true;
-        }
+        if(event.type==SDL_QUIT)
+            break;
     }
 }
 
@@ -39,6 +35,7 @@ void show_matrix(SDL_Renderer* renderer, const Matrix<Color>& img)
     SDL_RenderCopy(renderer, tex, NULL, NULL);
     SDL_RenderPresent(renderer);
     SDL_DestroyTexture(tex);
+
     free(pColor);
     pause();
 }

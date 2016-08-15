@@ -39,12 +39,16 @@ class Color
         int hue() const;
         int saturation() const;
         unsigned char value() const;
+        unsigned char luma() const;
+        unsigned char chromab() const;
+        unsigned char chromar() const;
 
         void red(unsigned char);
         void green(unsigned char);
         void blue(unsigned char);
         void alpha(unsigned char);
         void HSV2RGB(int, int, unsigned char);
+        void YCbCr2RGB(unsigned char, unsigned char, unsigned char);
 
         // operators
         void operator+=(const Color&);
