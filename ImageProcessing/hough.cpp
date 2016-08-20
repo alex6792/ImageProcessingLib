@@ -4,7 +4,7 @@
 
 Matrix<std::size_t> hough_transform(const Matrix<bool>& M)
 {
-    float dtheta = 2*PI/32.0f;
+    float dtheta = 2*PI/16.0f;
     float dphi = 1.0f;
     float phi_max = 2*(M.rowNb()+M.colNb())-1;//std::ceil(std::sqrt((M.rowNb()+1)*(M.rowNb()+1)+(M.colNb()+1)*(M.colNb()+1)));
     std::size_t W = std::ceil(2*PI/dtheta), H = std::ceil(phi_max/dphi);
@@ -23,11 +23,12 @@ Matrix<std::size_t> hough_transform(const Matrix<bool>& M)
     theta = dot(ones<float>(argw.rowNb(), 1), theta);
     //std::cout<<phi.rowNb()<<" "<<phi.colNb()<<std::endl;
     //std::cout<<theta.rowNb()<<" "<<theta.colNb()<<std::endl;
-
+    //std::cout<<cos_angles<<std::endl;
+    //std::cout<<sin_angles<<std::endl;
     theta/=dtheta;
     phi+=phi_max/2.0f;
     //phi/=2.0f;
-    phi = apply<float, float>(phi, std::ceil);
+    phi = apply<float, float>(phi, std::round);
     //std::cout<<phi<<std::endl;
     //std::cout<<phi<<std::endl;
     //auto it_theta = theta.cbegin(), it_phi = phi.cbegin();

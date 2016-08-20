@@ -304,14 +304,14 @@ template <class T> Matrix<T> quicksort(const Matrix<T>& M)
 template <class T> Matrix<T> sort(const Matrix<T>& M)
 {
     Matrix<T> Mcopy = M;
-    for(int k=M.size()-1;k>0;--k)
+    for(std::size_t k=M.size()-1;k>0;--k)
     {
-        for(int x=0;x<k;++x)
+        for(std::size_t x=0;x<k;++x)
         {
-            int i1 = x/M.colNb();
-            int i2 = (x+1)/M.colNb();
-            int j1 = x%M.colNb();
-            int j2 = (x+1)%M.colNb();
+            std::size_t i1 = x/M.colNb();
+            std::size_t i2 = (x+1)/M.colNb();
+            std::size_t j1 = x%M.colNb();
+            std::size_t j2 = (x+1)%M.colNb();
             if(Mcopy(i1, j1)>Mcopy(i2, j2))
                 std::swap(Mcopy(i1, j1), Mcopy(i2, j2));
         }

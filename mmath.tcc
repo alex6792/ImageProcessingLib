@@ -52,7 +52,7 @@ template <class T> Matrix<T> atan(const Matrix<T>& M)
 template <class T> Matrix<T> atan2(const Matrix<T>& My, const Matrix<T>& Mx)
 {
     Matrix<T> new_mat(My.rowNb(), My.colNb());
-    if(My.rowNb()==Mx.rowNb() && My.rowNb()==Mx.colNb())
+    if(My.rowNb()==Mx.rowNb() && My.colNb()==Mx.colNb())
         std::transform(My.begin(), My.end(), Mx.begin(), new_mat.begin(), std::atan2);
     else
         std::cout<<"dimension mismatch"<<std::endl;

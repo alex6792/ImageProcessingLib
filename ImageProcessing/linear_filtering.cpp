@@ -118,6 +118,23 @@ Matrix<float> robinson()
     return rob/5.0f;
 }
 
+
+Matrix<float> scharrx()
+{
+    Matrix<float> sch({{-3.0f,0.0f,3.0f},
+                    {-10.0f,0.0f,10.0f},
+                    {-3.0f,0.0f,3.0f}});
+    return sch/16.0f;
+}
+
+Matrix<float> scharry()
+{
+    Matrix<float> sch({{-3.0f,-10.0f,-3.0f},
+                    {0.0f,0.0f,0.0f},
+                    {3.0f,10.0f,3.0f}});
+    return sch/16.0f;
+}
+
 Matrix<float> sobelx()
 {
     Matrix<float> sob({{-1.0f,0.0f,1.0f},
@@ -145,9 +162,26 @@ Matrix<float> unsharp(float alpha)
 Matrix<unsigned char> gradient(Matrix<unsigned char> M, std::string method)
 {
     Matrix<float> M_copy = Matrix<float>(M);
-    Matrix<float> Gx = conv(M_copy, sobelx());
-    Matrix<float> Gy = conv(M_copy, sobely());
-    return Matrix<unsigned char>(sqrt(Gx*Gx+Gy*Gy));
+    Matrix<float> fx, fy;
+    if(!method.compare("sobel"))
+    {
+        fx = sobelx();
+        fy = sobely();
+    }
+    else if(!method.compare("scharr"))
+    {
+        fx = scharrx();
+        fy = scharry();
+    }
+    else if(!method.compare("isotropic"))
+    {
+        fx = isotropicx();
+        fy = isotropicy();
+    }
+
+    Matrix<float> Gx = conv(M_copy, fx);
+    Matrix<float> Gy = conv(M_copy, fy);
+    return Matrix<unsigned char>(sqrt((Gx*Gx+Gy*Gy)/2.0f));
 }
 
 Matrix<unsigned char> filter(Matrix<unsigned char> M, Matrix<float> f, int mode)

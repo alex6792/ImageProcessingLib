@@ -75,6 +75,8 @@
 		<Unit filename="ImageProcessing/morphology.hpp" />
 		<Unit filename="ImageProcessing/nonlinear_filtering.cpp" />
 		<Unit filename="ImageProcessing/nonlinear_filtering.hpp" />
+		<Unit filename="ImageProcessing/segmentation.cpp" />
+		<Unit filename="ImageProcessing/segmentation.hpp" />
 		<Unit filename="ImageProcessing/snake.cpp" />
 		<Unit filename="ImageProcessing/snake.hpp" />
 		<Unit filename="MachineLearning/Clustering/affinitypropagation.cpp" />
@@ -129,6 +131,8 @@
 		<Unit filename="regression.tcc" />
 		<Unit filename="statistics.hpp" />
 		<Unit filename="statistics.tcc" />
+		<Unit filename="test_functions.cpp" />
+		<Unit filename="test_functions.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

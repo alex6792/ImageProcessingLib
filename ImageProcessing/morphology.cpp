@@ -252,7 +252,7 @@ Matrix<bool> skeleton(const Matrix<bool>& M, const Mask& mask)
     Mask mask2 = mask;
     mask2.rot180();
     Matrix<bool> S = M-dilate(list_erosion[1], mask2);
-    for(unsigned int i=1;i<list_erosion.size()-1;++i)
+    for(std::size_t i=1;i<list_erosion.size()-1;++i)
         S+=list_erosion[i]-dilate(list_erosion[i+1], mask2);
     return S;
 }
@@ -477,7 +477,7 @@ Matrix<unsigned char> skeleton(const Matrix<unsigned char>& M, const Mask& mask)
     Mask mask2 = mask;
     mask2.rot180();
     Matrix<unsigned char> S = M-dilate(list_erosion[1], mask2);
-    for(unsigned int i=1;i<list_erosion.size()-1;++i)
+    for(std::size_t i=1;i<list_erosion.size()-1;++i)
         S+=list_erosion[i]-dilate(list_erosion[i+1], mask2);
     return S;
 }

@@ -8,14 +8,14 @@
 	<string>
 	<vector>
 
-1461412346 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\color.cpp
+1471289221 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\color.cpp
 	<cmath>
 	"color.hpp"
 
 1471278728 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\color.hpp
 	<iostream>
 
-1471271838 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\fourier.cpp
+1471453492 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\fourier.cpp
 	"fourier.hpp"
 	"../mmath.hpp"
 	"../statistics.hpp"
@@ -24,7 +24,7 @@
 	<complex>
 	"../matrix.hpp"
 
-1471036239 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.hpp
+1471548236 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.hpp
 	<deque>
 	<iostream>
 	"matrix.tcc"
@@ -43,7 +43,7 @@
 	"matrix.hpp"
 	"mmath.tcc"
 
-1465053464 c:\users\hp\documents\mes programmes\imageprocessinglib\mmath.tcc
+1471716085 c:\users\hp\documents\mes programmes\imageprocessinglib\mmath.tcc
 	"matrix.hpp"
 	"mmath.hpp"
 
@@ -51,7 +51,7 @@
 	"matrix.hpp"
 	"statistics.tcc"
 
-1471040057 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.tcc
+1471453876 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.tcc
 	<algorithm>
 	<cmath>
 	"mmath.hpp"
@@ -139,7 +139,7 @@
 	"../../matrix.hpp"
 	"../color.hpp"
 
-1463315159 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pnmio.cpp
+1471453314 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pnmio.cpp
 	"pnmIO.hpp"
 	<fstream>
 	<iostream>
@@ -186,14 +186,14 @@
 1471079870 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.hpp
 	"../matrix.hpp"
 
-1471079539 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.cpp
+1471714608 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.cpp
 	"linear_filtering.hpp"
 	"../statistics.hpp"
 
-1471079386 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.hpp
+1471714608 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.hpp
 	"../matrix.hpp"
 
-1471100146 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
+1471453876 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
 	<cmath>
 	<vector>
 	"../mmath.hpp"
@@ -355,48 +355,8 @@
 1471042616 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\perceptron.hpp
 	"../../matrix.hpp"
 
-1471273129 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
-	"csvIO.hpp"
-	"file_explorer.hpp"
-	"linalg.hpp"
-	"logical_operators.hpp"
-	"matrix.hpp"
-	"mmath.hpp"
-	"polynomial_equation_solver.hpp"
-	"regression.hpp"
-	"SDL_interface.hpp"
-	"statistics.hpp"
-	"MachineLearning/pca.hpp"
-	"MachineLearning/scaler.hpp"
-	"MachineLearning/Clustering/affinitypropagation.hpp"
-	"MachineLearning/Clustering/gmm.hpp"
-	"MachineLearning/Clustering/hierarchicalclustering.hpp"
-	"MachineLearning/Clustering/kmeans.hpp"
-	"MachineLearning/Clustering/kmedoids.hpp"
-	"MachineLearning/Clustering/meanshift.hpp"
-	"MachineLearning/SupervisedLearning/bernoulli_naive_bayes.hpp"
-	"MachineLearning/SupervisedLearning/dtree.hpp"
-	"MachineLearning/SupervisedLearning/gaussian_naive_bayes.hpp"
-	"MachineLearning/SupervisedLearning/knn.hpp"
-	"MachineLearning/SupervisedLearning/mlp.hpp"
-	"MachineLearning/SupervisedLearning/perceptron.hpp"
-	"ImageProcessing/color.hpp"
-	"ImageProcessing/fourier.hpp"
-	"ImageProcessing/hough.hpp"
-	"ImageProcessing/imgconverter.hpp"
-	"ImageProcessing/linear_filtering.hpp"
-	"ImageProcessing/morphology.hpp"
-	"ImageProcessing/nonlinear_filtering.hpp"
-	"ImageProcessing/snake.hpp"
-	"ImageProcessing/ImageIO/imageIO.hpp"
-	"ImageProcessing/ImageIO/bmpIO.hpp"
-	"ImageProcessing/ImageIO/gifIO.hpp"
-	"ImageProcessing/ImageIO/icoIO.hpp"
-	"ImageProcessing/ImageIO/jpegIO.hpp"
-	"ImageProcessing/ImageIO/pngIO.hpp"
-	"ImageProcessing/ImageIO/pnmIO.hpp"
-	"ImageProcessing/ImageIO/tgaIO.hpp"
-	"ImageProcessing/ImageIO/tiffIO.hpp"
+1471547892 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
+	"test_functions.hpp"
 
 1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -769,7 +729,7 @@
 1470148706 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\clusteringfeature.hpp
 	"../../matrix.hpp"
 
-1471043980 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\birch.cpp
+1471453876 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\birch.cpp
 	"birch.hpp"
 	<cfloat>
 
@@ -802,11 +762,67 @@
 	"SDL_interface.hpp"
 	"ImageProcessing/imgconverter.hpp"
 
-1471272590 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\hough.cpp
+1471337042 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\hough.cpp
 	"hough.hpp"
 	"../linalg.hpp"
 	"../mmath.hpp"
 
 1471207028 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\hough.hpp
 	"../matrix.hpp"
+
+1471357765 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\segmentation.hpp
+	"../matrix.hpp"
+
+1471453876 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\segmentation.cpp
+	"segmentation.hpp"
+	<algorithm>
+	<queue>
+	<vector>
+
+1471546173 c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.hpp
+
+1471548872 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
+	"csvIO.hpp"
+	"file_explorer.hpp"
+	"linalg.hpp"
+	"logical_operators.hpp"
+	"matrix.hpp"
+	"mmath.hpp"
+	"polynomial_equation_solver.hpp"
+	"regression.hpp"
+	"SDL_interface.hpp"
+	"statistics.hpp"
+	"test_functions.hpp"
+	"MachineLearning/pca.hpp"
+	"MachineLearning/scaler.hpp"
+	"MachineLearning/Clustering/affinitypropagation.hpp"
+	"MachineLearning/Clustering/gmm.hpp"
+	"MachineLearning/Clustering/hierarchicalclustering.hpp"
+	"MachineLearning/Clustering/kmeans.hpp"
+	"MachineLearning/Clustering/kmedoids.hpp"
+	"MachineLearning/Clustering/meanshift.hpp"
+	"MachineLearning/SupervisedLearning/bernoulli_naive_bayes.hpp"
+	"MachineLearning/SupervisedLearning/dtree.hpp"
+	"MachineLearning/SupervisedLearning/gaussian_naive_bayes.hpp"
+	"MachineLearning/SupervisedLearning/knn.hpp"
+	"MachineLearning/SupervisedLearning/mlp.hpp"
+	"MachineLearning/SupervisedLearning/perceptron.hpp"
+	"ImageProcessing/color.hpp"
+	"ImageProcessing/fourier.hpp"
+	"ImageProcessing/hough.hpp"
+	"ImageProcessing/imgconverter.hpp"
+	"ImageProcessing/linear_filtering.hpp"
+	"ImageProcessing/morphology.hpp"
+	"ImageProcessing/nonlinear_filtering.hpp"
+	"ImageProcessing/segmentation.hpp"
+	"ImageProcessing/snake.hpp"
+	"ImageProcessing/ImageIO/imageIO.hpp"
+	"ImageProcessing/ImageIO/bmpIO.hpp"
+	"ImageProcessing/ImageIO/gifIO.hpp"
+	"ImageProcessing/ImageIO/icoIO.hpp"
+	"ImageProcessing/ImageIO/jpegIO.hpp"
+	"ImageProcessing/ImageIO/pngIO.hpp"
+	"ImageProcessing/ImageIO/pnmIO.hpp"
+	"ImageProcessing/ImageIO/tgaIO.hpp"
+	"ImageProcessing/ImageIO/tiffIO.hpp"
 

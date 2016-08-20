@@ -21,15 +21,18 @@ Matrix<float> isotropicx();
 Matrix<float> isotropicy();
 Matrix<float> kirch();
 Matrix<float> laplacian(float);
-Matrix<float> log(int = 5, float = 1.0f);
+Matrix<float> log(std::size_t = 5, float = 1.0f);
 Matrix<float> prewittx();
 Matrix<float> prewitty();
 Matrix<float> robertsx();
 Matrix<float> robertsy();
+Matrix<float> robinson();
+Matrix<float> scharrx();
+Matrix<float> scharry();
 Matrix<float> sobelx();
 Matrix<float> sobely();
 
-Matrix<unsigned char> gradient(Matrix<unsigned char>, std::string);
+Matrix<unsigned char> gradient(Matrix<unsigned char>, std::string = "sobel");
 Matrix<unsigned char> filter(Matrix<unsigned char>, Matrix<float>, int = 0);
 Matrix<float> conv(Matrix<float>, Matrix<float>, int = 0);
 
