@@ -24,12 +24,12 @@
 	<complex>
 	"../matrix.hpp"
 
-1471548236 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.hpp
+1471861488 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.hpp
 	<deque>
 	<iostream>
 	"matrix.tcc"
 
-1471040057 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.tcc
+1471867431 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.tcc
 	<algorithm>
 	<chrono>
 	<cmath>
@@ -51,7 +51,7 @@
 	"matrix.hpp"
 	"statistics.tcc"
 
-1471453876 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.tcc
+1471733017 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.tcc
 	<algorithm>
 	<cmath>
 	"mmath.hpp"
@@ -172,14 +172,14 @@
 	"../../matrix.hpp"
 	"../color.hpp"
 
-1471043211 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imgconverter.cpp
+1471974826 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imgconverter.cpp
 	<cfloat>
 	<cmath>
 	"imgconverter.hpp"
 	"morphology.hpp"
 	"../statistics.hpp"
 
-1471043211 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imgconverter.hpp
+1471974859 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imgconverter.hpp
 	"color.hpp"
 	"../matrix.hpp"
 
@@ -193,7 +193,7 @@
 1471714608 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.hpp
 	"../matrix.hpp"
 
-1471453876 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
+1471733499 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
 	<cmath>
 	<vector>
 	"../mmath.hpp"
@@ -222,7 +222,7 @@
 	"matrix.hpp"
 	"linalg.tcc"
 
-1471101735 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.tcc
+1471974581 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.tcc
 	<cmath>
 	<tuple>
 	<utility>
@@ -237,7 +237,7 @@
 	"matrix.hpp"
 	"logical_operators.hpp"
 
-1471111432 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\gmm.cpp
+1471816216 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\gmm.cpp
 	<cfloat>
 	"../../linalg.hpp"
 	"../../mmath.hpp"
@@ -277,7 +277,7 @@
 1471105737 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\kmedoids.hpp
 	"../../matrix.hpp"
 
-1471093886 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\meanshift.cpp
+1471867810 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\meanshift.cpp
 	"meanshift.hpp"
 	"../../linalg.hpp"
 	"../../mmath.hpp"
@@ -302,7 +302,7 @@
 1464857949 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\scaler.hpp
 	"../matrix.hpp"
 
-1471042632 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\bernoulli_naive_bayes.cpp
+1471732413 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\bernoulli_naive_bayes.cpp
 	"bernoulli_naive_bayes.hpp"
 	"../../linalg.hpp"
 	"../../statistics.hpp"
@@ -321,7 +321,7 @@
 1471042876 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\dtree.hpp
 	"../../matrix.hpp"
 
-1471043232 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\gaussian_naive_bayes.cpp
+1471732413 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\gaussian_naive_bayes.cpp
 	"gaussian_naive_bayes.hpp"
 	"../../mmath.hpp"
 	"../../linalg.hpp"
@@ -355,7 +355,7 @@
 1471042616 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\perceptron.hpp
 	"../../matrix.hpp"
 
-1471547892 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
+1471900283 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
 	"test_functions.hpp"
 
 1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl.h
@@ -713,7 +713,7 @@
 	"linalg.hpp"
 	"statistics.hpp"
 
-1471041119 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\affinitypropagation.cpp
+1471861767 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\affinitypropagation.cpp
 	<cfloat>
 	"affinitypropagation.hpp"
 	"../../linalg.hpp"
@@ -726,7 +726,7 @@
 	"clusteringfeature.hpp"
 	"../../statistics.hpp"
 
-1470148706 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\clusteringfeature.hpp
+1471897867 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\clusteringfeature.hpp
 	"../../matrix.hpp"
 
 1471453876 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\birch.cpp
@@ -758,7 +758,7 @@
 	"matrix.hpp"
 	"ImageProcessing/color.hpp"
 
-1471272924 source:c:\users\hp\documents\mes programmes\imageprocessinglib\sdl_interface.cpp
+1471955073 source:c:\users\hp\documents\mes programmes\imageprocessinglib\sdl_interface.cpp
 	"SDL_interface.hpp"
 	"ImageProcessing/imgconverter.hpp"
 
@@ -770,18 +770,23 @@
 1471207028 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\hough.hpp
 	"../matrix.hpp"
 
-1471357765 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\segmentation.hpp
+1471974859 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\segmentation.hpp
 	"../matrix.hpp"
 
-1471453876 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\segmentation.cpp
+1471976564 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\segmentation.cpp
+	"../mmath.hpp"
+	"../statistics.hpp"
+	"imgconverter.hpp"
+	"morphology.hpp"
 	"segmentation.hpp"
 	<algorithm>
+	<cfloat>
 	<queue>
 	<vector>
 
 1471546173 c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.hpp
 
-1471548872 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
+1471958115 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
 	"csvIO.hpp"
 	"file_explorer.hpp"
 	"linalg.hpp"

@@ -109,6 +109,21 @@ template <class T> Matrix<T> Matrix<T>::getCols(std::size_t a, std::size_t b) co
     return getSubmat(0, sizex, a, b);
 }
 
+template <class T> Matrix<T> Matrix<T>::getDiag() const
+{
+    std::size_t row_nb = std::min(sizex, sizey);
+    Matrix<T> new_mat(row_nb, 1);
+    auto it_this = cbegin();
+    auto it_new_mat =  new_mat.begin();
+    for(std::size_t i=0;i<row_nb;++i)
+    {
+        *it_new_mat = *it_this;
+        it_this+=sizey+1;
+        ++it_new_mat;
+    }
+    return new_mat;
+}
+
 template <class T> Matrix<T> Matrix<T>::getRow(std::size_t a) const
 {
     return getSubmat(a, a+1, 0, sizey);
@@ -142,6 +157,24 @@ template <class T> void Matrix<T>::setCol(std::size_t a, const Matrix<T>& M)
 template <class T> void Matrix<T>::setCols(std::size_t a, const Matrix<T>& M)
 {
     setSubmat(0, a, M);
+}
+
+template <class T> void Matrix<T>::setDiag(const Matrix<T>& M)
+{
+    std::size_t row_nb = std::min(sizex, sizey);
+    if(row_nb==M.size() && (M.rowNb()==1 || M.colNb()==1))
+    {
+        auto it_this = begin();
+        auto it_m =  M.cbegin();
+        for(std::size_t i=0;i<row_nb;++i)
+        {
+            *it_this = *it_m;
+            it_this+=sizey+1;
+            ++it_m;
+        }
+    }
+    else
+        std::cout<<"dimension mismatch"<<std::endl;
 }
 
 template <class T> void Matrix<T>::setRow(std::size_t a, const Matrix<T>& M)
@@ -267,13 +300,28 @@ template <class T> void Matrix<T>::swaprow(std::size_t a, std::size_t b)
 
 template <class T> void Matrix<T>::transpose()
 {
-    Matrix<T> t_mat(sizey, sizex);
-    for(std::size_t i=0;i<sizex;++i)
+    if(sizex==1 || sizey==1)
     {
-        for(std::size_t j=0;j<sizey;++j)
-            t_mat(j, i) = mat[i*sizey+j];
+        std::swap(sizex, sizey);
     }
-    *this = t_mat;
+    else if(sizex==sizey)
+    {
+        for(std::size_t i=0;i<sizex-1;++i)
+        {
+            for(std::size_t j=i+1;j<sizey;++j)
+                std::swap(mat[i*sizey+j], mat[j*sizey+i]);
+        }
+    }
+    else
+    {
+        Matrix<T> t_mat(sizey, sizex);
+        for(std::size_t i=0;i<sizex;++i)
+        {
+            for(std::size_t j=0;j<sizey;++j)
+                t_mat(j, i) = mat[i*sizey+j];
+        }
+        *this = t_mat;
+    }
 }
 
 
@@ -840,23 +888,25 @@ template <class T> Matrix<T> unique(const Matrix<T>& M)
 }
 
 
-template <class T> Matrix<T> diag(const Matrix<T>& M)
-{
-    std::size_t row_nb = std::min(M.rowNb(), M.colNb());
-    Matrix<T> new_mat(row_nb, 1);
-    for(std::size_t i=0;i<row_nb;++i)
-        new_mat(i, 0) = M(i, i);
-    return new_mat;
-}
-
 template <class T> Matrix<T> transpose(const Matrix<T>& M)
 {
-    Matrix<T> t_mat(M.colNb(), M.rowNb());
-    for(std::size_t i=0;i<M.rowNb();++i)
+    std::size_t H = M.rowNb(), W = M.colNb();
+    Matrix<T> t_mat;
+    if(H==1 || W==1)
     {
-        for(std::size_t j=0;j<M.colNb();++j)
-            t_mat(j, i) = M(i, j);
+        t_mat=M;
+        t_mat.reshape(W, H);
     }
+    else
+    {
+        t_mat = Matrix<T>(W, H);
+        for(std::size_t i=0;i<H;++i)
+        {
+            for(std::size_t j=0;j<W;++j)
+                t_mat(j, i) = M(i, j);
+        }
+    }
+
     return t_mat;
 }
 
@@ -885,9 +935,9 @@ template <class T> Matrix<T> operator/(const T& value, const Matrix<T>& M)
 
 template <class T> std::ostream& operator<<(std::ostream& s, const Matrix<T>& my_matrix)
 {
-    for(std::size_t i=0;i<my_matrix.rowNb();++i)
+    for(std::size_t i=0, I=my_matrix.rowNb();i<I;++i)
     {
-        for(std::size_t j=0;j<my_matrix.colNb();++j)
+        for(std::size_t j=0, J=my_matrix.colNb();j<J;++j)
             s<<my_matrix(i, j)<<'\t';
         s<<std::endl;
     }

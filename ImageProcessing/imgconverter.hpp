@@ -17,8 +17,6 @@
 
 Matrix<bool> gray2bwimage(const Matrix<unsigned char>&, unsigned char = 128);
 Matrix<bool> color2bwimage(const Matrix<Color>&, unsigned char = 128);
-Matrix<bool> hysteresis(const Matrix<unsigned char>&, unsigned char, unsigned char);
-Matrix<bool> otsu(const Matrix<unsigned char>&);
 Matrix<unsigned char> bw2grayimage(const Matrix<bool>&);
 Matrix<unsigned char> color2grayimage(const Matrix<Color>&);
 Matrix<Color> bw2colorimage(const Matrix<bool>&);

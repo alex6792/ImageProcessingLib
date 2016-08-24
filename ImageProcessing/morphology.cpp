@@ -266,14 +266,14 @@ Matrix<std::size_t> label(const Matrix<bool>& M, const Mask& mask)
 {
     Matrix<std::size_t> labeledmap = zeros<std::size_t>(M.rowNb(), M.colNb());
     std::size_t curlabel = 0;
-    for(std::size_t i=0;i<M.rowNb();++i)
+    for(std::size_t i=0, I=M.rowNb();i<I;++i)
     {
-        for(std::size_t j=0;j<M.colNb();++j)
+        for(std::size_t j=0, J=M.colNb();j<J;++j)
         {
             if(M(i, j) && labeledmap(i, j)==0)
             {
                 ++curlabel;
-                Matrix<bool> marker = zeros<bool>(M.rowNb(), M.colNb());
+                Matrix<bool> marker = zeros<bool>(I, J);
                 marker(i, j) = true;
                 marker = reconstruct(M, marker, mask);
                 labeledmap = where(marker, full(M.rowNb(), M.colNb(), curlabel), labeledmap);
@@ -491,15 +491,15 @@ Matrix<std::size_t> label(const Matrix<unsigned char>& M, const Mask& mask)
 {
     Matrix<std::size_t> labeledmap = zeros<std::size_t>(M.rowNb(), M.colNb());
     std::size_t curlabel = 0;
-    for(std::size_t i=0;i<M.rowNb();++i)
+    for(std::size_t i=0, I=M.rowNb();i<I;++i)
     {
-        for(std::size_t j=0;j<M.colNb();++j)
+        for(std::size_t j=0, J=M.colNb();j<J;++j)
         {
-            if(M(i, j) && labeledmap(i, j)==0)
+            if(labeledmap(i, j)==0)
             {
                 ++curlabel;
-                Matrix<unsigned char> marker = zeros<unsigned char>(M.rowNb(), M.colNb());
-                marker(i, j) = 255;
+                Matrix<unsigned char> marker = zeros<unsigned char>(I, J);
+                marker(i, j) = M(i, j);
                 marker = reconstruct(M, marker, mask);
                 labeledmap = where(marker>0, full<std::size_t>(M.rowNb(), M.colNb(), curlabel), labeledmap);
             }

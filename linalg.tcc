@@ -17,9 +17,9 @@ template <class T> Matrix<T> dot(const Matrix<T>& A, const Matrix<T>& B)
         auto B_begin = Bt.cbegin();
         std::size_t n = A.colNb();
 
-        for(std::size_t i=0;i<my_matrix.rowNb();++i)
+        for(std::size_t i=0, I=my_matrix.rowNb();i<I;++i)
         {
-            for(std::size_t j=0;j<my_matrix.colNb();++j)
+            for(std::size_t j=0, J=my_matrix.colNb();j<J;++j)
                 my_matrix(i, j) = std::inner_product(A_begin+i*n, A_begin+(i+1)*n, B_begin+j*n, T(0));
         }
 
@@ -58,7 +58,7 @@ template <class T> Matrix<T> inv(const Matrix<T>& M)
         {
             for(std::size_t i=0;i<M.rowNb();++i)
             {
-                for(std::size_t j=0;j<M.colNb();++j)
+                for(std::size_t j=0, J=M.colNb();j<J;++j)
                 {
                     Matrix<T> temp = M;
                     temp.delRow(i);
@@ -147,10 +147,10 @@ template <class T> Matrix<T> fwdsub(const Matrix<T>& L, const Matrix<T>& B)
         X.setRow(0, B.getRow(0)/L(0,0));
         for(std::size_t i=1;i<X.rowNb();++i)
         {
-            X.setRow(i, B.getRow(i));
+            Matrix<T> new_row = B.getRow(i);
             for(std::size_t j=0;j<i;++j)
-                X.setRow(i, X.getRow(i)-X.getRow(j)*L(i, j));
-            X.setRow(i, X.getRow(i)/L(i, i));
+                new_row-=X.getRow(j)*L(i, j);
+            X.setRow(i, new_row/L(i, i));
         }
         return X;
     }
@@ -163,7 +163,7 @@ template <class T> Matrix<T> cholesky(const Matrix<T>& M)
     if(M.rowNb()==M.colNb())
     {
         Matrix<T> L(M.rowNb(), M.colNb());
-        for(std::size_t j=0;j<M.colNb();++j)
+        for(std::size_t j=0, J=M.colNb();j<J;++j)
         {
             Matrix<T> V = M.getSubmat(j, M.rowNb(), j, j+1);
             for(std::size_t i=0;i<j;++i)
@@ -255,11 +255,7 @@ template <class T> std::pair<Matrix<T>, Matrix<T> > svd(const Matrix<T>& M)
 
 template <class T> T trace(const Matrix<T>& M)
 {
-    std::size_t minimum = M.rowNb()>M.colNb()?M.colNb():M.rowNb();
-    T tr = T(0);
-    for(std::size_t i=0;i<minimum;++i)
-        tr+=M(i, i);
-    return tr;
+    return sum(M.getDiag());
 }
 
 template <class T> std::pair<Matrix<T>, Matrix<T> > Jacobi(const Matrix<T>& M)

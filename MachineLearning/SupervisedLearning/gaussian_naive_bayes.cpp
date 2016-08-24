@@ -33,7 +33,7 @@ void GaussianNaiveBayes::fit(const Matrix<float>& M, const Matrix<std::size_t>& 
     priors = Matrix<float>(nb_class, 1);
     for(std::size_t i=0;i<M.rowNb();++i)
     {
-        for(std::size_t j=0;j<M.colNb();++j)
+        for(std::size_t j=0, J=M.colNb();j<J;++j)
         {
             means(label(i, 0), j)+=M(i, j);
             stdevs(label(i, 0), j)+=M(i, j)*M(i, j);
@@ -69,7 +69,7 @@ Matrix<float> GaussianNaiveBayes::predict_proba(const Matrix<float>& M)
     Matrix<float> results = ones<float>(M.rowNb(), nb_class);
     for(std::size_t i=0; i<M.rowNb();++i)
     {
-        for(std::size_t j=0;j<M.colNb();++j)
+        for(std::size_t j=0, J=M.colNb();j<J;++j)
         {
             for(std::size_t k=0;k<nb_class;++k)
             {

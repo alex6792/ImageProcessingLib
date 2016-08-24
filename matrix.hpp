@@ -100,11 +100,13 @@ template <class T> class Matrix
         // accessors submatrix
         Matrix<T> getCol(std::size_t) const;
         Matrix<T> getCols(std::size_t, std::size_t) const;
+        Matrix<T> getDiag() const;
         Matrix<T> getRow(std::size_t) const;
         Matrix<T> getRows(std::size_t, std::size_t) const;
         Matrix<T> getSubmat(std::size_t, std::size_t, std::size_t, std::size_t) const;
         void setCol(std::size_t, const Matrix<T>&);
         void setCols(std::size_t, const Matrix<T>&);
+        void setDiag(const Matrix<T>&);
         void setRow(std::size_t, const Matrix<T>&);
         void setRows(std::size_t, const Matrix<T>&);
         void setSubmat(std::size_t, std::size_t, const Matrix<T>&);
@@ -213,9 +215,6 @@ template <class T = std::size_t> Matrix<std::size_t> argwhere(const Matrix<bool>
 
 // unique
 template <class T> Matrix<T> unique(const Matrix<T>&);
-
-// get diagonal
-template <class T> Matrix<T> diag(const Matrix<T>&);
 
 //non member function transpose
 template <class T> Matrix<T> transpose(const Matrix<T>&);

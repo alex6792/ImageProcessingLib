@@ -45,12 +45,12 @@
 #include "ImageProcessing/ImageIO/tgaIO.hpp"
 #include "ImageProcessing/ImageIO/tiffIO.hpp"
 
+
 void test_clustering()
 {
      ///////////test clustering
-
     //create data
-    std::size_t n_samples = 200;
+    std::size_t n_samples = 400;
     std::size_t n_features = 2;
     std::size_t n_classes = 4;
     Matrix<float> Data(n_samples, n_features);
@@ -410,18 +410,38 @@ void test_regression()
 
 void test_segmentation()
 {
-    ///// test Otsu
+        SDL_Init(SDL_INIT_VIDEO);
+    SDL_Window* pWindow = SDL_CreateWindow("Image Processing Library",
+                                            SDL_WINDOWPOS_UNDEFINED,
+                                            SDL_WINDOWPOS_UNDEFINED,
+                                            640,
+                                            480,
+                                            SDL_WINDOW_SHOWN);
+
+    SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
+
+
     Matrix<unsigned char> testimg = {{0,0,1,4,4,5},
                                     {0,1,3,4,3,4},
                                     {1,3,4,2,1,3},
                                     {4,4,3,1,0,0},
                                     {5,4,2,1,0,0},
                                     {5,5,4,3,1,0}};
-    Matrix<Color> testimg2 = gray2colorimage(testimg);
-    std::cout<<testimg2<<std::endl;
-    std::cout<<otsu(testimg)<<std::endl;
-    std::cout<< (testimg>(unsigned char)(4)) <<std::endl;
-    std::cout<<argwhere(testimg>4)<<std::endl;
+
+    testimg*=51;
+    testimg = read_pgm("Images/Pixmap/chat.pgm");
+    testimg = color2grayimage(read_img("Images/Detection_de_forme/bruit1.bmp"));
+    testimg = nagao(testimg);
+    show_matrix(renderer, testimg);
+
+    ///// test Otsu
+    show_matrix(renderer, otsu(testimg));
+
+    ///// test hysteresis
+    show_matrix(renderer, hysteresis(testimg, 2*51, 3*51));
+
+    // test felzenszwalb
+    show_matrix(renderer, felzenszwalb(testimg));
 
 
     ///// test watershed
@@ -430,6 +450,11 @@ void test_segmentation()
     std::cout<<testwatershed<<std::endl;
     std::cout<<markers<<std::endl;
     std::cout<<watershed(testwatershed, markers)<<std::endl;
+
+
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(pWindow);
+    SDL_Quit();
 }
 
 void test_sclaler()

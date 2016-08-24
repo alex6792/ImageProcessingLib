@@ -2,6 +2,7 @@
 #include "../linalg.hpp"
 #include "../mmath.hpp"
 
+
 Matrix<std::size_t> hough_transform(const Matrix<bool>& M)
 {
     float dtheta = 2*PI/16.0f;

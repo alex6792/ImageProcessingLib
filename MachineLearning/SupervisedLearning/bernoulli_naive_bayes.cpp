@@ -15,7 +15,7 @@ void BernoulliNaiveBayes::fit(const Matrix<bool>& M, const Matrix<std::size_t>& 
     priors = Matrix<float>(nb_class, 1);
     for(std::size_t i=0; i<M.rowNb();++i)
     {
-        for(std::size_t j=0;j<M.colNb();++j)
+        for(std::size_t j=0, J=M.colNb();j<J;++j)
         {
             if(M(i, j))
                 ++proba(label(i, 0), j);
@@ -47,7 +47,7 @@ Matrix<float> BernoulliNaiveBayes::predict_proba(const Matrix<bool>& M)
     Matrix<float> results = ones<float>(M.rowNb(), nb_class);
     for(std::size_t i=0; i<M.rowNb();++i)
     {
-        for(std::size_t j=0;j<M.colNb();++j)
+        for(std::size_t j=0, J=M.colNb();j<J;++j)
         {
             for(std::size_t k=0;k<nb_class;++k)
             {

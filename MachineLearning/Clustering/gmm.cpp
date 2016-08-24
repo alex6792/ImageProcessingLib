@@ -57,8 +57,9 @@ Matrix<std::size_t> GMM::fit_predict(const Matrix<float>& M)
 
 Matrix<std::size_t> GMM::predict(const Matrix<float>& M)
 {
-    labels = zeros<std::size_t>(M.rowNb(), 1);
-    for(std::size_t i=0;i<M.rowNb();++i)
+    std::size_t nb_samples = M.rowNb();
+    labels = zeros<std::size_t>(nb_samples, 1);
+    for(std::size_t i=0;i<nb_samples;++i)
     {
         float distance = 0.0f;
         Matrix<float> cur_row = M.getRow(i);
@@ -66,10 +67,10 @@ Matrix<std::size_t> GMM::predict(const Matrix<float>& M)
         {
             Matrix<float> cur_mat = cur_row-centers.getRow(j);
             cur_mat*=cur_mat;
-            for(std::size_t k=0;k<nb_features;++k)
-                cur_mat(0, k)/=vars(j, k);
+            Matrix<float> cur_var = vars.getRow(j);
+            cur_mat*=1.0f/cur_var;
 
-            float dist = weights(j, 0)*std::exp(-0.5*sum(cur_mat))/std::sqrt(prod(vars.getRow(j)));
+            float dist = weights(j, 0)*std::exp(-0.5*sum(cur_mat))/std::sqrt(prod(cur_var));
 
             if(dist>distance)
             {
@@ -83,20 +84,21 @@ Matrix<std::size_t> GMM::predict(const Matrix<float>& M)
 
 void GMM::expectation(const Matrix<float>& M)
 {
-    for(std::size_t i=0;i<M.rowNb();++i)
+    std::size_t nb_samples = M.rowNb();
+    for(std::size_t i=0;i<nb_samples;++i)
     {
         Matrix<float> cur_row = M.getRow(i);
         for(std::size_t j=0;j<nb_clusters;++j)
         {
             Matrix<float> cur_mat = cur_row-centers.getRow(j);
             cur_mat*=cur_mat;
-            for(std::size_t k=0;k<M.colNb();++k)
+            for(std::size_t k=0;k<nb_features;++k)
                 cur_mat(0, k)/=vars(j, k);
             responsibilities(i, j) = weights(j, 0)*std::exp(-0.5*sum(cur_mat))/std::sqrt(prod(vars.getRow(j)));
         }
     }
     Matrix<float> part_sum = axissum(responsibilities, 1);
-    for(std::size_t i=0;i<M.rowNb();++i)
+    for(std::size_t i=0;i<nb_samples;++i)
     {
         for(std::size_t j=0;j<nb_clusters;++j)
         {
@@ -107,10 +109,11 @@ void GMM::expectation(const Matrix<float>& M)
 
 void GMM::maximization(const Matrix<float>& M)
 {
+    std::size_t nb_samples = M.rowNb();
     centers = zeros<float>(nb_clusters, nb_features);
     vars = zeros<float>(nb_clusters, nb_features);
     weights = zeros<float>(nb_clusters, 1);
-    for(std::size_t i=0;i<M.rowNb();++i)
+    for(std::size_t i=0;i<nb_samples;++i)
     {
         Matrix<float> cur_mat = M.getRow(i);
         for(std::size_t k=0;k<nb_clusters;++k)
@@ -121,10 +124,10 @@ void GMM::maximization(const Matrix<float>& M)
     }
     for(std::size_t i=0;i<nb_clusters;++i)
     {
-        for(std::size_t j=0;j<M.colNb();++j)
+        for(std::size_t j=0;j<nb_features;++j)
             centers(i, j)/=weights(i, 0);
     }
-    for(std::size_t i=0;i<M.rowNb();++i)
+    for(std::size_t i=0;i<nb_samples;++i)
     {
         Matrix<float> cur_row = M.getRow(i);
         for(std::size_t k=0;k<nb_clusters;++k)
