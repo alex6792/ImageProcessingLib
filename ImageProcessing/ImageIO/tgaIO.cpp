@@ -10,90 +10,79 @@ Matrix<Color> read_tga(std::string filename)
     std::ifstream myfile(filename, std::ios::in|std::ios::binary);
     if(myfile)
     {
-        char header_c[18];
-        myfile.read(header_c, 18);
-        unsigned char* header = reinterpret_cast<unsigned char*>(header_c);
+        unsigned char header[18];
+        myfile.read(reinterpret_cast<char*>(header), 18);
 
-        int idLength = header[0];
-        int colorMapType = header[1];
-        int compression = header[2];
+        unsigned idLength = header[0];
+        unsigned colorMapType = header[1];
+        unsigned compression = header[2];
 
-        int colorMapIndex = header[3] + header[4] * 256;
-        int colorMapLength = header[5] + header[6] * 256;
-        int colorMapSize = header[7];
+        unsigned colorMapIndex = header[3] + header[4] * 256;
+        unsigned colorMapLength = header[5] + header[6] * 256;
+        unsigned colorMapSize = header[7];
 
-        int xOrigin = header[8] + header[9] * 256;
-        int yOrigin = header[10] + header[11] * 256;
-        int width = header[12] + header[13] * 256;
-        int height = header[14] + header[15] * 256;
-        int bpp = header[16];
-        int bytes = (bpp + 7) / 8;
-        unsigned char alphaBits = header[17] & 0x0f; /* Just the low 4 bits */
+        unsigned xOrigin = header[8] + header[9] * 256;
+        unsigned yOrigin = header[10] + header[11] * 256;
+        unsigned width = header[12] + header[13] * 256;
+        unsigned height = header[14] + header[15] * 256;
+        unsigned bpp = header[16];
+        unsigned bytes = (bpp + 7) / 8;
+        unsigned char alphaBits = header[17] & 0x0f;
         bool flipHoriz = (header[17] & 0x10) ? 1 : 0;
         bool flipVert = (header[17] & 0x20) ? 0 : 1;
-        std::cout<<width<<" "<<height<<std::endl;
-        std::cout<<compression<<std::endl;
-        std::cout<<bpp<<std::endl;
-        std::cout<<flipHoriz<<std::endl;
-        std::cout<<flipVert<<std::endl;
+
         Matrix<Color> img(height, width);
         char r,g,b,a;
+        auto it = img.begin();
+        std::size_t n = img.size();
         if(compression == 2 && bpp==24)
         {
-            for(int i=0;i<height;++i)
+            for(std::size_t i=0;i<n;++i)
             {
-                for(int j=0;j<width;++j)
-                {
-                    myfile.get(b);
-                    myfile.get(g);
-                    myfile.get(r);
-                    img(i, j) = Color(r, g, b);
-                }
+                myfile.get(b);
+                myfile.get(g);
+                myfile.get(r);
+                *it++ = Color(r, g, b);
             }
         }
-        if(compression == 2 && bpp==32)
+        else if(compression == 2 && bpp==32)
         {
-            for(int i=0;i<height;++i)
+            for(std::size_t i=0;i<n;++i)
             {
-                for(int j=0;j<width;++j)
-                {
-                    myfile.get(b);
-                    myfile.get(g);
-                    myfile.get(r);
-                    myfile.get(a);
-                    img(i, j) = Color(r, g, b, a);
-                }
+                myfile.get(b);
+                myfile.get(g);
+                myfile.get(r);
+                myfile.get(a);
+                *it++ = Color(r, g, b, a);
             }
         }
-        else if(compression == 10)
+        else if(compression == 10 && bpp==24)
         {
-            std::size_t cpt = 0;
-            while(cpt<img.size())
+            auto it_end = img.end();
+            while(it!=it_end)
             {
                 char chunkheader;
                 myfile.get(chunkheader);
-                if((unsigned char)chunkheader<128)
+                unsigned char chunk2 = chunkheader;
+                if(chunk2<128)
                 {
-                    ++chunkheader;													// add 1 to get number of following color values
-                    for(int counter = 0; counter < (unsigned char)chunkheader; counter++)		// Read RAW color values
+                    ++chunk2;
+                    for(unsigned i=0;i<chunk2;++i)
                     {
                         myfile.get(b);
                         myfile.get(g);
                         myfile.get(r);
-                        img(cpt/width, cpt%width) = Color(r,g,b);
-                        ++cpt;														// Return failed
+                        *it++ = Color(r,g,b);
                     }
                 }
                 else
                 {
-                    unsigned char chunk2 = chunkheader;
                     myfile.get(b);
                     myfile.get(g);
                     myfile.get(r);
-                    for(int i=0;i<chunk2 - 127;++i)
+                    for(unsigned i=0;i<chunk2 - 127;++i)
                     {
-                        img(cpt/width, cpt%width) = Color(r,g,b);
-                        ++cpt;
+                        *it++ = Color(r,g,b);
                     }
                 }
             }
@@ -111,22 +100,24 @@ Matrix<Color> read_tga(std::string filename)
 
 void save_tga(std::string filename, const Matrix<Color>& img)
 {
-    std::ofstream myfile(filename, std::ios::out | std::ios::trunc |std::ios::binary);
+    std::ofstream myfile(filename, std::ios::out|std::ios::trunc|std::ios::binary);
     if(myfile)
     {
-        int w = img.colNb();
-        int h = img.rowNb();
+        unsigned w = img.colNb();
+        unsigned h = img.rowNb();
         char seq[] = {0,0,2,0,0,0,0,0,0,0,0,0};
         myfile.write(seq, 12);
         myfile.put(w%256);
         myfile.put(w/256);
         myfile.put(h%256);
         myfile.put(h/256);
-        myfile.put(32);myfile.put(32);
-        std::for_each(img.cbegin(), img.cend(), [&myfile](Color c){myfile.put(c.blue());
-                                                                    myfile.put(c.green());
-                                                                    myfile.put(c.red());
-                                                                    myfile.put(c.alpha());});
+        myfile.put(32);
+        myfile.put(32);
+        std::for_each(img.cbegin(), img.cend(), [&myfile](const Color& c)
+                                                {myfile.put(c.blue());
+                                                myfile.put(c.green());
+                                                myfile.put(c.red());
+                                                myfile.put(c.alpha());});
         myfile.close();
     }
     else

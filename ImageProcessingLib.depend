@@ -56,7 +56,7 @@
 	<cmath>
 	"mmath.hpp"
 
-1463589717 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\bmpio.cpp
+1472563917 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\bmpio.cpp
 	"bmpIO.hpp"
 	<fstream>
 	<iostream>
@@ -67,12 +67,13 @@
 	"../../matrix.hpp"
 	"../color.hpp"
 
-1463315159 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\gifio.cpp
+1472573959 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\gifio.cpp
 	"gifIO.hpp"
 	<fstream>
 	<iostream>
 	<string>
 	<sstream>
+	<queue>
 
 1466115436 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\gifio.hpp
 	"../../matrix.hpp"
@@ -126,7 +127,7 @@
 	<iostream>
 	"lodepng.h"
 
-1471105355 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pngio.cpp
+1472046193 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pngio.cpp
 	"pngIO.hpp"
 	"lodepng/lodepng.h"
 	<fstream>
@@ -150,7 +151,7 @@
 	"../../matrix.hpp"
 	"../color.hpp"
 
-1471037585 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\tgaio.cpp
+1472512184 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\tgaio.cpp
 	"tgaIO.hpp"
 	<fstream>
 	<iostream>
@@ -183,7 +184,7 @@
 	"color.hpp"
 	"../matrix.hpp"
 
-1471079870 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.hpp
+1472332337 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.hpp
 	"../matrix.hpp"
 
 1471714608 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.cpp
@@ -193,11 +194,12 @@
 1471714608 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.hpp
 	"../matrix.hpp"
 
-1471733499 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
+1472333625 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
 	<cmath>
 	<vector>
-	"../mmath.hpp"
 	"../logical_operators.hpp"
+	"../mmath.hpp"
+	"../statistics.hpp"
 	"morphology.hpp"
 
 1463072424 c:\users\hp\documents\mes programmes\imageprocessinglib\logical_operators.hpp
@@ -212,7 +214,7 @@
 1471088692 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\nonlinear_filtering.hpp
 	"../matrix.hpp"
 
-1471044221 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\snake.cpp
+1472044871 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\snake.cpp
 	"../linalg.hpp"
 	"../mmath.hpp"
 	"linear_filtering.hpp"
@@ -355,7 +357,7 @@
 1471042616 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\perceptron.hpp
 	"../../matrix.hpp"
 
-1471900283 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
+1472500356 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
 	"test_functions.hpp"
 
 1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl.h
@@ -762,7 +764,7 @@
 	"SDL_interface.hpp"
 	"ImageProcessing/imgconverter.hpp"
 
-1471337042 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\hough.cpp
+1471977010 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\hough.cpp
 	"hough.hpp"
 	"../linalg.hpp"
 	"../mmath.hpp"
@@ -786,7 +788,7 @@
 
 1471546173 c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.hpp
 
-1471958115 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
+1472575341 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
 	"csvIO.hpp"
 	"file_explorer.hpp"
 	"linalg.hpp"

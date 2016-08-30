@@ -1,7 +1,8 @@
 #include <cmath>
 #include <vector>
-#include "../mmath.hpp"
 #include "../logical_operators.hpp"
+#include "../mmath.hpp"
+#include "../statistics.hpp"
 #include "morphology.hpp"
 
 
@@ -46,6 +47,24 @@ Mask diamond(std::size_t a)
             new_diamond(i, j) = true;
     }
     return new_diamond;
+}
+
+
+Mask octagon(std::size_t a)
+{
+    float n = (1+std::sqrt(2.0f))*a+1;
+    std::size_t x1 = std::round(a/std::sqrt(2.0f));
+    std::size_t x2 = n-1-x1;
+    Mask new_octa = zeros<bool>(n);
+    new_octa(0, x1) = 1;
+    new_octa(0, x2) = 1;
+    new_octa(x1, 0) = 1;
+    new_octa(x1, n-1) = 1;
+    new_octa(x2, 0) = 1;
+    new_octa(x2, n-1) = 1;
+    new_octa(n-1, x1) = 1;
+    new_octa(n-1, x2) = 1;
+    return convex_hull(new_octa);
 }
 
 Mask rect(std::size_t a, std::size_t b)
@@ -95,6 +114,38 @@ Matrix<bool> conservative_smoothing(const Matrix<bool>& M)
     return I;
 }
 
+
+Matrix<bool> convex_hull(const Matrix<bool>& M)
+{
+    std::size_t H = M.rowNb(), W = M.colNb();
+
+    Matrix<std::size_t> Coordinates = argwhere(M);
+    Matrix<std::size_t> X = Coordinates.getCol(0);
+    Matrix<std::size_t> Y = Coordinates.getCol(1);
+    std::size_t xmin = min(X);
+    std::size_t xmax = max(X);
+    std::size_t ymin = min(Y);
+    std::size_t ymax = max(Y);
+
+    Matrix<std::size_t> U = X+Y;
+    Matrix<std::size_t> V = W+X-Y;
+    std::size_t umin = min(U);
+    std::size_t umax = max(U);
+    std::size_t vmin = min(V);
+    std::size_t vmax = max(V);
+
+    auto mesh = meshgrid<std::size_t>(H, W);
+    Matrix<std::size_t> meshX = mesh.first;
+    Matrix<std::size_t> meshY = mesh.second;
+    Matrix<std::size_t> meshU = meshX+meshY;
+    Matrix<std::size_t> meshV = W+meshX-meshY;
+    Matrix<bool> result = (meshX>=xmin)*(meshX<=xmax);
+    result *= (meshY>=ymin)*(meshY<=ymax);
+    result *= (meshU>=umin)*(meshU<=umax);
+    result *= (meshV>=vmin)*(meshV<=vmax);
+    return result;
+}
+
 Matrix<bool> dilate(const Matrix<bool>& M, const Mask& mask)
 {
     std::size_t I = M.rowNb(), J = M.colNb();
@@ -105,18 +156,17 @@ Matrix<bool> dilate(const Matrix<bool>& M, const Mask& mask)
         {
             if(mask(k, l))
             {
-                std::size_t sup_bound_i = std::min(I, I+K/2-k);
-                std::size_t inf_bound_i = sup_bound_i+k-I-K/2;
-                std::size_t sup_bound_j = std::min(J, J+L/2-l);
-                std::size_t inf_bound_j = sup_bound_j+l-J-L/2;
-                for(std::size_t i=inf_bound_i;i<sup_bound_i;++i)
+                for(std::size_t i=0;i<I;++i)
                 {
-                    for(std::size_t j=inf_bound_j;j<sup_bound_j;++j)
+                    for(std::size_t j=0;j<J;++j)
                     {
-                        std::size_t x = i+k-K/2;
-                        std::size_t y = j+l-L/2;
-                        if(M(x, y))
-                            res(i, j) = true;
+                        if(i+k>=K/2 && j+l>=L/2 && i+k-K/2<I && j+l-L/2<J)
+                        {
+                            std::size_t x = i+k-K/2;
+                            std::size_t y = j+l-L/2;
+                            if(M(x, y))
+                                res(i, j) = true;
+                        }
                     }
                 }
             }
@@ -135,18 +185,17 @@ Matrix<bool> erode(const Matrix<bool>& M, const Mask& mask)
         {
             if(mask(k, l))
             {
-                std::size_t sup_bound_i = std::min(I, I+K/2-k);
-                std::size_t inf_bound_i = sup_bound_i+k-I-K/2;
-                std::size_t sup_bound_j = std::min(J, J+L/2-l);
-                std::size_t inf_bound_j = sup_bound_j+l-J-L/2;
-                for(std::size_t i=inf_bound_i;i<sup_bound_i;++i)
+                for(std::size_t i=0;i<I;++i)
                 {
-                    for(std::size_t j=inf_bound_j;j<sup_bound_j;++j)
+                    for(std::size_t j=0;j<J;++j)
                     {
-                        std::size_t x = i+k-K/2;
-                        std::size_t y = j+l-L/2;
-                        if(!M(x, y))
-                            res(i, j) = false;
+                        if(i+k>=K/2 && j+l>=L/2 && i+k-K/2<I && j+l-L/2<J)
+                        {
+                            std::size_t x = i+k-K/2;
+                            std::size_t y = j+l-L/2;
+                            if(!M(x, y))
+                                res(i, j) = false;
+                        }
                     }
                 }
             }
@@ -329,18 +378,17 @@ Matrix<unsigned char> erode(const Matrix<unsigned char>& M, const Mask& mask)
         {
             if(mask(k, l))
             {
-                std::size_t sup_bound_i = std::min(I, I+K/2-k);
-                std::size_t inf_bound_i = sup_bound_i+k-I-K/2;
-                std::size_t sup_bound_j = std::min(J, J+L/2-l);
-                std::size_t inf_bound_j = sup_bound_j+l-J-L/2;
-                for(std::size_t i=inf_bound_i;i<sup_bound_i;++i)
+                for(std::size_t i=0;i<I;++i)
                 {
-                    for(std::size_t j=inf_bound_j;j<sup_bound_j;++j)
+                    for(std::size_t j=0;j<J;++j)
                     {
-                        std::size_t x = i+k-K/2;
-                        std::size_t y = j+l-L/2;
-                        if(M(x, y)<res(i, j))
-                            res(i, j) = M(x, y);
+                        if(k+i>=K/2 && k+i<I+K/2 && l+j>=L/2 && l+j<J+L/2)
+                        {
+                            std::size_t x = i+k-K/2;
+                            std::size_t y = j+l-L/2;
+                            if(M(x, y)<res(i, j))
+                                res(i, j) = M(x, y);
+                        }
                     }
                 }
             }
@@ -359,18 +407,17 @@ Matrix<unsigned char> dilate(const Matrix<unsigned char>& M, const Mask& mask)
         {
             if(mask(k, l))
             {
-                std::size_t sup_bound_i = std::min(I, I+K/2-k);
-                std::size_t inf_bound_i = sup_bound_i+k-I-K/2;
-                std::size_t sup_bound_j = std::min(J, J+L/2-l);
-                std::size_t inf_bound_j = sup_bound_j+l-J-L/2;
-                for(std::size_t i=inf_bound_i;i<sup_bound_i;++i)
+                for(std::size_t i=0;i<I;++i)
                 {
-                    for(std::size_t j=inf_bound_j;j<sup_bound_j;++j)
+                    for(std::size_t j=0;j<J;++j)
                     {
-                        std::size_t x = i+k-K/2;
-                        std::size_t y = j+l-L/2;
-                        if(M(x, y)>res(i, j))
-                            res(i, j) = M(x, y);
+                        if(k+i>=K/2 && k+i<I+K/2 && l+j>=L/2 && l+j<J+L/2)
+                        {
+                            std::size_t x = i+k-K/2;
+                            std::size_t y = j+l-L/2;
+                            if(M(x, y)>res(i, j))
+                                res(i, j) = M(x, y);
+                        }
                     }
                 }
             }

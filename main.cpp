@@ -3,6 +3,6 @@
 
 int main()
 {
-    test_segmentation();
+    test_lecture_img();
     return 0;
 }

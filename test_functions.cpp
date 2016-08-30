@@ -202,6 +202,47 @@ void test_morpho_binaire()
 
     SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 
+// test filtres non linéaires
+    Matrix<Color> img = read_png("Images/Filtrage/phare_bruit_ps.png");
+    Matrix<bool> gray_img = color2bwimage(img);
+
+    gray_img = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,1,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,1,1,0,0,0,0,0,0,0},
+                {0,0,0,0,0,1,1,1,1,0,0,0,0,0},
+                {0,0,0,0,0,0,1,1,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+    };
+
+    show_matrix(renderer, octagon(1));
+    show_matrix(renderer, octagon(2));
+    show_matrix(renderer, octagon(3));
+    show_matrix(renderer, octagon(4));
+    show_matrix(renderer, octagon(5));
+    show_matrix(renderer, octagon(6));
+    show_matrix(renderer, octagon(7));
+    show_matrix(renderer, octagon(8));
+    show_matrix(renderer, octagon(9));
+    SDL_SetWindowTitle(pWindow, "original");
+    show_matrix(renderer, gray_img);
+    SDL_SetWindowTitle(pWindow, "erode");
+    show_matrix(renderer, erode(gray_img));
+    SDL_SetWindowTitle(pWindow, "dilate");
+    show_matrix(renderer, dilate(gray_img));
+    SDL_SetWindowTitle(pWindow, "median");
+    show_matrix(renderer, median_filter(gray_img));
+    SDL_SetWindowTitle(pWindow, "convex hull");
+    show_matrix(renderer, convex_hull(gray_img));
+    SDL_SetWindowTitle(pWindow, "conservative smoothing");
+    show_matrix(renderer, conservative_smoothing(gray_img));
+    SDL_SetWindowTitle(pWindow, "opening by reconstruction");
+    gray_img = opening_by_reconstruction(gray_img);
+    show_matrix(renderer, gray_img);
+    gray_img = closing_by_reconstruction(gray_img);
+    SDL_SetWindowTitle(pWindow, "closing by reconstruction");
+    show_matrix(renderer, gray_img);
+
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(pWindow);
     SDL_Quit();
@@ -219,7 +260,7 @@ void test_morpho_gray()
 
     SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 
-        // test filtres non linéaires
+    // test filtres non linéaires
     Matrix<Color> img = read_png("Images/Filtrage/phare_bruit_ps.png");
     Matrix<unsigned char> gray_img = color2grayimage(img);
 
@@ -263,11 +304,11 @@ void test_lecture_img()
 
     SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 
-    std::string extensions[] = { "bmp", "tga", "ico", "png", "pbm","pgm", "ppm", "jpg", "gif", "tiff"};
+    std::string extensions[] = { "bmp", "tga", "ico", "pbm","pgm", "ppm", "jpg", "gif", "tiff"};
 
     std::for_each(
-                  extensions,
-                  extensions+1,
+                  extensions+7,
+                  extensions+8,
                   [renderer](std::string s){auto cur_list = get_files_recursively(".", s);
                                                 std::for_each(cur_list.begin(),
                                                   cur_list.end(),
@@ -313,10 +354,23 @@ void test_filtrage__lineaire()
 
     SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 
+    Matrix<Color> img = read_img("Images/Filtrage/phare_bruit_ps.png");
+    Matrix<unsigned char> img_gray = color2grayimage(img);
+    show_matrix(renderer, img_gray);
+    show_matrix(renderer, filter(img_gray, average()));
+    show_matrix(renderer, filter(img_gray, disk()));
+    show_matrix(renderer, filter(img_gray, gaussian()));
+    show_matrix(renderer, filter(img_gray, kirch()));
+    show_matrix(renderer, filter(img_gray, laplacian(0.5)));
+    show_matrix(renderer, filter(img_gray, log()));
+    show_matrix(renderer, filter(img_gray, prewittx()));
+    show_matrix(renderer, filter(img_gray, prewitty()));
+    show_matrix(renderer, filter(img_gray, robinson()));
+    show_matrix(renderer, filter(img_gray, sobelx()));
+    show_matrix(renderer, filter(img_gray, sobely()));
 
 
     SDL_DestroyRenderer(renderer);
-
     SDL_DestroyWindow(pWindow);
     SDL_Quit();
 }
@@ -330,8 +384,15 @@ void test_filtrage_non_lineaire()
                                             640,
                                             480,
                                             SDL_WINDOW_SHOWN);
-
     SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
+
+    Matrix<Color> img = read_img("Images/Filtrage/phare_bruit_ps.png");
+    Matrix<unsigned char> img_gray = color2grayimage(img);
+    show_matrix(renderer, img_gray);
+    show_matrix(renderer, bilateral(img_gray, 10.0, 1.0));
+    show_matrix(renderer, despeckle(img_gray));
+    show_matrix(renderer, nagao(img_gray));
+
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(pWindow);
     SDL_Quit();
@@ -348,6 +409,26 @@ void test_snake()
                                             SDL_WINDOW_SHOWN);
 
     SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
+
+    Matrix<Color> img = read_img("Images/Filtrage/phare_bruit_ps.png");
+    Matrix<unsigned char> img_gray = color2grayimage(img);
+    img_gray = nagao(img_gray);
+    show_matrix(renderer, img_gray);
+    Snake s;
+    s.init_contour(150.0f, 150.0f, 50.0f);
+    s.init_image(img_gray);
+    std::size_t cpt=0;
+    while(cpt++<20)
+    {
+        std::pair<Matrix<float>, Matrix<float> > Coordinates = s.getcoordinates();
+        Matrix<float>& X = Coordinates.first, &Y = Coordinates.second;
+        std::size_t n = Y.size();
+        for(std::size_t i=0;i<n;++i)
+            img(X(i, 0), Y(i, 0)) = Red;
+        show_matrix(renderer, img);
+        img = gray2colorimage(img_gray);
+        s.iterate();
+    }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(pWindow);
     SDL_Quit();

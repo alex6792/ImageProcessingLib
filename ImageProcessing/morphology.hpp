@@ -20,6 +20,7 @@ Mask circle(std::size_t);
 Mask cross(std::size_t);
 Mask ellipse(std::size_t, std::size_t);
 Mask diamond(std::size_t);
+Mask octagon(std::size_t);
 Mask rect(std::size_t, std::size_t);
 Mask square(std::size_t);
 
@@ -28,6 +29,7 @@ Matrix<bool> BTH(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> close(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> closing_by_reconstruction(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> conservative_smoothing(const Matrix<bool>&);
+Matrix<bool> convex_hull(const Matrix<bool>&);
 Matrix<bool> erode(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> dilate(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> gradient(const Matrix<bool>&, const Mask& = square(3));

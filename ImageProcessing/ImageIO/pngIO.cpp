@@ -13,7 +13,6 @@ Matrix<Color> read_png(std::string filename)
     lodepng::load_file(buffer, filename);
     unsigned w,h;
     unsigned error = lodepng::decode(image, w, h, buffer);
-    std::cout<<w<< " "<<h<<" "<<image.size()<<std::endl;
 
     if(error)
         return Matrix<Color>();

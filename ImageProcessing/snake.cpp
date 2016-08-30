@@ -9,7 +9,7 @@ Snake::Snake()
     lambda1 = 5;
     lambda2 = 5;
     lambda3 = 0.5;
-    nb_points = 20;
+    nb_points = 50;
     dt = 0.01;
     max_iteration = 200;
 }
@@ -132,9 +132,10 @@ void Snake::init_contour(const Matrix<float>& Vx_arg, const Matrix<float>& Vy_ar
 
 void Snake::iterate()
 {
-    Matrix<float> Gx(Vx.rowNb(), Vx.colNb());
-    Matrix<float> Gy(Vy.rowNb(), Vy.colNb());
-    for(std::size_t i=0;i<Vx.rowNb();++i)
+    std::size_t n = Vx.rowNb();
+    Matrix<float> Gx(n, 1);
+    Matrix<float> Gy(n, 1);
+    for(std::size_t i=0;i<n;++i)
     {
         Gx(i, 0) = Px((int)Vx(i, 0), (int)Vy(i, 0));
         Gy(i, 0) = Py((int)Vx(i, 0), (int)Vy(i, 0));

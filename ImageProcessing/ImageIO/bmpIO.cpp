@@ -10,61 +10,69 @@ Matrix<Color> read_bmp(std::string filename)
     std::ifstream myfile(filename, std::ios::in|std::ios::binary);
     if(myfile)
     {
-        char info[54];
-        myfile.read(info, 54);
+        unsigned char info[54];
+        myfile.read(reinterpret_cast<char*>(info), 54);
 
-        std::string type = info;
+        std::string type = reinterpret_cast<char*>(info);
         type = type.substr(0,4);
-        int offset = *(int*)&info[10];
-        int sizeof_header = *(int*)&info[14];
-        int w = *(int*)&info[18];
-        int h = *(int*)&info[22];
-        int nb_plan = info[27]*256+info[26];
-        int depth = info[29]*256+info[28];
-        int compression = *(int*)&info[30];
-        int total_size = *(int*)&info[34];
-        int res_h = *(int*)&info[38];
-        int res_v = *(int*)&info[42];
-        int nb_color = *(int*)&info[46];
-        int nb_important_color = *(int*)&info[50];
-
-
-        std::cout<<"info"<<std::endl;
-        std::cout<<type<<std::endl;
-        std::cout<<offset<<std::endl;
-        std::cout<<sizeof_header<<std::endl;
-        std::cout<<w<<" "<<h<<std::endl;
-        std::cout<<nb_plan<<std::endl;
-        std::cout<<depth<<std::endl;
-        std::cout<<compression<<std::endl;
-        std::cout<<total_size<<std::endl;
-        std::cout<<res_h<<std::endl;
-        std::cout<<res_v<<std::endl;
-        std::cout<<nb_color<<std::endl;
-        std::cout<<nb_important_color<<std::endl;
+        unsigned offset = *(unsigned*)&info[10];
+        unsigned sizeof_header = *(unsigned*)&info[14];
+        unsigned w = *(unsigned*)&info[18];
+        unsigned h = *(unsigned*)&info[22];
+        unsigned nb_plan = info[27]*256+info[26];
+        unsigned depth = info[29]*256+info[28];
+        unsigned compression = *(unsigned*)&info[30];
+        unsigned total_size = *(unsigned*)&info[34];
+        unsigned res_h = *(unsigned*)&info[38];
+        unsigned res_v = *(unsigned*)&info[42];
+        unsigned nb_color = *(unsigned*)&info[46];
+        unsigned nb_important_color = *(unsigned*)&info[50];
 
         Matrix<Color> img(h, w);
-        char palette[offset-54];
-        myfile.read(palette, offset-54);
+        unsigned char palette[offset-54];
+        myfile.read(reinterpret_cast<char*>(palette), offset-54);
         char r,g,b;
-        for(int i=h-1;i>=0;--i)
+        for(unsigned i=h;i>0;--i)
         {
-            for(int j=0;j<w;++j)
+            for(unsigned j=0;j<w;++j)
             {
                 if(depth == 24)
                 {
                     myfile.get(b);
                     myfile.get(g);
                     myfile.get(r);
-                    img(i, j) = Color(r, g, b);
+                    img(i-1, j) = Color(r, g, b);
+                }
+                else if(depth == 16)
+                {
+                    char c1,c2;
+                    myfile.get(c1);
+                    myfile.get(c2);
+                    unsigned idx = (unsigned char)c2*256+(unsigned char)c1;
+                    if(offset!=54)
+                        img(i-1, j) = Color(palette[4*idx+2], palette[4*idx+1], palette[4*idx]);
                 }
                 else if(depth == 8)
                 {
                     myfile.get(g);
                     if(offset==54)
-                        img(i, j) = Color(g, g, g);
+                        img(i-1, j) = Color(g, g, g);
                     else
-                        img(i, j) = Color(palette[4*(unsigned char)g+2], palette[4*(unsigned char)g+1], palette[4*(unsigned char)g+0]);
+                        img(i-1, j) = Color(palette[4*(unsigned char)g+2], palette[4*(unsigned char)g+1], palette[4*(unsigned char)g]);
+                }
+                else if(depth == 4)
+                {
+                    if(j%2==0)
+                    {
+                        myfile.get(g);
+                        unsigned char idx1 = g/16;
+                        unsigned char idx2 = g%16;
+                        if(offset!=54)
+                        {
+                            img(i-1, j) = Color(palette[4*idx1+2], palette[4*idx1+1], palette[4*idx1]);
+                            img(i-1, j+1) = Color(palette[4*idx2+2], palette[4*idx2+1], palette[4*idx2]);
+                        }
+                    }
                 }
                 else if(depth == 1)
                 {
@@ -72,17 +80,17 @@ Matrix<Color> read_bmp(std::string filename)
                     {
                         myfile.get(g);
                         unsigned char t = 128;
-                        for(int k=0;k<8;++k)
+                        for(unsigned k=0;k<8;++k)
                         {
                             bool temp = (unsigned char)g%(2*t)/t;
                             if(j+k<w)
-                                img(i, j+k) = temp?White:Black;
+                                img(i-1, j+k) = temp?White:Black;
                             t/=2;
                         }
                     }
                 }
             }
-            for(int j=0;j<(4-(w*depth/8)%4)%4;++j)
+            for(unsigned j=0;j<(4-(w*depth/8)%4)%4;++j)
                 myfile.get(b);
         }
         myfile.close();
@@ -94,12 +102,12 @@ Matrix<Color> read_bmp(std::string filename)
 
 void save_bmp(std::string filename, const Matrix<Color>& img)
 {
-    std::ofstream myfile(filename, std::ios::out | std::ios::trunc |std::ios::binary);
+    std::ofstream myfile(filename, std::ios::out|std::ios::trunc|std::ios::binary);
     if(myfile)
     {
-        int w = img.colNb();
-        int h = img.rowNb();
-        int filesize = 54 + 3*w*h;
+        std::size_t w = img.colNb();
+        std::size_t h = img.rowNb();
+        std::size_t filesize = 54 + 3*w*h;
         char bmpheader[14] = {'B', 'M',
                                 filesize, filesize>>8, filesize>>16, filesize>>24,
                                 0,0,0,0,
@@ -108,16 +116,16 @@ void save_bmp(std::string filename, const Matrix<Color>& img)
                                     w, w>>8, w>>16, w>>24,
                                     h, h>>8, h>>16, h>>24,
                                     1, 0, 24, 0};
-        int  pad_size = (4-(w*3)%4)%4;
+        unsigned  pad_size = (4-(w*3)%4)%4;
         char bmppad[3] = {0, 0, 0};
         myfile.write(bmpheader, 14);
         myfile.write(bmpinfoheader, 40);
 
-        for(int i=h-1;i>=0;--i)
+        for(unsigned i=h;i>0;--i)
         {
-            for(int j=0;j<w;++j)
+            for(unsigned j=0;j<w;++j)
             {
-                Color c = img(i, j);
+                const Color& c = img(i-1, j);
                 myfile.put(c.blue());
                 myfile.put(c.green());
                 myfile.put(c.red());
