@@ -97,6 +97,7 @@ template <class T> class Matrix
          */
         T& operator()(std::size_t i, std::size_t j);
 
+
         // accessors submatrix
         Matrix<T> getCol(std::size_t) const;
         Matrix<T> getCols(std::size_t, std::size_t) const;
@@ -174,6 +175,7 @@ template <class T> class Matrix
 
 };
 
+
 // specific constructors
 template <class T> Matrix<T> arange(T, T, T = T(1));
 template <class T> Matrix<T> full(std::size_t, T);
@@ -202,7 +204,7 @@ template <class T> Matrix<T> where(const Matrix<bool>&, const Matrix<T>&, const 
 // compression
 template <class T> Matrix<T> compress(const Matrix<bool>&, const Matrix<T>&, int);
 
-//count elements
+// count elements
 template <class T> std::size_t count(const Matrix<T>&, const T&);
 template <class T> std::size_t count_nonzero(const Matrix<T>&);
 
@@ -210,13 +212,13 @@ template <class T> std::size_t count_nonzero(const Matrix<T>&);
 template <class T> void replace(Matrix<T>&, const T&, const T&);
 template <class T> void replace_if(Matrix<T>&, const Matrix<bool>&, const T&);
 
-//argwhere
+// argwhere
 template <class T = std::size_t> Matrix<std::size_t> argwhere(const Matrix<bool>&);
 
 // unique
 template <class T> Matrix<T> unique(const Matrix<T>&);
 
-//non member function transpose
+// non member function transpose
 template <class T> Matrix<T> transpose(const Matrix<T>&);
 
 // operators
@@ -225,7 +227,7 @@ template <class T> Matrix<T> operator-(const T&, const Matrix<T>&);
 template <class T> Matrix<T> operator*(const T&, const Matrix<T>&);
 template <class T> Matrix<T> operator/(const T&, const Matrix<T>&);
 
-//prstd::size_t
+//print
 template <class T> std::ostream& operator<<(std::ostream&, const Matrix<T>&);
 
 

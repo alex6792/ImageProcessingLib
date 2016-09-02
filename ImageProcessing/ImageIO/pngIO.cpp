@@ -19,11 +19,8 @@ Matrix<Color> read_png(std::string filename)
     else
     {
         Matrix<Color> img(h, w);
-        for(std::size_t i=0;i<h;++i)
-        {
-            for(std::size_t j=0;j<w;++j)
-                img(i, j) = Color(image[(i*w+j)*4], image[(i*w+j)*4+1], image[(i*w+j)*4+2], image[(i*w+j)*4+3]);
-        }
+        unsigned char* image_ptr = image.data();
+        std::for_each(img.begin(), img.end(), [&image_ptr](Color& c){c = Color(*image_ptr, *(image_ptr+1), *(image_ptr+2));image_ptr+=4;});
         return img;
     }
 }

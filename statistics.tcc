@@ -191,7 +191,7 @@ template <class T> T central_moment(const Matrix<T>& M, int order)
 
 template <class T> T central_moment(const Matrix<T>& M, int orderx, int ordery)
 {
-    auto XY = meshgrid(M.rowNb(), M.colNb());
+    auto XY = meshgrid<T>(M.rowNb(), M.colNb());
     Matrix<T>& X = XY.first;
     Matrix<T>& Y = XY.second;
     T M00 = sum(M);
@@ -201,7 +201,7 @@ template <class T> T central_moment(const Matrix<T>& M, int orderx, int ordery)
         T M01 = sum(M*Y);
         X-=M10/M00;
         Y-=M01/M00;
-        return sum(M*pow(X, orderx)*pow(Y, ordery));
+        return sum(M*pow(X, T(orderx))*pow(Y, T(ordery)));
     }
     else
         return T(0);

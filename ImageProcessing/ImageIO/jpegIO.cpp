@@ -28,35 +28,26 @@ Matrix<Color> read_jpeg(std::string filename)
     w = info.output_width;
     h = info.output_height;
     channels = info.num_components;
-    std::cout<<channels<<std::endl;
+
     Matrix<Color> img(h, w);
     unsigned char* rowptr[1];
     unsigned char * jdata = (unsigned char *)malloc(channels*w*h);
     while(info.output_scanline < info.output_height)
     {
-        rowptr[0] = (unsigned char *)jdata+channels* info.output_width * info.output_scanline;
+        rowptr[0] = jdata+channels* info.output_width * info.output_scanline;
         jpeg_read_scanlines(&info, rowptr, 1);
     }
     jpeg_finish_decompress(&info);
     jpeg_destroy_decompress(&info);
 
-    for(int i=0;i<h;++i)
+    if(channels==1)
+        std::transform(jdata, jdata+w*h, img.begin(), [](const unsigned char& c){return Color(c, c, c);});
+    else if(channels==3)
     {
-        for(int j=0;j<w;++j)
-        {
-            if(channels == 3)
-            {
-                int idx = 3*(j+i*w);
-                img(i, j) = Color(jdata[idx], jdata[idx+1], jdata[idx+2]);
-            }
-            else if(channels == 1)
-            {
-                int idx = j+i*w;
-                img(i, j) = Color(jdata[idx], jdata[idx], jdata[idx]);
-            }
-
-        }
+        unsigned char* pix_ptr = jdata;
+        std::for_each(img.begin(), img.end(), [&pix_ptr](Color& c){c = Color(*pix_ptr, *(pix_ptr+1), *(pix_ptr+2)); pix_ptr+=3;});
     }
+
     fclose(infile);
     free(jdata);
     return img;

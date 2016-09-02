@@ -24,12 +24,12 @@
 	<complex>
 	"../matrix.hpp"
 
-1471861488 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.hpp
+1472644893 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.hpp
 	<deque>
 	<iostream>
 	"matrix.tcc"
 
-1471867431 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.tcc
+1472654937 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.tcc
 	<algorithm>
 	<chrono>
 	<cmath>
@@ -37,7 +37,6 @@
 	<functional>
 	<numeric>
 	<random>
-	<vector>
 
 1461412347 c:\users\hp\documents\mes programmes\imageprocessinglib\mmath.hpp
 	"matrix.hpp"
@@ -47,11 +46,11 @@
 	"matrix.hpp"
 	"mmath.hpp"
 
-1471038203 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.hpp
+1472821582 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.hpp
 	"matrix.hpp"
 	"statistics.tcc"
 
-1471733017 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.tcc
+1472822535 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.tcc
 	<algorithm>
 	<cmath>
 	"mmath.hpp"
@@ -67,7 +66,7 @@
 	"../../matrix.hpp"
 	"../color.hpp"
 
-1472573959 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\gifio.cpp
+1472747927 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\gifio.cpp
 	"gifIO.hpp"
 	<fstream>
 	<iostream>
@@ -79,7 +78,7 @@
 	"../../matrix.hpp"
 	"../color.hpp"
 
-1463315159 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\icoio.cpp
+1472815537 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\icoio.cpp
 	"icoIO.hpp"
 	<fstream>
 	<iostream>
@@ -90,7 +89,7 @@
 	"../../matrix.hpp"
 	"../color.hpp"
 
-1471037435 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\jpegio.cpp
+1472813214 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\jpegio.cpp
 	<stdio.h>
 	<jpeglib.h>
 	<jerror.h>
@@ -127,7 +126,7 @@
 	<iostream>
 	"lodepng.h"
 
-1472046193 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pngio.cpp
+1472815342 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pngio.cpp
 	"pngIO.hpp"
 	"lodepng/lodepng.h"
 	<fstream>
@@ -151,7 +150,7 @@
 	"../../matrix.hpp"
 	"../color.hpp"
 
-1472512184 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\tgaio.cpp
+1472815537 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\tgaio.cpp
 	"tgaIO.hpp"
 	<fstream>
 	<iostream>
@@ -194,7 +193,7 @@
 1471714608 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.hpp
 	"../matrix.hpp"
 
-1472333625 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
+1472834164 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
 	<cmath>
 	<vector>
 	"../logical_operators.hpp"
@@ -357,8 +356,9 @@
 1471042616 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\perceptron.hpp
 	"../../matrix.hpp"
 
-1472500356 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
+1472830574 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
 	"test_functions.hpp"
+	"matrix.hpp"
 
 1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -715,7 +715,7 @@
 	"linalg.hpp"
 	"statistics.hpp"
 
-1471861767 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\affinitypropagation.cpp
+1472653545 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\affinitypropagation.cpp
 	<cfloat>
 	"affinitypropagation.hpp"
 	"../../linalg.hpp"
@@ -788,7 +788,7 @@
 
 1471546173 c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.hpp
 
-1472575341 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
+1472835765 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
 	"csvIO.hpp"
 	"file_explorer.hpp"
 	"linalg.hpp"
@@ -832,4 +832,13 @@
 	"ImageProcessing/ImageIO/pnmIO.hpp"
 	"ImageProcessing/ImageIO/tgaIO.hpp"
 	"ImageProcessing/ImageIO/tiffIO.hpp"
+
+1472822304 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\shape_features.cpp
+	"shape_features.hpp"
+	"morphology.hpp"
+	"../mmath.hpp"
+	"../statistics.hpp"
+
+1472820795 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\shape_features.hpp
+	"../matrix.hpp"
 

@@ -77,6 +77,8 @@
 		<Unit filename="ImageProcessing/nonlinear_filtering.hpp" />
 		<Unit filename="ImageProcessing/segmentation.cpp" />
 		<Unit filename="ImageProcessing/segmentation.hpp" />
+		<Unit filename="ImageProcessing/shape_features.cpp" />
+		<Unit filename="ImageProcessing/shape_features.hpp" />
 		<Unit filename="ImageProcessing/snake.cpp" />
 		<Unit filename="ImageProcessing/snake.hpp" />
 		<Unit filename="MachineLearning/Clustering/affinitypropagation.cpp" />

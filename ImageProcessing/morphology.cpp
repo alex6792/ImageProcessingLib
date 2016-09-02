@@ -21,32 +21,27 @@ Mask cross(std::size_t a)
 
 Mask ellipse(std::size_t a, std::size_t b)
 {
-    Mask new_ellipse = zeros<bool>(2*a+1, 2*b+1);
-    for(std::size_t i=0;i<new_ellipse.rowNb();++i)
-    {
-        for(std::size_t j=0;j<new_ellipse.colNb();++j)
-        {
-            if(b*b*(i*i+a*a-2*i*a)+a*a*(j*j+b*b-2*j*b)<=a*a*b*b)
-                new_ellipse(i, j) = true;
-        }
-    }
-    return new_ellipse;
+    auto mesh = meshgrid<float>(2*a+1, 2*b+1);
+    Matrix<float>& X = mesh.first;
+    Matrix<float>& Y = mesh.second;
+    float min_axe = float(a)+0.5;
+    float max_axe = float(b)+0.5;
+    X-=a;
+    Y-=b;
+    return (X/min_axe)*(X/min_axe)+(Y/max_axe)*(Y/max_axe)<=1;
 }
 
 Mask diamond(std::size_t a)
 {
-    Mask new_diamond = zeros<bool>(a);
-    for(std::size_t i=0;i<(a-1)/2;++i)
-    {
-        for(std::size_t j=-i+(a-1)/2;j<=i+a/2;++j)
-            new_diamond(i, j) = true;
-    }
-    for(std::size_t i=a/2;i<a;++i)
-    {
-        for(std::size_t j=i-a/2;j<-i+3*a/2;++j)
-            new_diamond(i, j) = true;
-    }
-    return new_diamond;
+    auto mesh = meshgrid<float>(2*a+1);
+    Matrix<float>& X = mesh.first;
+    Matrix<float>& Y = mesh.second;
+    X-=a;
+    Y-=a;
+    float limit = float(a)+0.5;
+    Matrix<bool> result1 = AND(X+Y<=limit, X+Y>=-limit);
+    Matrix<bool> result2 = AND(X-Y<=limit, X-Y>=-limit);
+    return AND(result1, result2);
 }
 
 

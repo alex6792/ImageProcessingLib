@@ -5,8 +5,6 @@
 #include <functional>
 #include <numeric>
 #include <random>
-#include <vector>
-
 
 
 // constructors & accessors
@@ -476,21 +474,21 @@ template <class T> Matrix<T> Matrix<T>::operator*(const Matrix<T>& M) const
 template <class T> Matrix<T> Matrix<T>::operator+(const T& value) const
 {
     Matrix<T> newM(sizex, sizey);
-    std::transform(cbegin(), cend(), std::deque<T>(size(), value).begin(), newM.begin(), std::plus<T>());
+    std::transform(cbegin(), cend(), newM.begin(), [value](const T& v){return v+value;});
     return newM;
 }
 
 template <class T> Matrix<T> Matrix<T>::operator-(const T& value) const
 {
     Matrix<T> newM(sizex, sizey);
-    std::transform(cbegin(), cend(), std::deque<T>(size(), value).begin(), newM.begin(), std::minus<T>());
+    std::transform(cbegin(), cend(), newM.begin(), [value](const T& v){return v-value;});
     return newM;
 }
 
 template <class T> Matrix<T> Matrix<T>::operator*(const T& value) const
 {
     Matrix<T> newM(sizex, sizey);
-    std::transform(cbegin(), cend(), std::deque<T>(size(), value).begin(), newM.begin(), std::multiplies<T>());
+    std::transform(cbegin(), cend(), newM.begin(), [value](const T& v){return v*value;});
     return newM;
 }
 
@@ -498,7 +496,7 @@ template <class T> Matrix<T> Matrix<T>::operator/(const T& value) const
 {
     Matrix<T> newM(sizex, sizey);
     if(std::abs(value)>10e-9)
-        std::transform(cbegin(), cend(), std::deque<T>(size(), value).begin(), newM.begin(), std::divides<T>());
+        std::transform(cbegin(), cend(), newM.begin(), [value](const T& v){return v/value;});
     else
         std::cout<<"division by zero"<<std::endl;
     return newM;
@@ -508,7 +506,7 @@ template <class T> Matrix<T> Matrix<T>::operator%(const T& value) const
 {
     Matrix<T> newM(sizex, sizey);
     if(std::abs(value)>10e-9)
-        std::transform(cbegin(), cend(), std::deque<T>(size(), value).begin(), newM.begin(), std::modulus<T>());
+        std::transform(cbegin(), cend(), newM.begin(), [value](const T& v){return v%value;});
     else
         std::cout<<"division by zero"<<std::endl;
     return newM;
@@ -584,42 +582,42 @@ template <class T> Matrix<bool> Matrix<T>::operator<(const Matrix<T>& M) const
 template <class T> Matrix<bool> Matrix<T>::operator==(const T& value) const
 {
     Matrix<bool> newM(sizex, sizey);
-    std::transform(cbegin(), cend(), std::deque<T>(size(), value).begin(), newM.begin(), std::equal_to<T>());
+    std::transform(cbegin(), cend(), newM.begin(), [value](const T& v){return v==value;});
     return newM;
 }
 
 template <class T> Matrix<bool> Matrix<T>::operator!=(const T& value) const
 {
     Matrix<bool> newM(sizex, sizey);
-    std::transform(cbegin(), cend(), std::deque<T>(size(), value).begin(), newM.begin(), std::not_equal_to<T>());
+    std::transform(cbegin(), cend(), newM.begin(), [value](const T& v){return v!=value;});
     return newM;
 }
 
 template <class T> Matrix<bool> Matrix<T>::operator>=(const T& value) const
 {
     Matrix<bool> newM(sizex, sizey);
-    std::transform(cbegin(), cend(), std::deque<T>(size(), value).cbegin(), newM.begin(), std::greater_equal<T>());
+    std::transform(cbegin(), cend(), newM.begin(), [value](const T& v){return v>=value;});
     return newM;
 }
 
 template <class T> Matrix<bool> Matrix<T>::operator<=(const T& value) const
 {
     Matrix<bool> newM(sizex, sizey);
-    std::transform(cbegin(), cend(), std::deque<T>(size(), value).cbegin(), newM.begin(), std::less_equal<T>());
+    std::transform(cbegin(), cend(), newM.begin(), [value](const T& v){return v<=value;});
     return newM;
 }
 
 template <class T> Matrix<bool> Matrix<T>::operator>(const T& value) const
 {
     Matrix<bool> newM(sizex, sizey);
-    std::transform(cbegin(), cend(), std::deque<T>(size(), value).cbegin(), newM.begin(), std::greater<T>());
+    std::transform(cbegin(), cend(), newM.begin(), [value](const T& v){return v>value;});
     return newM;
 }
 
 template <class T> Matrix<bool> Matrix<T>::operator<(const T& value) const
 {
     Matrix<bool> newM(sizex, sizey);
-    std::transform(cbegin(), cend(), std::deque<T>(size(), value).cbegin(), newM.begin(), std::less<T>());
+    std::transform(cbegin(), cend(), newM.begin(), [value](const T& v){return v<value;});
     return newM;
 }
 
@@ -861,7 +859,7 @@ template <class T> void replace_if(Matrix<T>& M, const Matrix<bool>& cdt, const 
 
 template <class T> Matrix<std::size_t> argwhere(const Matrix<bool>& M)
 {
-    std::vector<std::size_t> indices(M.size());
+    std::deque<std::size_t> indices(M.size());
     std::iota(indices.begin(), indices.end(), 0);
     auto it_begin = M.cbegin();
     auto it = std::remove_if(indices.begin(), indices.end(), [&it_begin](std::size_t){return !(*it_begin++);});
@@ -877,7 +875,7 @@ template <class T> Matrix<std::size_t> argwhere(const Matrix<bool>& M)
 
 template <class T> Matrix<T> unique(const Matrix<T>& M)
 {
-    std::vector<T> vec(M.cbegin(), M.cend());
+    std::deque<T> vec(M.cbegin(), M.cend());
     std::sort(vec.begin(), vec.end());
     auto it = std::unique(vec.begin(), vec.end());
     std::size_t n = std::distance(vec.begin(), it);

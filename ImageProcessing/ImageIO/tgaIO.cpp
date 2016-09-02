@@ -80,7 +80,8 @@ Matrix<Color> read_tga(std::string filename)
                     myfile.get(b);
                     myfile.get(g);
                     myfile.get(r);
-                    for(unsigned i=0;i<chunk2 - 127;++i)
+                    chunk2-=127;
+                    for(unsigned i=0;i<chunk2;++i)
                     {
                         *it++ = Color(r,g,b);
                     }

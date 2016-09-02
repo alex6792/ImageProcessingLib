@@ -76,12 +76,12 @@ void AffinityPropagation::fit(const Matrix<float>& M)
         Matrix<float> old_R = responsibility;
         Matrix<float> maximum = full<float>(nb_samples, nb_samples, -FLT_MAX);
         Matrix<float> temp = availability+dist;
-        float switch_value = -FLT_MAX;
         for(std::size_t i=0;i<nb_samples;++i)
         {
             Matrix<float> temp_row = temp.getRow(i);
             Matrix<std::size_t> arg_max = argmax(temp_row);
-            std::size_t& x = arg_max(0, 0), y = arg_max(0, 1);
+            std::size_t& x = arg_max(0, 0);
+            std::size_t& y = arg_max(0, 1);
             maximum.setRow(i, full<float>(1, nb_samples, temp_row(x, y)));
             temp_row(x, y) = -FLT_MAX;
             maximum(i, y) = max(temp_row);

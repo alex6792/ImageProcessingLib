@@ -197,12 +197,12 @@ void test_morpho_binaire()
                                             SDL_WINDOWPOS_UNDEFINED,
                                             SDL_WINDOWPOS_UNDEFINED,
                                             640,
-                                            480,
+                                            640,
                                             SDL_WINDOW_SHOWN);
 
     SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 
-// test filtres non linéaires
+    // test filtres non linéaires
     Matrix<Color> img = read_png("Images/Filtrage/phare_bruit_ps.png");
     Matrix<bool> gray_img = color2bwimage(img);
 
@@ -215,15 +215,21 @@ void test_morpho_binaire()
                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0},
     };
 
-    show_matrix(renderer, octagon(1));
-    show_matrix(renderer, octagon(2));
-    show_matrix(renderer, octagon(3));
-    show_matrix(renderer, octagon(4));
-    show_matrix(renderer, octagon(5));
-    show_matrix(renderer, octagon(6));
-    show_matrix(renderer, octagon(7));
-    show_matrix(renderer, octagon(8));
-    show_matrix(renderer, octagon(9));
+    for(int i=1;i<20;++i)
+        show_matrix(renderer, octagon(i));
+    for(int i=1;i<20;++i)
+        show_matrix(renderer, circle(i));
+    for(int i=1;i<20;++i)
+        show_matrix(renderer, diamond(i));
+
+    for(int i=1;i<5;i+=1)
+    {
+        for(int j=1;j<5;j+=1)
+        {
+            show_matrix(renderer, ellipse(i, j));
+            save_pbm("ellipse.pbm", ellipse(i, j));
+        }
+    }
     SDL_SetWindowTitle(pWindow, "original");
     show_matrix(renderer, gray_img);
     SDL_SetWindowTitle(pWindow, "erode");
@@ -304,11 +310,11 @@ void test_lecture_img()
 
     SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 
-    std::string extensions[] = { "bmp", "tga", "ico", "pbm","pgm", "ppm", "jpg", "gif", "tiff"};
+    std::string extensions[] = { "bmp", "tga", "ico", "pbm","pgm", "ppm", "jpg", "gif", "png", "tiff"};
 
     std::for_each(
-                  extensions+7,
-                  extensions+8,
+                  extensions,
+                  extensions+9,
                   [renderer](std::string s){auto cur_list = get_files_recursively(".", s);
                                                 std::for_each(cur_list.begin(),
                                                   cur_list.end(),
@@ -326,11 +332,28 @@ void test_lecture_img()
 
 void test_ecriture_img()
 {
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Window* pWindow = SDL_CreateWindow("Image Processing Library",
+                                            SDL_WINDOWPOS_UNDEFINED,
+                                            SDL_WINDOWPOS_UNDEFINED,
+                                            640,
+                                            480,
+                                            SDL_WINDOW_SHOWN);
+
+    SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
+
+
+
     //Test writer
-    Matrix<Color> img = read_png("Images/Detection_de_forme/bild4.png");
+    //Matrix<Color> img = read_img("Images/Detection_de_forme/bild4.png");
+    Matrix<Color> img = read_img("Images/marinbas.ico");
+    //img = read_img("Images/test_icone.ico");
+    show_matrix(renderer, img);
     std::vector<std::string> extensions = { "bmp", "tga", "ico", "png", "pbm","pgm", "ppm", "jpg", "gif", "tiff"};
     std::for_each(extensions.cbegin(), extensions.cend(), [img](const std::string& s){save_img("testwriter."+s, img);});
-
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(pWindow);
+    SDL_Quit();
 }
 
 void test_fourier()
