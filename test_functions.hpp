@@ -15,3 +15,5 @@ void test_regression();
 void test_segmentation();
 void test_sclaler();
 void test_hough();
+void test_zernike();
+void test_digits();

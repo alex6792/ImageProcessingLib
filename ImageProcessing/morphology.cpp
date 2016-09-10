@@ -91,9 +91,9 @@ Matrix<bool> closing_by_reconstruction(const Matrix<bool>& M, const Mask& mask)
     std::vector<Matrix<bool> > I;
     I.clear();
     I.push_back(dilate(M, mask));
-    I.push_back(max(erode(I[0], mask), M));
+    I.push_back(OR(erode(I[0], mask), M));
     while(any(I[I.size()-1]!=I[I.size()-2]))
-        I.push_back(max(erode(I[I.size()-1], mask), M));
+        I.push_back(OR(erode(I[I.size()-1], mask), M));
     return I[I.size()-1];
 }
 
@@ -105,7 +105,7 @@ Matrix<bool> conservative_smoothing(const Matrix<bool>& M)
 
     Matrix<bool> dil = dilate(M, N);
     Matrix<bool> ero = erode(M, N);
-    Matrix<bool> I = max(min(M, dil), ero);
+    Matrix<bool> I = OR(AND(M, dil), ero);
     return I;
 }
 
@@ -257,9 +257,9 @@ Matrix<bool> opening_by_reconstruction(const Matrix<bool>& M, const Mask& mask)
     std::vector<Matrix<bool> > I;
     I.clear();
     I.push_back(erode(M, mask));
-    I.push_back(min(dilate(I[0], mask), M));
+    I.push_back(AND(dilate(I[0], mask), M));
     while(any(I[I.size()-1]!=I[I.size()-2]))
-        I.push_back(min(dilate(I[I.size()-1], mask), M));
+        I.push_back(AND(dilate(I[I.size()-1], mask), M));
     return I[I.size()-1];
 }
 

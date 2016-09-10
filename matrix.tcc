@@ -744,19 +744,53 @@ template <class T> Matrix<T> zeros(std::size_t a, std::size_t b)
 }
 
 // functions
-template <class T, typename Type> Matrix<Type> apply(const Matrix<T>& M, Type (*ptr)(T))
+template <typename Type, class T> Matrix<T> apply(const Matrix<Type>& M, T (*ptr)(Type))
 {
-    Matrix<Type> new_mat(M.rowNb(), M.colNb());
+    Matrix<T> new_mat(M.rowNb(), M.colNb());
     std::transform(M.cbegin(), M.cend(), new_mat.begin(), *ptr);
     return new_mat;
 }
 
-template <class T, typename Type> Matrix<Type> apply(const Matrix<T>& M, Type (T::*ptr)() const)
+
+template <typename Type, class T> Matrix<T> apply(const Matrix<Type>& M, T (*ptr)(const Type&))
 {
-    Matrix<Type> new_mat(M.rowNb(), M.colNb());
-    std::transform(M.cbegin(), M.cend(), new_mat.begin(), [ptr](T x){return (x.*ptr)();});
+    Matrix<T> new_mat(M.rowNb(), M.colNb());
+    std::transform(M.cbegin(), M.cend(), new_mat.begin(), *ptr);
     return new_mat;
 }
+
+template <typename Type, class T> Matrix<T> apply(const Matrix<Type>& M, T (Type::*ptr)() const)
+{
+    Matrix<T> new_mat(M.rowNb(), M.colNb());
+    std::transform(M.cbegin(), M.cend(), new_mat.begin(), [ptr](Type x){return (x.*ptr)();});
+    return new_mat;
+}
+
+template <typename T1, typename T2, class T> Matrix<T> apply(const Matrix<T1>& M1, const Matrix<T2>& M2, T (*ptr)(T1, T2))
+{
+    Matrix<T> new_mat(M1.rowNb(), M1.colNb());
+    if(M1.rowNb()==M2.rowNb() && M1.colNb()==M2.colNb())
+    {
+
+        std::transform(M1.cbegin(), M1.cend(), M2.cbegin(), new_mat.begin(), *ptr);
+        return new_mat;
+    }
+    std::cout<<"dimension mismatch"<<std::endl;
+    return new_mat;
+}
+
+template <typename T1, typename T2, class T> Matrix<T> apply(const Matrix<T1>& M1, const Matrix<T2>& M2, T (*ptr)(const T1&, const T2&))
+{
+    Matrix<T> new_mat(M1.rowNb(), M1.colNb());
+    if(M1.rowNb()==M2.rowNb() && M1.colNb()==M2.colNb())
+    {
+        std::transform(M1.cbegin(), M1.cend(), M2.cbegin(), new_mat.begin(), *ptr);
+        return new_mat;
+    }
+    std::cout<<"dimension mismatch"<<std::endl;
+    return new_mat;
+}
+
 
 // construct a matrix depending on a condition
 template <class T> Matrix<T> where(const Matrix<bool>& cdt, const T& a, const T& b)

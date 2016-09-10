@@ -30,11 +30,13 @@ void Kmeans::setMaxIteration(std::size_t new_max_iteration)
 
 void Kmeans::fit(const Matrix<float>& M)
 {
-    labels = zeros<std::size_t>(M.rowNb(), 1);
+    std::size_t nb_samples = M.rowNb();
+    nb_features = M.colNb();
+    labels = zeros<std::size_t>(nb_samples, 1);
     //init_centers(M);
     centers = KmeansPlusPlusCenters(M, nb_clusters);
     std::size_t cpt = 0;
-    Matrix<std::size_t> old_labels = ones<std::size_t>(M.rowNb(), 1);
+    Matrix<std::size_t> old_labels = ones<std::size_t>(nb_samples, 1);
     while(cpt<max_iteration && any(old_labels!=labels))
     {
         old_labels = labels;
@@ -110,7 +112,6 @@ Matrix<float> Kmeans::KmeansPlusPlusCenters(const Matrix<float>& M, std::size_t 
 Matrix<size_t> Kmeans::KmeansPlusPlusCentersIndices(const Matrix<float>& M, std::size_t nb_clusters)
 {
     std::size_t n_samples = M.rowNb();
-    std::size_t n_features = M.colNb();
     Matrix<size_t> centers = Matrix<size_t>(nb_clusters, 1);
     std::vector<std::size_t> init_indices;
     init_indices.clear();
@@ -153,7 +154,7 @@ Matrix<size_t> Kmeans::KmeansPlusPlusCentersIndices(const Matrix<float>& M, std:
 
 void Kmeans::update_centers(const Matrix<float>& M)
 {
-    centers = zeros<float>(nb_clusters, M.colNb());
+    centers = zeros<float>(nb_clusters, nb_features);
     Matrix<float> elem_counter = zeros<float>(nb_clusters, 1);
     for(std::size_t i=0;i<M.rowNb();++i)
     {
@@ -167,12 +168,13 @@ void Kmeans::update_centers(const Matrix<float>& M)
 
 void Kmeans::init_centers(const Matrix<float>& M)
 {
-    centers = Matrix<float>(nb_clusters, M.colNb());
+    centers = Matrix<float>(nb_clusters, nb_features);
     std::set<std::size_t> init_indices;
     init_indices.clear();
+    std::size_t H = M.rowNb();
     while(init_indices.size()<nb_clusters)
     {
-        std::size_t k = rand()%M.rowNb();
+        std::size_t k = rand()%H;
         init_indices.insert(k);
     }
     std::size_t i = 0;

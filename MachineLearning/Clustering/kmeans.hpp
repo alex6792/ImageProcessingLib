@@ -24,6 +24,7 @@ class Kmeans
         Matrix<float> centers;// cluster centers
         Matrix<std::size_t> labels;// labels
         std::size_t nb_clusters;// number of clusters
+        std::size_t nb_features;// number of features
         std::size_t max_iteration;// max iteration
 
     public :

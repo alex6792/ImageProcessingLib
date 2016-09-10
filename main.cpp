@@ -3,7 +3,6 @@
 
 int main()
 {
-    //test_lecture_img();
-    test_morpho_binaire();
+    test_digits();
     return 0;
 }

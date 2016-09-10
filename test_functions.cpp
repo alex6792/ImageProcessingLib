@@ -33,6 +33,7 @@
 #include "ImageProcessing/morphology.hpp"
 #include "ImageProcessing/nonlinear_filtering.hpp"
 #include "ImageProcessing/segmentation.hpp"
+#include "ImageProcessing/shape_features.hpp"
 #include "ImageProcessing/snake.hpp"
 
 #include "ImageProcessing/ImageIO/imageIO.hpp"
@@ -45,7 +46,7 @@
 #include "ImageProcessing/ImageIO/tgaIO.hpp"
 #include "ImageProcessing/ImageIO/tiffIO.hpp"
 
-
+#include <complex>
 void test_clustering()
 {
      ///////////test clustering
@@ -363,6 +364,29 @@ void test_fourier()
     std::cout<<data<<std::endl;
     std::cout<<FFT(data)<<std::endl;
     std::cout<<iFFT(FFT(data))<<std::endl;
+
+    Matrix<unsigned char> img = read_pgm("Images/Pixmap/antifeep_P2.pgm");
+
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Window* pWindow = SDL_CreateWindow("Image Processing Library",
+                                            SDL_WINDOWPOS_UNDEFINED,
+                                            SDL_WINDOWPOS_UNDEFINED,
+                                            640,
+                                            480,
+                                            SDL_WINDOW_SHOWN);
+
+    SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
+    show_matrix(renderer, img);
+    Matrix<float> img_f(img);
+    Matrix<std::complex<float> > fft_img = FFT(img_f);
+    Matrix<std::complex<float> > ifft_img = iFFT(fft_img);
+    Matrix<float> resultfft(apply<std::complex<float>, float>(fft_img, std::norm));
+    Matrix<unsigned char> result(apply<std::complex<float>, float>(ifft_img, std::real));
+    show_matrix(renderer, Matrix<unsigned char>(resultfft*255.0f/max(resultfft)));
+    show_matrix(renderer, result);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(pWindow);
+    SDL_Quit();
 }
 
 void test_filtrage__lineaire()
@@ -703,4 +727,119 @@ void test_hough()
     std::cout<<Matrix<float>(argmax(res)).getCol(0)-phi_max/2.0f<<std::endl;
     show_matrix(renderer, houghtest3);
     show_matrix(renderer, Matrix<unsigned char>(res*255.0/max(res)));
+
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(pWindow);
+    SDL_Quit();
+}
+
+void test_zernike()
+{
+    //test image reader
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Window* pWindow = SDL_CreateWindow("Image Processing Library",
+                                            SDL_WINDOWPOS_UNDEFINED,
+                                            SDL_WINDOWPOS_UNDEFINED,
+                                            640,
+                                            480,
+                                            SDL_WINDOW_SHOWN);
+
+    SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
+
+    Matrix<bool> gray_img = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,1,1,1,1,1,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0},};
+
+
+    std::size_t H = gray_img.rowNb(), W = gray_img.colNb();
+
+    show_matrix(renderer, gray_img);
+    Matrix<std::size_t> indices = argwhere(gray_img);
+    Matrix<float> gray_img_f(gray_img);
+    Matrix<float> X(indices.getCol(0));
+    Matrix<float> Y(indices.getCol(1));
+    X-=float(H-1)/2.0f;
+    Y-=float(W-1)/2.0f;
+    X/=sqrt(float((H-1)*(H-1)+(W-1)*(W-1))/4.0f);
+    Y/=sqrt(float((H-1)*(H-1)+(W-1)*(W-1))/4.0f);
+    Matrix<float> rho = sqrt(X*X+Y*Y);
+    Matrix<float> phi = atan2(Y, X);
+    std::cout<<X<<" "<<Y<<std::endl;
+
+    Matrix<std::complex<float> > F = zeros<std::complex<float> >(H, W);
+    auto mesh = meshgrid<float>(H, W);
+    Matrix<float>& meshX = mesh.first;
+    Matrix<float>& meshY = mesh.second;
+    meshX-=float(H-1)/2.0f;
+    meshY-=float(W-1)/2.0f;
+    meshX/=sqrt(float((H-1)*(H-1)+(W-1)*(W-1))/4.0f);
+    meshY/=sqrt(float((H-1)*(H-1)+(W-1)*(W-1))/4.0f);
+    Matrix<float> meshrho = sqrt(meshX*meshX+meshY*meshY);
+    Matrix<float> meshphi = atan2(meshY, meshX);
+
+    for(int i=0;i<6;++i)
+    {
+        for(int j=-i;j<=i;++j)
+        {
+            if((i-std::abs(j))%2==0)
+            {
+                Matrix<std::complex<float> > Aij(H, W);
+                Zernike zer = Zernike(j, i);
+                std::transform(rho.begin(), rho.end(), phi.begin(), Aij.begin(), [&zer](float r1, float r2){return zer.polynom(r1, r2);});
+                Aij = apply<std::complex<float>, std::complex<float> >(Aij, std::conj);
+                std::complex<float> aij = sum(Aij)*float(i+1)/float(PI);
+                Matrix<std::complex<float> > f(H, W);
+                std::transform(meshrho.begin(), meshrho.end(), meshphi.begin(), f.begin(), [&zer](float r1, float r2){return zer.polynom(r1, r2);});
+                F+=f*aij;
+            }
+        }
+        std::cout<<apply<std::complex<float>, float>(F, std::norm)<<std::endl;
+    }
+
+    Matrix<float> F_float = apply<std::complex<float>, float>(F, std::norm);
+    F_float/=max(F_float)/255.0f;
+    show_matrix(renderer, Matrix<unsigned char>(F_float));
+    std::cout<<apply<std::complex<float>, float>(F, std::norm)<<std::endl;
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(pWindow);
+    SDL_Quit();
+}
+
+void test_digits()
+{
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Window* pWindow = SDL_CreateWindow("Image Processing Library",
+                                            SDL_WINDOWPOS_UNDEFINED,
+                                            SDL_WINDOWPOS_UNDEFINED,
+                                            480,
+                                            480,
+                                            SDL_WINDOW_SHOWN);
+
+    SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
+
+   std::vector<std::string> filenames = get_files_recursively("Images/Digits/", ".png");
+   std::size_t nb_samples = filenames.size();
+   Matrix<float> Data(nb_samples, 64);
+   Matrix<std::size_t> Labels(nb_samples, 1);
+   for(std::size_t i=0;i<nb_samples;++i)
+   {
+       std::cout<<filenames[i]<<" "<<filenames[i][14]<<std::endl;
+       Matrix<Color> img = read_png(filenames[i]);
+       //show_matrix(renderer, img);
+       Matrix<float> gray_img(color2grayimage(img));
+       gray_img.reshape(1, 64);
+       Data.setRow(i, gray_img/127.5f-1.0f);
+       Labels(i, 0) = filenames[i][14]-'0';
+   }
+    MLP clf({});
+    Matrix<std::size_t> Result = clf.fit_predict(Data, Labels);
+    clf.export_graphviz("digits.dot");
+    std::cout<<count(Result==Labels, true)<<"/"<<nb_samples<<std::endl;
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(pWindow);
+    SDL_Quit();
 }

@@ -97,7 +97,6 @@ template <class T> class Matrix
          */
         T& operator()(std::size_t i, std::size_t j);
 
-
         // accessors submatrix
         Matrix<T> getCol(std::size_t) const;
         Matrix<T> getCols(std::size_t, std::size_t) const;
@@ -194,8 +193,12 @@ template <class T> Matrix<T> zeros(std::size_t);
 template <class T> Matrix<T> zeros(std::size_t, std::size_t);
 
 // apply any function
-template <class T, typename Type> Matrix<Type> apply(const Matrix<T>&, Type (*)(T));
-template <class T, typename Type> Matrix<Type> apply(const Matrix<T>&, Type (T::*)() const);
+template <typename Type, class T> Matrix<T> apply(const Matrix<Type>&, T (*)(Type));
+template <typename Type, class T> Matrix<T> apply(const Matrix<Type>&, T (*)(const Type&));
+template <typename Type, class T> Matrix<T> apply(const Matrix<Type>&, T (Type::*)() const);
+
+template <typename T1, typename T2, class T> Matrix<T> apply(const Matrix<T1>&, const Matrix<T2>&, T (*)(T1, T2));
+template <typename T1, typename T2, class T> Matrix<T> apply(const Matrix<T1>&, const Matrix<T2>&, T (*)(const T1&, const T2&));
 
 // construct a matrix depending on a condition
 template <class T> Matrix<T> where(const Matrix<bool>&, const T&, const T&);

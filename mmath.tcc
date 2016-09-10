@@ -51,12 +51,7 @@ template <class T> Matrix<T> atan(const Matrix<T>& M)
 
 template <class T> Matrix<T> atan2(const Matrix<T>& My, const Matrix<T>& Mx)
 {
-    Matrix<T> new_mat(My.rowNb(), My.colNb());
-    if(My.rowNb()==Mx.rowNb() && My.colNb()==Mx.colNb())
-        std::transform(My.begin(), My.end(), Mx.begin(), new_mat.begin(), std::atan2);
-    else
-        std::cout<<"dimension mismatch"<<std::endl;
-    return new_mat;
+    return apply<T,T,T>(My, Mx, std::atan2);
 }
 
 
@@ -130,4 +125,47 @@ template <class T> Matrix<T> pow(const Matrix<T>& M, const T& exponent)
 template <class T> Matrix<T> sqrt(const Matrix<T>& M)
 {
     return apply<T,T>(M, std::sqrt);
+}
+
+template <class T> Matrix<T> cbrt(const Matrix<T>& M)
+{
+    return apply<T,T>(M, std::cbrt);
+}
+
+template <class T> Matrix<T> hypot(const Matrix<T>& A, const Matrix<T>& B)
+{
+    return apply<T,T,T>(A, B, std::hypot);
+}
+
+
+// gamma functions
+template <class T> Matrix<T> tgamma(const Matrix<T>& M)
+{
+    return apply<T,T>(M, std::tgamma);
+}
+
+template <class T> Matrix<T> lgamma(const Matrix<T>& M)
+{
+    return apply<T,T>(M, std::lgamma);
+}
+
+// rounding functions
+template <class T> Matrix<T> ceil(const Matrix<T>& M)
+{
+    return apply<T,T>(M, std::round);
+}
+
+template <class T> Matrix<T> floor(const Matrix<T>& M)
+{
+    return apply<T,T>(M, std::floor);
+}
+
+template <class T> Matrix<T> trunc(const Matrix<T>& M)
+{
+    return apply<T,T>(M, std::trunc);
+}
+
+template <class T> Matrix<T> round(const Matrix<T>& M)
+{
+    return apply<T,T>(M, std::round);
 }

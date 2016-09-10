@@ -49,6 +49,18 @@ template <class T> Matrix<T> log10(const Matrix<T>&);
 // power functions
 template <class T> Matrix<T> pow(const Matrix<T>&, const T&);
 template <class T> Matrix<T> sqrt(const Matrix<T>&);
+template <class T> Matrix<T> cbrt(const Matrix<T>&);
+template <class T> Matrix<T> hypot(const Matrix<T>&, const Matrix<T>&);
+
+// gamma functions
+template <class T> Matrix<T> tgamma(const Matrix<T>&);
+template <class T> Matrix<T> lgamma(const Matrix<T>&);
+
+// rounding functions
+template <class T> Matrix<T> ceil(const Matrix<T>&);
+template <class T> Matrix<T> floor(const Matrix<T>&);
+template <class T> Matrix<T> trunc(const Matrix<T>&);
+template <class T> Matrix<T> round(const Matrix<T>&);
 
 
 #include "mmath.tcc"
