@@ -186,14 +186,15 @@
 1472332337 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.hpp
 	"../matrix.hpp"
 
-1471714608 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.cpp
+1473536228 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.cpp
 	"linear_filtering.hpp"
+	"../linalg.hpp"
 	"../statistics.hpp"
 
-1471714608 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.hpp
+1473533966 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.hpp
 	"../matrix.hpp"
 
-1472834164 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
+1473524686 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
 	<cmath>
 	<vector>
 	"../logical_operators.hpp"
@@ -356,9 +357,9 @@
 1471042616 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\perceptron.hpp
 	"../../matrix.hpp"
 
-1473001229 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
+1474153674 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
 	"test_functions.hpp"
-	"matrix.hpp"
+	"ImageProcessing/linear_filtering.hpp"
 
 1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -786,15 +787,16 @@
 	<queue>
 	<vector>
 
-1473001229 c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.hpp
+1474153674 c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.hpp
 
-1473006519 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
+1474721822 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
 	"csvIO.hpp"
 	"file_explorer.hpp"
 	"linalg.hpp"
 	"logical_operators.hpp"
 	"matrix.hpp"
 	"mmath.hpp"
+	"polynomial.hpp"
 	"polynomial_equation_solver.hpp"
 	"regression.hpp"
 	"SDL_interface.hpp"
@@ -844,4 +846,13 @@
 1472928694 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\shape_features.hpp
 	"../matrix.hpp"
 	<complex>
+
+1474719933 source:c:\users\hp\documents\mes programmes\imageprocessinglib\polynomial.cpp
+	"polynomial.hpp"
+	<algorithm>
+	<functional>
+
+1474719754 c:\users\hp\documents\mes programmes\imageprocessinglib\polynomial.hpp
+	<iostream>
+	<vector>
 

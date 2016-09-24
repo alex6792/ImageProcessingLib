@@ -15,6 +15,7 @@
 
 
 Matrix<float> average(std::size_t = 3);
+Matrix<float> binomial(std::size_t = 3);
 Matrix<float> disk(std::size_t = 2);
 Matrix<float> gaussian(std::size_t = 5, float = 1.0f);
 Matrix<float> isotropicx();

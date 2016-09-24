@@ -128,6 +128,8 @@
 		<Unit filename="matrix.tcc" />
 		<Unit filename="mmath.hpp" />
 		<Unit filename="mmath.tcc" />
+		<Unit filename="polynomial.cpp" />
+		<Unit filename="polynomial.hpp" />
 		<Unit filename="polynomial_equation_solver.hpp" />
 		<Unit filename="regression.hpp" />
 		<Unit filename="regression.tcc" />

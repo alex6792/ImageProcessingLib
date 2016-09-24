@@ -17,3 +17,4 @@ void test_sclaler();
 void test_hough();
 void test_zernike();
 void test_digits();
+void test_polynomials();

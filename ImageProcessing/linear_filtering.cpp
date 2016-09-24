@@ -1,10 +1,21 @@
 #include "linear_filtering.hpp"
+#include "../linalg.hpp"
 #include "../statistics.hpp"
 
 
 Matrix<float> average(std::size_t filtersize)
 {
     return ones<float>(filtersize)/float(filtersize*filtersize);
+}
+
+
+Matrix<float> binomial(std::size_t filtersize)
+{
+    Matrix<float> v(1, filtersize);
+    for(std::size_t i=0;i<filtersize;++i)
+        v(0, i) = std::tgamma(filtersize)/std::tgamma(filtersize-i)/std::tgamma(i+1);
+    v = dot(transpose(v), v);
+    return v/sum(v);
 }
 
 Matrix<float> disk(std::size_t radius)
@@ -42,10 +53,10 @@ Matrix<float> isotropicx()
 
 Matrix<float> isotropicy()
 {
-    Matrix<float> iso({{-1.0f,-sqrt(2.0f),-1.0f},
+    Matrix<float> iso({{-1.0f,-std::sqrt(2.0f),-1.0f},
                     {0.0f,0.0f,0.0f},
-                    {1.0f,sqrt(2.0f),1.0f}});
-    return iso/(2.0f+sqrt(2.0f));
+                    {1.0f,std::sqrt(2.0f),1.0f}});
+    return iso/(2.0f+std::sqrt(2.0f));
 }
 
 Matrix<float> kirch()
@@ -251,14 +262,6 @@ Matrix<float> conv(Matrix<float> M, Matrix<float> f, int mode)
     return filtered_img;
 }
 /*
-binomial
-
-1 4 6 4 1
-4 16 24 16 4
-6 24 36 24 6
-4 16 24 16 4
-1 4 6 4 1
-
 pyramidal
 1 2 3 2 1
 2 4 6 4 2

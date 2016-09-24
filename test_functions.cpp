@@ -4,6 +4,7 @@
 #include "logical_operators.hpp"
 #include "matrix.hpp"
 #include "mmath.hpp"
+#include "polynomial.hpp"
 #include "polynomial_equation_solver.hpp"
 #include "regression.hpp"
 #include "SDL_interface.hpp"
@@ -842,4 +843,16 @@ void test_digits()
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(pWindow);
     SDL_Quit();
+}
+
+void test_polynomials()
+{
+    std::cout<<Polynomial({0.0f, 2.0f})<<std::endl;
+
+    for(unsigned i=0;i<10;++i)
+        std::cout<<Tchebychev(i)<<std::endl;
+    for(unsigned i=0;i<10;++i)
+        std::cout<<Laguerre(i)<<std::endl;
+    for(unsigned i=0;i<10;++i)
+        std::cout<<Legendre(i)<<std::endl;
 }
