@@ -208,37 +208,41 @@ template <class T> std::pair<Matrix<T>, Matrix<T> > crout(const Matrix<T>& M)
 
 template <class T> std::tuple<Matrix<T>, Matrix<T>, Matrix<T> > lu(const Matrix<T>& M)
 {
-    Matrix<T> L(M.rowNb(), M.colNb());
+    std::size_t H = M.rowNb(), W = M.colNb();
+    Matrix<T> L(H, W);
     Matrix<T> U = M;
-    Matrix<T> P = id<T>(M.rowNb(), M.colNb());
-    for(std::size_t i=0;i<M.rowNb()-1;++i)
+    Matrix<T> P = id<T>(H, W);
+    for(std::size_t i=0;i<H-1;++i)
     {
-        Matrix<T> cur_col = abs(U.getSubmat(i, M.rowNb(), i, i+1));
+        Matrix<T> cur_col = abs(U.getSubmat(i, H, i, i+1));
         Matrix<std::size_t> maxidx = argmax(cur_col);
         P.swaprow(i, maxidx(0, 0)+i);
         U.swaprow(i, maxidx(0, 0)+i);
         L.swaprow(i, maxidx(0, 0)+i);
-        L.setSubmat(i+1, i, U.getSubmat(i+1, M.rowNb(), i, i+1)/U(i, i));
+        L.setSubmat(i+1, i, U.getSubmat(i+1, H, i, i+1)/U(i, i));
         L(i, i) = T(1);
-        for(std::size_t j=i+1;j<M.rowNb();++j)
-            U.setRow(j, (U.getRow(j)*U(i, i)-U.getRow(i)*U(j, i))/U(i, i));
+        Matrix<float> rowi = U.getRow(i);
+        for(std::size_t j=i+1;j<H;++j)
+            U.setRow(j, (U.getRow(j)*U(i, i)-rowi*U(j, i))/U(i, i));
     }
-    L(M.rowNb()-1, M.colNb()-1) = T(1);
+    L(H-1, W-1) = T(1);
     return std::make_tuple(L, U, P);
 }
 
 template <class T> std::pair<Matrix<T>, Matrix<T> > qr(const Matrix<T>& M)
 {
-    Matrix<T> Q(M.rowNb(), M.colNb());
-    Matrix<T> R(M.colNb(), M.colNb());
-    for(std::size_t i=0;i<M.colNb();++i)
+    std::size_t H = M.rowNb(), W = M.colNb();
+    Matrix<T> Q, R;
+    Q = zeros<T>(H, H);
+    R = zeros<T>(H, W);
+    for(std::size_t i=0;i<W;++i)
     {
         Matrix<T> U = M.getCol(i);
-        for(std::size_t j=0;j<i;++j)
+        for(std::size_t j=0;j<i && j<H;++j)
         {
             Matrix<T> cur_col = Q.getCol(j);
             R(j, i) = sum(U*cur_col);
-            U-=R(j, i)*Q.getCol(j);
+            U-=R(j, i)*cur_col;
         }
         U/=norm(U);
         R(i, i) = sum(M.getCol(i)*U);

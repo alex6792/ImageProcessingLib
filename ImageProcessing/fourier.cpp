@@ -53,3 +53,37 @@ Matrix<std::complex<float> > iFFT(const Matrix<std::complex<float> >& M)
     }
     return fft;
 }
+
+
+Matrix<std::complex<float> > FFTshift(const Matrix<std::complex<float> >& M)
+{
+    std::size_t H = M.rowNb(), W = M.colNb();
+    Matrix<std::complex<float>> res(H, W);
+
+    if(H>1 && W>1)
+        res.setSubmat(0, 0, M.getSubmat((H+1)/2, H, (W+1)/2, W));
+    if(W>1)
+        res.setSubmat(H-(H+1)/2, 0, M.getSubmat(0, (H+1)/2, (W+1)/2, W));
+    if(H>1)
+        res.setSubmat(0, W-(W+1)/2, M.getSubmat((H+1)/2, H, 0, (W+1)/2));
+
+        res.setSubmat(H-(H+1)/2, W-(W+1)/2, M.getSubmat(0, (H+1)/2, 0, (W+1)/2));
+
+    return res;
+}
+
+Matrix<float> FFTfreq(std::size_t n, float d)
+{
+    Matrix<float> freqs(n, 1);
+    if(n%2==0)
+    {
+        freqs.setSubmat(0, 0, arange<float>(0, n/2));
+        freqs.setSubmat(n/2, 0, arange<float>(-float(n/2), 0.0f));
+    }
+    else
+    {
+        freqs.setSubmat(0, 0, arange<float>(0, (n+1)/2));
+        freqs.setSubmat((n+1)/2, 0, arange<float>(-float((n-1)/2), 0.0f));
+    }
+    return freqs/(d*n);
+}

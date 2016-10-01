@@ -3,6 +3,6 @@
 
 int main()
 {
-    test_polynomials();
+    test_fourier();
     return 0;
 }

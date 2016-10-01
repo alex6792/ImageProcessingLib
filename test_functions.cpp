@@ -10,6 +10,7 @@
 #include "SDL_interface.hpp"
 #include "statistics.hpp"
 #include "test_functions.hpp"
+#include <tuple>
 
 #include "MachineLearning/pca.hpp"
 #include "MachineLearning/scaler.hpp"
@@ -361,10 +362,12 @@ void test_ecriture_img()
 void test_fourier()
 {
     // test FFT
-    Matrix<float> data = sin(2.0f*float(PI)/10.0f*arange<float>(0.0f,  10.0f));
+    Matrix<float> data = sin(2.0f*float(PI)*0.2f*arange<float>(0.0f,  25.0f));
     std::cout<<data<<std::endl;
     std::cout<<FFT(data)<<std::endl;
+    std::cout<<FFTshift(FFT(data))<<std::endl;
     std::cout<<iFFT(FFT(data))<<std::endl;
+    std::cout<<FFTfreq(data.size())<<std::endl;
 
     Matrix<unsigned char> img = read_pgm("Images/Pixmap/antifeep_P2.pgm");
 
@@ -381,6 +384,8 @@ void test_fourier()
     Matrix<float> img_f(img);
     Matrix<std::complex<float> > fft_img = FFT(img_f);
     Matrix<std::complex<float> > ifft_img = iFFT(fft_img);
+
+    std::cout<<FFTshift(fft_img)<<std::endl;
     Matrix<float> resultfft(apply<std::complex<float>, float>(fft_img, std::norm));
     Matrix<unsigned char> result(apply<std::complex<float>, float>(ifft_img, std::real));
     show_matrix(renderer, Matrix<unsigned char>(resultfft*255.0f/max(resultfft)));
@@ -529,7 +534,58 @@ void test_statistics()
 
 void test_linalg()
 {
+    Matrix<float> U = {{2,3,5},
+                        {0,4,1},
+                        {0,0,8}};
 
+    Matrix<float> B = {{5,4,2,6,5},
+                        {2,4,7,8,9},
+                        {3,2,1,4,5}};
+
+    Matrix<float> X = bwdsub(U, B);// solve UX = B with U an upper triangular matrix
+
+    std::cout<<U<<std::endl;
+    std::cout<<B<<std::endl;
+    std::cout<<X<<std::endl;
+    std::cout<<dot(U, X)<<std::endl;
+
+
+    Matrix<float> L = transpose(U);
+    X = fwdsub(L, B);// solve LX = B with L a lower triangular matrix
+
+    std::cout<<L<<std::endl;
+    std::cout<<B<<std::endl;
+    std::cout<<X<<std::endl;
+    std::cout<<dot(L, X)<<std::endl;
+
+    std::cout<<"LU decomposition"<<std::endl;
+    Matrix<float> A = {{2,3,5},
+                        {6,4,1},
+                        {2,9,8}};
+    auto PLU = lu(A);// LU decomposition PA = LU
+    Matrix<float> P;
+    std::tie(L, U, P) = PLU;
+    std::cout<<P<<std::endl;
+    std::cout<<A<<std::endl;
+    std::cout<<L<<std::endl;
+    std::cout<<U<<std::endl;
+    std::cout<<dot(P, A)<<std::endl;
+    std::cout<<dot(L, U)<<std::endl;
+
+    std::cout<<"QR decomposition"<<std::endl;
+    /*A = {{5,4,2,6,5},
+        {2,4,7,8,9},
+        {3,2,1,4,5}};*/
+    //A.transpose();
+    auto QR = qr(A);
+    Matrix<float> Q,R;
+    std::tie(Q,R) = QR;
+    std::cout<<A<<std::endl;
+    std::cout<<Q<<std::endl;
+    std::cout<<dot(Q, transpose(Q))<<std::endl;
+    std::cout<<dot(transpose(Q), Q)<<std::endl;
+    std::cout<<R<<std::endl;
+    std::cout<<dot(Q, R)<<std::endl;
 }
 
 void test_regression()
