@@ -29,6 +29,7 @@ Matrix<bool> BTH(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> close(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> closing_by_reconstruction(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> conservative_smoothing(const Matrix<bool>&);
+Matrix<bool> contrast_enhancement(const Matrix<bool>&);
 Matrix<bool> convex_hull(const Matrix<bool>&);
 Matrix<bool> erode(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> dilate(const Matrix<bool>&, const Mask& = square(3));
@@ -50,6 +51,7 @@ Matrix<unsigned char> BTH(const Matrix<unsigned char>&, const Mask& = square(3))
 Matrix<unsigned char> close(const Matrix<unsigned char>&, const Mask& = square(3));
 Matrix<unsigned char> closing_by_reconstruction(const Matrix<unsigned char>&, const Mask& = square(3));
 Matrix<unsigned char> conservative_smoothing(const Matrix<unsigned char>&);
+Matrix<unsigned char> contrast_enhancement(const Matrix<unsigned char>&);
 Matrix<unsigned char> erode(const Matrix<unsigned char>&, const Mask& = square(3));
 Matrix<unsigned char> dilate(const Matrix<unsigned char>&, const Mask& = square(3));
 Matrix<unsigned char> gradient(const Matrix<unsigned char>&, const Mask& = square(3));

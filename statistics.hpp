@@ -27,6 +27,7 @@ template <class T> Matrix<T> axisvar(const Matrix<T>&, int);
 template <class T> T central_moment(const Matrix<T>&, int);
 template <class T> T corrected_var(const Matrix<T>&);
 template <class T> Matrix<T> cumsum(const Matrix<T>&);
+template <class T> T geometric_mean(const Matrix<T>&);
 template <class T> T max(const Matrix<T>&);
 template <class T> T mean(const Matrix<T>&);
 template <class T> T median(const Matrix<T>&);

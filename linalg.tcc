@@ -182,23 +182,24 @@ template <class T> Matrix<T> cholesky(const Matrix<T>& M)
     return zeros<T>(1);
 }
 
-template <class T> std::pair<Matrix<T>, Matrix<T> > crout(const Matrix<T>& M)
+template <class T> std::pair<Matrix<T>, Matrix<T> > crout(const Matrix<T>& M)//decomposition LDU -> see doolittle
 {
-    if(M.rowNb()==M.colNb())
+    std::size_t H = M.rowNb(), W = M.colNb();
+    if(H==W)
     {
-        Matrix<T> D(M.rowNb(), M.colNb());
-        Matrix<T> L = id<T>(M.rowNb(), M.colNb());
+        Matrix<T> D(H, W);
+        Matrix<T> L = id<T>(H, W);
         D(0, 0) = M(0, 0);
-        L.setSubmat(1, 0, (M.getSubmat(1, M.rowNb(), 0, 1))/M(0, 0));
-        for(std::size_t j=1;j<M.colNb();++j)
+        L.setSubmat(1, 0, (M.getSubmat(1, H, 0, 1))/M(0, 0));
+        for(std::size_t j=1;j<W;++j)
         {
             Matrix<T> V(j+1, 1);
             for(std::size_t i=0;i<j;++i)
                 V(i, 0) = L(j, i)*D(i, i);
             V(j, 0) = M(j, j)-dot(L.getSubmat(j, j+1, 0, j+1), V.getRows(0, j+1))(0, 0);
             D(j, j) = V(j, 0);
-            if(j!=M.colNb()-1)
-                L.setSubmat(j+1, j, (M.getSubmat(j+1, M.rowNb(), j, j+1)-dot(L.getSubmat(j+1, M.rowNb(), 0, j), V.getSubmat(0, j, 0, 1)))/V(j, 0));
+            if(j!=W-1)
+                L.setSubmat(j+1, j, (M.getSubmat(j+1, H, j, j+1)-dot(L.getSubmat(j+1, H, 0, j), V.getSubmat(0, j, 0, 1)))/V(j, 0));
         }
         return std::make_pair(L, D);
     }
@@ -229,26 +230,100 @@ template <class T> std::tuple<Matrix<T>, Matrix<T>, Matrix<T> > lu(const Matrix<
     return std::make_tuple(L, U, P);
 }
 
+
+template <class T> Matrix<T> pinv(const Matrix<T>& M)
+{
+    std::size_t H = M.rowNb(), W = M.colNb();
+    bool tr = false;
+    Matrix<T> A;
+    if(H<W)
+    {
+        tr = true;
+        A = dot(M, transpose(M));
+        W = H;
+    }
+    else
+        A = dot(transpose(M), M);
+
+    Matrix<T> da = A.getDiag();
+    T tol = 1e-12;
+    Matrix<T> L = zeros<T>(W, W);
+    std::size_t r = 0;
+    for(std::size_t k=0;k<W;++k)
+    {
+        Matrix<T> temp = A.getSubmat(k, W, k, k+1);
+        if(r>0)
+            temp-=dot(L.getSubmat(k, W, 0, r), transpose(L.getSubmat(k, k+1, 0, r)));
+        L.setSubmat(k, r, temp);
+        if(L(k,r)>tol)
+        {
+            L(k,r) = std::sqrt(L(k,r));
+            if(k+1<W)
+                L.setSubmat(k+1, r, L.getSubmat(k+1, W, r, r+1)/L(k, r));
+            ++r;
+        }
+    }
+
+    L = L.getCols(0,r);
+    Matrix<T> L_t = transpose(L);
+    Matrix<T> N = inv(dot(L_t, L));
+    Matrix<T> X = dot(L, N);
+    Matrix<T> Y = dot(N, L_t);
+    Matrix<T> Z = dot(X, Y);
+    if(tr)
+        return dot(transpose(M), Z);
+    else
+        return dot(Z, transpose(M));
+}
+
 template <class T> std::pair<Matrix<T>, Matrix<T> > qr(const Matrix<T>& M)
 {
     std::size_t H = M.rowNb(), W = M.colNb();
     Matrix<T> Q, R;
-    Q = zeros<T>(H, H);
-    R = zeros<T>(H, W);
+    Q = zeros<T>(H, W);
+    R = zeros<T>(W, W);
+    std::vector<Matrix<float> > V(W);
     for(std::size_t i=0;i<W;++i)
     {
-        Matrix<T> U = M.getCol(i);
-        for(std::size_t j=0;j<i && j<H;++j)
+        V[i] = M.getCol(i);
+    }
+    for(std::size_t i=0;i<W;++i)
+    {
+        R(i, i) = norm(V[i]);
+        Q.setCol(i, V[i]/R(i, i));
+        Matrix<T> cur_col = Q.getCol(i);
+        for(std::size_t j=i+1;j<W;++j)
         {
-            Matrix<T> cur_col = Q.getCol(j);
-            R(j, i) = sum(U*cur_col);
-            U-=R(j, i)*cur_col;
+            R(i, j) = sum(V[j]*cur_col);
+            V[j]-=R(i, j)*cur_col;
         }
-        U/=norm(U);
-        R(i, i) = sum(M.getCol(i)*U);
-        Q.setCol(i, U);
     }
     return std::make_pair(Q, R);
+}
+
+template <class T> std::pair<Matrix<T>, Matrix<T> > rq(const Matrix<T>& M)
+{
+    std::size_t H = M.rowNb(), W = M.colNb();
+    Matrix<T> Q, R;
+    Q = zeros<T>(H, W);
+    R = zeros<T>(H, H);
+    std::vector<Matrix<float> > V(H);
+    for(std::size_t i=0;i<H;++i)
+    {
+        V[i] = M.getRow(i);
+    }
+    for(std::size_t i=H;i>0;--i)
+    {
+        R(i-1, i-1) = norm(V[i-1]);
+        Q.setRow(i-1, V[i-1]/R(i-1, i-1));
+        Matrix<T> cur_row = Q.getRow(i-1);
+        for(std::size_t j=H;j>i-1;--j)
+        {
+            R(i-1, j-1) = sum(V[j-1]*cur_row);
+            V[j-1]-=R(i-1, j-1)*cur_row;
+        }
+    }
+    return std::make_pair(R, Q);
 }
 
 template <class T> std::pair<Matrix<T>, Matrix<T> > svd(const Matrix<T>& M)

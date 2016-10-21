@@ -12,6 +12,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 				</Compiler>
 			</Target>
@@ -22,6 +23,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-std=c++11" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -29,15 +31,20 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-Wall" />
+			<Add option="-pedantic-errors" />
+			<Add option="-pedantic" />
+			<Add option="-w" />
+			<Add option="-Wfatal-errors" />
+			<Add option="-Wextra" />
+			<Add option="-std=c++11" />
 			<Add directory="../../../../../SDL2-2.0.4/i686-w64-mingw32/include" />
 			<Add directory="../../../../../Program Files (x86)/GnuWin32/include" />
 		</Compiler>
 		<Linker>
-			<Add library="..\..\..\..\..\Program Files (x86)\CodeBlocks\MinGW\lib\libmingw32.a" />
-			<Add library="..\..\..\..\..\SDL2-2.0.4\i686-w64-mingw32\lib\libSDL2main.a" />
-			<Add library="..\..\..\..\..\SDL2-2.0.4\i686-w64-mingw32\lib\libSDL2.dll.a" />
-			<Add library="..\..\..\..\..\Program Files (x86)\GnuWin32\lib\libjpeg.dll.a" />
+			<Add library="../../../../../Program Files (x86)/CodeBlocks/MinGW/lib/libmingw32.a" />
+			<Add library="../../../../../SDL2-2.0.4/i686-w64-mingw32/lib/libSDL2main.a" />
+			<Add library="../../../../../SDL2-2.0.4/i686-w64-mingw32/lib/libSDL2.dll.a" />
+			<Add library="../../../../../Program Files (x86)/GnuWin32/lib/libjpeg.dll.a" />
 			<Add directory="../../../../../SDL2-2.0.4/i686-w64-mingw32/lib" />
 			<Add directory="../../../../../Program Files (x86)/GnuWin32/lib" />
 		</Linker>

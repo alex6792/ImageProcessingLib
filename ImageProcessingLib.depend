@@ -29,7 +29,7 @@
 	<iostream>
 	"matrix.tcc"
 
-1475324348 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.tcc
+1476286490 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.tcc
 	<algorithm>
 	<chrono>
 	<cmath>
@@ -46,11 +46,11 @@
 	"matrix.hpp"
 	"mmath.hpp"
 
-1472821582 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.hpp
+1476996612 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.hpp
 	"matrix.hpp"
 	"statistics.tcc"
 
-1472822535 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.tcc
+1476996618 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.tcc
 	<algorithm>
 	<cmath>
 	"mmath.hpp"
@@ -183,7 +183,7 @@
 	"color.hpp"
 	"../matrix.hpp"
 
-1472332337 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.hpp
+1477075328 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.hpp
 	"../matrix.hpp"
 
 1473536228 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.cpp
@@ -194,7 +194,7 @@
 1473533966 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.hpp
 	"../matrix.hpp"
 
-1473524686 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
+1477077257 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
 	<cmath>
 	<vector>
 	"../logical_operators.hpp"
@@ -220,11 +220,11 @@
 	"linear_filtering.hpp"
 	"snake.hpp"
 
-1461412347 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.hpp
+1476906568 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.hpp
 	"matrix.hpp"
 	"linalg.tcc"
 
-1474739465 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.tcc
+1476910889 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.tcc
 	<cmath>
 	<tuple>
 	<utility>
@@ -287,7 +287,7 @@
 1471040721 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\meanshift.hpp
 	"../../matrix.hpp"
 
-1471040502 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\pca.cpp
+1476348784 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\pca.cpp
 	"pca.hpp"
 	"../mmath.hpp"
 	"../linalg.hpp"
@@ -357,8 +357,15 @@
 1471042616 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\perceptron.hpp
 	"../../matrix.hpp"
 
-1475095491 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
+1477074244 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
 	"test_functions.hpp"
+	"matrix.hpp"
+	"statistics.hpp"
+	<numeric>
+	<algorithm>
+	<functional>
+	<deque>
+	"linalg.hpp"
 
 1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -731,7 +738,7 @@
 1471897867 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\clusteringfeature.hpp
 	"../../matrix.hpp"
 
-1471453876 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\birch.cpp
+1476863927 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\birch.cpp
 	"birch.hpp"
 	<cfloat>
 
@@ -788,7 +795,7 @@
 
 1474153674 c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.hpp
 
-1475324608 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
+1476380772 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
 	"csvIO.hpp"
 	"file_explorer.hpp"
 	"linalg.hpp"
@@ -847,12 +854,12 @@
 	"../matrix.hpp"
 	<complex>
 
-1474719933 source:c:\users\hp\documents\mes programmes\imageprocessinglib\polynomial.cpp
+1476722020 source:c:\users\hp\documents\mes programmes\imageprocessinglib\polynomial.cpp
 	"polynomial.hpp"
 	<algorithm>
 	<functional>
 
-1474719754 c:\users\hp\documents\mes programmes\imageprocessinglib\polynomial.hpp
+1476721561 c:\users\hp\documents\mes programmes\imageprocessinglib\polynomial.hpp
 	<iostream>
 	<vector>
 

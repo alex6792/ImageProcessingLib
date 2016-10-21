@@ -32,6 +32,9 @@ class Polynomial
         const std::vector<float>& get_coeffs() const;
         unsigned get_degree() const;
 
+        Polynomial differentiate() const;
+        Polynomial integrate(float = 0.0f) const;
+
         // operators
         void operator+=(const Polynomial&);
         void operator-=(const Polynomial&);
@@ -59,6 +62,9 @@ class Polynomial
 
         bool operator==(const Polynomial&) const;
         bool operator!=(const Polynomial&) const;
+
+    private :
+        void remove_zeros();
 };
 
 
@@ -67,6 +73,8 @@ Polynomial operator+(float, const Polynomial&);
 Polynomial operator-(float, const Polynomial&);
 Polynomial operator*(float, const Polynomial&);
 
+Polynomial Hermite_phi(unsigned);
+Polynomial Hermite_pro(unsigned);
 Polynomial Laguerre(unsigned);
 Polynomial Legendre(unsigned);
 Polynomial Tchebychev(unsigned);

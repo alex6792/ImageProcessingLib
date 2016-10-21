@@ -222,6 +222,12 @@ template <class T> Matrix<T> cumsum(const Matrix<T>& M)
     return new_mat;
 }
 
+
+template <class T> T geometric_mean(const Matrix<T>& M)
+{
+    return std::pow(prod(M),T(1)/T(M.size()));
+}
+
 template <class T> T max(const Matrix<T>& M)
 {
     return *std::max_element(M.cbegin(), M.cend());
@@ -234,7 +240,7 @@ template <class T> T mean(const Matrix<T>& M)
 
 template <class T> T median(const Matrix<T>& M)
 {
-    std::deque<T> M_copy(M.begin(), M.end());
+    std::deque<T> M_copy(M.cbegin(), M.cend());
     if(M_copy.size()%2==1)
     {
         std::nth_element(M_copy.begin(), M_copy.begin()+(M_copy.size()-1)/2, M_copy.end());
@@ -347,3 +353,4 @@ template <class T> static void quicksort(Matrix<T>& M, int first, int last)
         quicksort(M, pivot+1, last);
     }
 }
+

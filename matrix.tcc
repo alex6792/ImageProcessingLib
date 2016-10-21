@@ -84,7 +84,7 @@ template <class T> T Matrix<T>::operator()(std::size_t x, std::size_t y) const
     if(x<sizex && y<sizey)
         return mat[x*sizey+y];
     std::cout<<"invalid indices {"<<x<<", "<<y<<"}"<<std::endl;
-    return T();
+    return mat[0];
 }
 
 template <class T> T& Matrix<T>::operator()(std::size_t x, std::size_t y)

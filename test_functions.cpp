@@ -576,7 +576,6 @@ void test_linalg()
     /*A = {{5,4,2,6,5},
         {2,4,7,8,9},
         {3,2,1,4,5}};*/
-    //A.transpose();
     auto QR = qr(A);
     Matrix<float> Q,R;
     std::tie(Q,R) = QR;
@@ -586,6 +585,16 @@ void test_linalg()
     std::cout<<dot(transpose(Q), Q)<<std::endl;
     std::cout<<R<<std::endl;
     std::cout<<dot(Q, R)<<std::endl;
+
+    std::cout<<"RQ decomposition"<<std::endl;
+    auto RQ = rq(A);
+    std::tie(R, Q) = RQ;
+    std::cout<<A<<std::endl;
+    std::cout<<Q<<std::endl;
+    std::cout<<dot(Q, transpose(Q))<<std::endl;
+    std::cout<<dot(transpose(Q), Q)<<std::endl;
+    std::cout<<R<<std::endl;
+    std::cout<<dot(R, Q)<<std::endl;
 }
 
 void test_regression()
@@ -911,4 +920,13 @@ void test_polynomials()
         std::cout<<Laguerre(i)<<std::endl;
     for(unsigned i=0;i<10;++i)
         std::cout<<Legendre(i)<<std::endl;
+    for(unsigned i=0;i<10;++i)
+        std::cout<<Hermite_pro(i)<<std::endl;
+    for(unsigned i=0;i<10;++i)
+    {
+        std::cout<<Hermite_phi(i).integrate()<<std::endl;
+        std::cout<<Hermite_phi(i)<<std::endl;
+        std::cout<<Hermite_phi(i).differentiate()<<std::endl;
+    }
+
 }

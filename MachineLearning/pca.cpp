@@ -30,7 +30,7 @@ Matrix<float> PCA::fit_transform(const Matrix<float>& M)
 Matrix<float> PCA::inverse_transform(const Matrix<float>& M)
 {
     Matrix<float> D = eigenvalues;
-    for(std::size_t i = 0;i<D.rowNb();++i)
+    for(std::size_t i = 0, I = D.rowNb();i<I;++i)
     {
         if(std::abs(D(i, i))>10e-7)
             D(i,i)=1.0/D(i,i);

@@ -109,6 +109,13 @@ Matrix<bool> conservative_smoothing(const Matrix<bool>& M)
     return I;
 }
 
+Matrix<bool> contrast_enhancement(const Matrix<bool>& M)
+{
+    Matrix<bool> dil = dilate(M);
+    Matrix<bool> ero = erode(M);
+    Matrix<bool> I = where(dil-M<M-ero, dil, ero);
+    return I;
+}
 
 Matrix<bool> convex_hull(const Matrix<bool>& M)
 {
@@ -320,7 +327,7 @@ Matrix<std::size_t> label(const Matrix<bool>& M, const Mask& mask)
                 Matrix<bool> marker = zeros<bool>(I, J);
                 marker(i, j) = true;
                 marker = reconstruct(M, marker, mask);
-                labeledmap = where(marker, full(M.rowNb(), M.colNb(), curlabel), labeledmap);
+                labeledmap = where(marker, full(I, J, curlabel), labeledmap);
             }
         }
     }
@@ -360,6 +367,14 @@ Matrix<unsigned char> conservative_smoothing(const Matrix<unsigned char>& M)
     Matrix<unsigned char> dil = dilate(M, N);
     Matrix<unsigned char> ero = erode(M, N);
     Matrix<unsigned char> I = max(min(M, dil), ero);
+    return I;
+}
+
+Matrix<unsigned char> contrast_enhancement(const Matrix<unsigned char>& M)
+{
+    Matrix<unsigned char> dil = dilate(M);
+    Matrix<unsigned char> ero = erode(M);
+    Matrix<unsigned char> I = where(dil-M<M-ero, dil, ero);
     return I;
 }
 
@@ -543,7 +558,7 @@ Matrix<std::size_t> label(const Matrix<unsigned char>& M, const Mask& mask)
                 Matrix<unsigned char> marker = zeros<unsigned char>(I, J);
                 marker(i, j) = M(i, j);
                 marker = reconstruct(M, marker, mask);
-                labeledmap = where(marker>0, full<std::size_t>(M.rowNb(), M.colNb(), curlabel), labeledmap);
+                labeledmap = where(marker>0, full<std::size_t>(I, J, curlabel), labeledmap);
             }
         }
     }

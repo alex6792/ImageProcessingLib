@@ -6,6 +6,8 @@
 Polynomial::Polynomial(const std::vector<float>& v)
 {
     coefficients = v;
+    if(coefficients.size()==0)
+        coefficients.push_back(0.0f);
 }
 
 float Polynomial::operator()(unsigned i) const
@@ -28,6 +30,23 @@ unsigned Polynomial::get_degree() const
     return coefficients.size()-1;
 }
 
+Polynomial Polynomial::differentiate() const
+{
+    std::vector<float> new_coeffs = coefficients;
+    new_coeffs.erase(new_coeffs.begin());
+    for(std::size_t i=1, I = new_coeffs.size();i<I;++i)
+        new_coeffs[i]*=i+1;
+    return Polynomial(new_coeffs);
+}
+
+Polynomial Polynomial::integrate(float c) const
+{
+    std::vector<float> new_coeffs = coefficients;
+    new_coeffs.insert(new_coeffs.begin(), c);
+    for(std::size_t i=2, I = new_coeffs.size();i<I;++i)
+        new_coeffs[i]/=i;
+    return Polynomial(new_coeffs);
+}
 
 // operators
 void Polynomial::operator+=(const Polynomial& p)
@@ -67,10 +86,19 @@ void Polynomial::operator*=(const Polynomial& p)
 
 void Polynomial::operator/=(const Polynomial& p)
 {
+    Polynomial Q = *this;
+    while(Q.get_degree()>=p.get_degree())
+    {
+        Q-=p*p(p.get_degree())*Q(Q.get_degree());
+        Q.remove_zeros();
+    }
+    *this = Q;
 }
 
 void Polynomial::operator%=(const Polynomial& p)
 {
+    Polynomial Q = *this/p;
+    *this-=Q*p;
 }
 
 void Polynomial::operator+=(float v)
@@ -158,7 +186,6 @@ Polynomial Polynomial::operator/(float v) const
 
 Polynomial Polynomial::operator-() const
 {
-
     return (*this)*(-1.0f);
 }
 
@@ -168,9 +195,9 @@ bool Polynomial::operator==(const Polynomial& p) const
         return false;
     else
     {
-        auto& coeffs1 = this->get_coeffs();
-        auto& coeffs2 = p.get_coeffs();
-        //return std::all_of(coeffs1.cbegin(),coeff2.begin)
+        const std::vector<float>& coeffs1 = this->get_coeffs();
+        const std::vector<float>& coeffs2 = p.get_coeffs();
+        return std::equal(coeffs1.begin(), coeffs1.end(), coeffs2.begin());
     }
 }
 
@@ -179,6 +206,16 @@ bool Polynomial::operator!=(const Polynomial& p) const
     return !(*this==p);
 }
 
+
+void Polynomial::remove_zeros()
+{
+    std::size_t idx = get_degree();
+    while(coefficients[idx]==0 && idx!=0)
+    {
+        coefficients.pop_back();
+        --idx;
+    }
+}
 
 // operators
 Polynomial operator+(float v, const Polynomial& p)
@@ -194,6 +231,26 @@ Polynomial operator-(float v, const Polynomial& p)
 Polynomial operator*(float v, const Polynomial& p)
 {
     return p*v;
+}
+
+Polynomial Hermite_phi(unsigned i)
+{
+    if(i==0)
+        return Polynomial({1.0f});
+    else if(i==1)
+        return Polynomial({0.0f, 2.0f});
+    else
+        return Hermite_phi(i-1)*Polynomial({0.0f, 2.0f})-2.0f*Hermite_phi(i-2)*(i-1);
+}
+
+Polynomial Hermite_pro(unsigned i)
+{
+    if(i==0)
+        return Polynomial({1.0f});
+    else if(i==1)
+        return Polynomial({0.0f, 1.0f});
+    else
+        return Hermite_pro(i-1)*Polynomial({0.0f, 1.0f})-Hermite_pro(i-2)*(i-1);
 }
 
 Polynomial Legendre(unsigned i)
@@ -230,13 +287,14 @@ Polynomial Tchebychev(unsigned i)
 std::ostream& operator<<(std::ostream& s, const Polynomial& p)
 {
     auto& coeffs = p.get_coeffs();
-    s<<coeffs[0];
+    if(coeffs.size()>=1)
+        s<<coeffs[0];
     if(coeffs.size()>=2 && coeffs[1]>0.0f)
         s<<" + "<<coeffs[1]<<"X";
     else if(coeffs.size()>=2)
         s<<" "<<coeffs[1]<<"X";
 
-    for(int i=2;i<coeffs.size();++i)
+    for(std::size_t i=2;i<coeffs.size();++i)
     {
         if(coeffs[i]==0.0f)
             continue;
