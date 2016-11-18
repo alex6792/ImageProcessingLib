@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['gaussiannaivebayes',['GaussianNaiveBayes',['../class_gaussian_naive_bayes.html',1,'']]],
-  ['gmm',['GMM',['../class_g_m_m.html',1,'']]]
+  ['clusteringfeature',['ClusteringFeature',['../class_clustering_feature.html',1,'']]],
+  ['color',['Color',['../class_color.html',1,'']]],
+  ['colortree',['ColorTree',['../struct_color_tree.html',1,'']]]
 ];

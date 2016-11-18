@@ -211,18 +211,18 @@ void test_morpho_binaire()
 
     gray_img = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,1,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,1,1,0,0,0,0,0,0,0},
                 {0,0,0,0,0,1,1,1,1,0,0,0,0,0},
-                {0,0,0,0,0,0,1,1,0,0,0,0,0,0},
+                {0,0,0,0,0,1,1,1,1,0,1,0,0,0},
+                {0,0,0,0,0,0,1,1,1,1,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0},
     };
 
-    for(int i=1;i<20;++i)
+    for(int i=1;i<10;++i)
         show_matrix(renderer, octagon(i));
-    for(int i=1;i<20;++i)
+    for(int i=1;i<10;++i)
         show_matrix(renderer, circle(i));
-    for(int i=1;i<20;++i)
+    for(int i=1;i<10;++i)
         show_matrix(renderer, diamond(i));
 
     for(int i=1;i<5;i+=1)
@@ -239,12 +239,22 @@ void test_morpho_binaire()
     show_matrix(renderer, erode(gray_img));
     SDL_SetWindowTitle(pWindow, "dilate");
     show_matrix(renderer, dilate(gray_img));
+    SDL_SetWindowTitle(pWindow, "open");
+    show_matrix(renderer, open(gray_img));
+    SDL_SetWindowTitle(pWindow, "close");
+    show_matrix(renderer, close(gray_img));
+    SDL_SetWindowTitle(pWindow, "gradient");
+    show_matrix(renderer, gradient(gray_img));
     SDL_SetWindowTitle(pWindow, "median");
     show_matrix(renderer, median_filter(gray_img));
     SDL_SetWindowTitle(pWindow, "convex hull");
     show_matrix(renderer, convex_hull(gray_img));
+    SDL_SetWindowTitle(pWindow, "skeleton");
+    show_matrix(renderer, skeleton(gray_img));
     SDL_SetWindowTitle(pWindow, "conservative smoothing");
     show_matrix(renderer, conservative_smoothing(gray_img));
+    SDL_SetWindowTitle(pWindow, "contrast enhancement");
+    show_matrix(renderer, contrast_enhancement(gray_img));
     SDL_SetWindowTitle(pWindow, "opening by reconstruction");
     gray_img = opening_by_reconstruction(gray_img);
     show_matrix(renderer, gray_img);
@@ -270,25 +280,39 @@ void test_morpho_gray()
     SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 
     // test filtres non linéaires
-    Matrix<Color> img = read_png("Images/Filtrage/phare_bruit_ps.png");
+    Matrix<Color> img = read_img("Images/Pixmap/clown_P5.pgm");
     Matrix<unsigned char> gray_img = color2grayimage(img);
 
     SDL_SetWindowTitle(pWindow, "original");
     show_matrix(renderer, gray_img);
     SDL_SetWindowTitle(pWindow, "bilateral");
-    show_matrix(renderer, bilateral(gray_img, 5, 1000, 5));
+    show_matrix(renderer, bilateral(gray_img, 5, 10000.0f, 1.0f));
     SDL_SetWindowTitle(pWindow, "despeckle");
     show_matrix(renderer, despeckle(gray_img));
     SDL_SetWindowTitle(pWindow, "nagao");
     show_matrix(renderer, nagao(gray_img));
+    SDL_SetWindowTitle(pWindow, "original");
+    show_matrix(renderer, gray_img);
     SDL_SetWindowTitle(pWindow, "erode");
     show_matrix(renderer, erode(gray_img));
     SDL_SetWindowTitle(pWindow, "dilate");
     show_matrix(renderer, dilate(gray_img));
+    SDL_SetWindowTitle(pWindow, "open");
+    show_matrix(renderer, open(gray_img));
+    SDL_SetWindowTitle(pWindow, "close");
+    show_matrix(renderer, close(gray_img));
+    //SDL_SetWindowTitle(pWindow, "gradient");
+    //show_matrix(renderer, gradient(gray_img));
     SDL_SetWindowTitle(pWindow, "median");
     show_matrix(renderer, median_filter(gray_img));
+    //SDL_SetWindowTitle(pWindow, "skeleton");
+    //show_matrix(renderer, skeleton(gray_img));
     SDL_SetWindowTitle(pWindow, "conservative smoothing");
     show_matrix(renderer, conservative_smoothing(gray_img));
+    SDL_SetWindowTitle(pWindow, "contrast enhancement");
+    show_matrix(renderer, contrast_enhancement(gray_img));
+    SDL_SetWindowTitle(pWindow, "original");
+    show_matrix(renderer, gray_img);
     SDL_SetWindowTitle(pWindow, "opening by reconstruction");
     gray_img = opening_by_reconstruction(gray_img);
     show_matrix(renderer, gray_img);
@@ -313,10 +337,10 @@ void test_lecture_img()
 
     SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 
-    std::string extensions[] = { "bmp", "tga", "ico", "pbm","pgm", "ppm", "jpg", "gif", "png", "tiff"};
+    std::string extensions[] = { "bmp", "tga", "ico", "pbm", "pcx", "pgm", "ppm", "jpg", "gif", "png", "tiff"};
 
     std::for_each(
-                  extensions,
+                  extensions+4,
                   extensions+9,
                   [renderer](std::string s){auto cur_list = get_files_recursively(".", s);
                                                 std::for_each(cur_list.begin(),
@@ -352,7 +376,7 @@ void test_ecriture_img()
     Matrix<Color> img = read_img("Images/marinbas.ico");
     //img = read_img("Images/test_icone.ico");
     show_matrix(renderer, img);
-    std::vector<std::string> extensions = { "bmp", "tga", "ico", "png", "pbm","pgm", "ppm", "jpg", "gif", "tiff"};
+    std::vector<std::string> extensions = { "bmp", "tga", "ico", "png", "pbm","pgm", "ppm", "jpg", "gif", "pcx", "tiff"};
     std::for_each(extensions.cbegin(), extensions.cend(), [img](const std::string& s){save_img("testwriter."+s, img);});
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(pWindow);
@@ -406,6 +430,40 @@ void test_filtrage__lineaire()
                                             SDL_WINDOW_SHOWN);
 
     SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
+
+    std::size_t filtersize = 7;
+    std::pair<Matrix<float>, Matrix<float> > XY = meshgrid<float>(filtersize);
+    Matrix<float>& X = XY.first;
+    Matrix<float>& Y = XY.second;
+    X-=filtersize/2.0f-0.5f;
+    Y-=filtersize/2.0f-0.5f;
+    std::cout<<X<<Y<<std::endl;
+
+    std::cout<<average()<<std::endl;
+    std::cout<<disk()<<std::endl;
+    std::cout<<binomial()<<std::endl;
+    std::cout<<gaussian()<<std::endl;
+    std::cout<<savgol(7,3)<<std::endl;
+
+    std::cout<<sobelx()<<std::endl;
+    std::cout<<prewittx()<<std::endl;
+    std::cout<<isotropicx()<<std::endl;
+    std::cout<<mdifx()<<std::endl;
+    std::cout<<savgol(7, 3, 1, 0)<<std::endl;
+    std::cout<<mdifxx()<<std::endl;
+    std::cout<<savgol(7, 3, 2, 0)<<std::endl;
+
+    std::cout<<sobely()<<std::endl;
+    std::cout<<prewitty()<<std::endl;
+    std::cout<<isotropicy()<<std::endl;
+    std::cout<<mdify()<<std::endl;
+    std::cout<<savgol(7, 3, 0, 1)<<std::endl;
+    std::cout<<mdifyy()<<std::endl;
+    std::cout<<savgol(7, 3, 0, 2)<<std::endl;
+
+    std::cout<<mdifxy()<<std::endl;
+    std::cout<<savgol(7, 3, 1, 1)<<std::endl;
+
 
     Matrix<Color> img = read_img("Images/Filtrage/phare_bruit_ps.png");
     Matrix<unsigned char> img_gray = color2grayimage(img);
@@ -543,7 +601,6 @@ void test_linalg()
                         {3,2,1,4,5}};
 
     Matrix<float> X = bwdsub(U, B);// solve UX = B with U an upper triangular matrix
-
     std::cout<<U<<std::endl;
     std::cout<<B<<std::endl;
     std::cout<<X<<std::endl;
@@ -552,7 +609,6 @@ void test_linalg()
 
     Matrix<float> L = transpose(U);
     X = fwdsub(L, B);// solve LX = B with L a lower triangular matrix
-
     std::cout<<L<<std::endl;
     std::cout<<B<<std::endl;
     std::cout<<X<<std::endl;
@@ -595,6 +651,16 @@ void test_linalg()
     std::cout<<dot(transpose(Q), Q)<<std::endl;
     std::cout<<R<<std::endl;
     std::cout<<dot(R, Q)<<std::endl;
+
+    std::cout<<"decomposition de cholesky"<<std::endl;
+    A = {{1, 2, 3},
+        {2, 20, 26},
+        {3, 26, 70}};
+    L = cholesky(A);
+    std::cout<<A<<std::endl;
+    std::cout<<L<<std::endl;
+    std::cout<<dot(L, transpose(L))<<std::endl;
+
 }
 
 void test_regression()
@@ -604,7 +670,7 @@ void test_regression()
 
 void test_segmentation()
 {
-        SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_VIDEO);
     SDL_Window* pWindow = SDL_CreateWindow("Image Processing Library",
                                             SDL_WINDOWPOS_UNDEFINED,
                                             SDL_WINDOWPOS_UNDEFINED,
@@ -675,7 +741,7 @@ void test_sclaler()
 
 void test_hough()
 {
-        //test image reader
+    //test image reader
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window* pWindow = SDL_CreateWindow("Image Processing Library",
                                             SDL_WINDOWPOS_UNDEFINED,

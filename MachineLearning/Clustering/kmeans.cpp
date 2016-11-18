@@ -10,6 +10,7 @@
 Kmeans::Kmeans(std::size_t nb_clusters_arg)
 {
     nb_clusters = nb_clusters_arg;
+    nb_features = 0;
     max_iteration = 20;
 }
 

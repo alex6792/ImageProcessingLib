@@ -60,6 +60,8 @@
 		<Unit filename="ImageProcessing/ImageIO/jpegIO.hpp" />
 		<Unit filename="ImageProcessing/ImageIO/lodepng/lodepng.cpp" />
 		<Unit filename="ImageProcessing/ImageIO/lodepng/lodepng.h" />
+		<Unit filename="ImageProcessing/ImageIO/pcxIO.cpp" />
+		<Unit filename="ImageProcessing/ImageIO/pcxIO.hpp" />
 		<Unit filename="ImageProcessing/ImageIO/pngIO.cpp" />
 		<Unit filename="ImageProcessing/ImageIO/pngIO.hpp" />
 		<Unit filename="ImageProcessing/ImageIO/pnmIO.cpp" />

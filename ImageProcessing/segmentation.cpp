@@ -77,16 +77,16 @@ Matrix<bool> otsu(const Matrix<unsigned char>& img)
 Matrix<std::size_t> felzenszwalb(const Matrix<unsigned char>& M)
 {
     std::size_t H = M.rowNb(), W = M.colNb();
-    Matrix<float> M_copy_l = Matrix<float>(M);
-    Matrix<float> M_copy_r = Matrix<float>(M);
-    Matrix<float> M_copy_u = Matrix<float>(M);
-    Matrix<float> M_copy_d = Matrix<float>(M);
+    Matrix<float> M_copy_l(M);
+    Matrix<float> M_copy_r(M);
+    Matrix<float> M_copy_u(M);
+    Matrix<float> M_copy_d(M);
     M_copy_l.delCol(0);
     M_copy_r.delCol(W-1);
     M_copy_u.delRow(0);
     M_copy_d.delRow(H-1);
-    Matrix<unsigned char> diff_img_h = Matrix<unsigned char>(abs(M_copy_l-M_copy_r));
-    Matrix<unsigned char> diff_img_v = Matrix<unsigned char>(abs(M_copy_u-M_copy_d));
+    Matrix<unsigned char> diff_img_h(abs(M_copy_l-M_copy_r));
+    Matrix<unsigned char> diff_img_v(abs(M_copy_u-M_copy_d));
     Matrix<std::size_t> labeled_img = arange<std::size_t>(0, H*W);
     Matrix<std::vector<std::size_t> >cluster_elements(1, H*W);
     auto it_m = cluster_elements.begin();

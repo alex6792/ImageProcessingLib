@@ -24,7 +24,7 @@ class Polynomial
     private :
         std::vector<float> coefficients;
     public:
-        Polynomial(const std::vector<float>&);
+        explicit Polynomial(const std::vector<float>&);
 
         // getter/setter
         float operator()(unsigned) const;

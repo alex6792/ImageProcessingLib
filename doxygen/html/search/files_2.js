@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['file_5fexplorer_2ehpp',['file_explorer.hpp',['../file__explorer_8hpp.html',1,'']]],
-  ['fourier_2ehpp',['fourier.hpp',['../fourier_8hpp.html',1,'']]]
+  ['clusteringfeature_2ehpp',['clusteringfeature.hpp',['../clusteringfeature_8hpp.html',1,'']]],
+  ['color_2ehpp',['color.hpp',['../color_8hpp.html',1,'']]],
+  ['csvio_2ehpp',['csvIO.hpp',['../csv_i_o_8hpp.html',1,'']]]
 ];

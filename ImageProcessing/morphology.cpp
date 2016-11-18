@@ -14,8 +14,8 @@ Mask circle(std::size_t r)
 Mask cross(std::size_t a)
 {
     Mask new_cross = zeros<bool>(2*a+1);
-    new_cross.setCol(a, ones<bool>(new_cross.rowNb(), 1));
-    new_cross.setRow(a, ones<bool>(1, new_cross.colNb()));
+    new_cross.setCol(a, ones<bool>(2*a+1, 1));
+    new_cross.setRow(a, ones<bool>(1, 2*a+1));
     return new_cross;
 }
 
@@ -353,8 +353,13 @@ Matrix<unsigned char> closing_by_reconstruction(const Matrix<unsigned char>& M, 
     I.clear();
     I.push_back(dilate(M, mask));
     I.push_back(max(erode(I[0], mask), M));
+    int cpt = 0;
     while(any(I[I.size()-1]!=I[I.size()-2]))
+    {
         I.push_back(max(erode(I[I.size()-1], mask), M));
+        ++cpt;
+        std::cout<<cpt<<std::endl;
+    }
     return I[I.size()-1];
 }
 
@@ -496,8 +501,14 @@ Matrix<unsigned char> opening_by_reconstruction(const Matrix<unsigned char>& M, 
     I.clear();
     I.push_back(erode(M, mask));
     I.push_back(min(dilate(I[0], mask), M));
+    int cpt = 0;
     while(any(I[I.size()-1]!=I[I.size()-2]))
+    {
         I.push_back(min(dilate(I[I.size()-1], mask), M));
+        ++cpt;
+        std::cout<<cpt<<std::endl;
+    }
+
     return I[I.size()-1];
 }
 

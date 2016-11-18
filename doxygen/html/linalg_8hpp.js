@@ -11,7 +11,9 @@ var linalg_8hpp =
     [ "Jacobi", "linalg_8hpp.html#a67196829c38648ac3f20571b5dc83c63", null ],
     [ "lu", "linalg_8hpp.html#a678d32b5cd978a9535a2c8015511f2a7", null ],
     [ "norm", "linalg_8hpp.html#a0a0a5aa416d30cefdd6095026442cfdd", null ],
+    [ "pinv", "linalg_8hpp.html#a85d3286feaaa8d37a235378fe2fb71b2", null ],
     [ "qr", "linalg_8hpp.html#a1bbcc265dca3a7a1df8606aebbc99a67", null ],
+    [ "rq", "linalg_8hpp.html#ad77d5cb42b42255e8dd3ae9032485dc6", null ],
     [ "svd", "linalg_8hpp.html#a5f73a02c9d297b8ea68b4bcd0ddbe829", null ],
     [ "trace", "linalg_8hpp.html#a3f354f5ec26ffd7402e3954a9e44469c", null ]
 ];

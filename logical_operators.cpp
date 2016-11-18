@@ -69,9 +69,7 @@ bool XNOR(bool a, bool b)
 // logical operators on matrix
 Matrix<bool> NOT(const Matrix<bool>& M)
 {
-    Matrix<bool> new_mat(M.rowNb(), M.colNb());
-    std::transform(M.cbegin(), M.cend(), new_mat.begin(), [](bool i){return !i;});
-    return new_mat;
+    return true-M;
 }
 
 Matrix<bool> AND(const Matrix<bool>& A, const Matrix<bool>& B)

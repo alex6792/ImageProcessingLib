@@ -4,6 +4,7 @@
 #include "gifIO.hpp"
 #include "icoIO.hpp"
 #include "jpegIO.hpp"
+#include "pcxIO.hpp"
 #include "pngIO.hpp"
 #include "pnmIO.hpp"
 #include "tgaIO.hpp"
@@ -30,6 +31,10 @@ Matrix<Color> read_img(std::string filename)
     else if(!extension3.compare("jpg"))
     {
         return read_jpeg(filename);
+    }
+    else if(!extension3.compare("pcx"))
+    {
+        return read_pcx(filename);
     }
     else if(!extension3.compare("png"))
     {
@@ -82,6 +87,10 @@ void save_img(std::string filename, const Matrix<Color>& img)
     else if(!extension3.compare("jpg"))
     {
         save_jpeg(filename, img);
+    }
+    else if(!extension3.compare("pcx"))
+    {
+        save_pcx(filename, img);
     }
     else if(!extension3.compare("png"))
     {

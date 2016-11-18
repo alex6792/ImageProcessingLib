@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['kmeans_2ehpp',['kmeans.hpp',['../kmeans_8hpp.html',1,'']]],
-  ['kmedoids_2ehpp',['kmedoids.hpp',['../kmedoids_8hpp.html',1,'']]],
-  ['knn_2ehpp',['knn.hpp',['../knn_8hpp.html',1,'']]]
+  ['icoio_2ehpp',['icoIO.hpp',['../ico_i_o_8hpp.html',1,'']]],
+  ['imageio_2ehpp',['imageIO.hpp',['../image_i_o_8hpp.html',1,'']]],
+  ['imgconverter_2ehpp',['imgconverter.hpp',['../imgconverter_8hpp.html',1,'']]]
 ];

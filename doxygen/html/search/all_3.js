@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['file_5fexplorer_2ehpp',['file_explorer.hpp',['../file__explorer_8hpp.html',1,'']]],
-  ['fourier_2ehpp',['fourier.hpp',['../fourier_8hpp.html',1,'']]]
+  ['dtree',['Dtree',['../class_dtree.html',1,'']]],
+  ['dtree_2ehpp',['dtree.hpp',['../dtree_8hpp.html',1,'']]],
+  ['dtreenode',['DtreeNode',['../struct_dtree_node.html',1,'']]]
 ];

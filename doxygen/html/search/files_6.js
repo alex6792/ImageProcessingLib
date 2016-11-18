@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['jpegio_2ehpp',['jpegIO.hpp',['../jpeg_i_o_8hpp.html',1,'']]]
+  ['hierarchicalclustering_2ehpp',['hierarchicalclustering.hpp',['../hierarchicalclustering_8hpp.html',1,'']]],
+  ['hough_2ehpp',['hough.hpp',['../hough_8hpp.html',1,'']]]
 ];

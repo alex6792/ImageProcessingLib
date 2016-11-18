@@ -7,6 +7,15 @@
 Matrix<unsigned char> bilateral(Matrix<unsigned char> M, std::size_t filtersize, float range_var, float spatial_var)
 {
     Matrix<unsigned char> filtered_img(M.rowNb(), M.colNb());
+    Matrix<float> M_copy(M);
+
+    std::pair<Matrix<float>, Matrix<float> > XY = meshgrid<float>(filtersize);
+    Matrix<float>& X = XY.first;
+    Matrix<float>& Y = XY.second;
+    X-=filtersize/2.0f-0.5f;
+    Y-=filtersize/2.0f-0.5f;
+    Matrix<float> W_spatial = exp(-X*X-Y*Y)/(2.0f*spatial_var);
+
     for(std::size_t i=0, I=M.rowNb();i<I;++i)
     {
         for(std::size_t j=0, J=M.colNb();j<J;++j)
@@ -17,15 +26,14 @@ Matrix<unsigned char> bilateral(Matrix<unsigned char> M, std::size_t filtersize,
             {
                 for(std::size_t l=0;l<filtersize;++l)
                 {
-
                     if(i+k>=filtersize/2 && j+l>=filtersize/2 && i+k<I+filtersize/2 && j+l<J+filtersize/2)
                     {
-                        std::size_t dist = filtersize*filtersize/2+k*k+l*l-2*(k+l)*filtersize;
+
                         std::size_t x = i+k-filtersize/2;
                         std::size_t y = j+l-filtersize/2;
-                        float w = std::exp(-((float)M(i, j)-(float)M(x, y))*((float)M(i, j)-(float)M(x, y))/(2.0f*range_var));
-                        w*=std::exp(-(dist)/(2.0f*spatial_var));
-                        weighted_sum+=w*M(x, y);
+                        float w = std::exp(-(M_copy(i, j)-M_copy(x, y))*(M_copy(i, j)-M_copy(x, y))/(2.0f*range_var));
+                        w*=W_spatial(k, l);
+                        weighted_sum+=w*M_copy(x, y);
                         normalization+=w;
                     }
                 }

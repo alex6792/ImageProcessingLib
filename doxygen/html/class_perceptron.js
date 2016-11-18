@@ -7,5 +7,5 @@ var class_perceptron =
     [ "get_thresh", "class_perceptron.html#a299ec872ea6dfec964707239690a92d7", null ],
     [ "predict", "class_perceptron.html#ae59fec54803090a6e1f25ffa47ebc5e2", null ],
     [ "set_alpha", "class_perceptron.html#ad6eb0fdd55273eb19ca255ff7870982e", null ],
-    [ "set_max_iteration", "class_perceptron.html#adb1203eacb353b360b71d8d4b64f4892", null ]
+    [ "set_max_iteration", "class_perceptron.html#a5cdeb04de23add4f77c1fc722766c6ea", null ]
 ];

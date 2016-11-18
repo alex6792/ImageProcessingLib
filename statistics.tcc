@@ -282,19 +282,6 @@ template <class T> T stdev(const Matrix<T>& M)
     return std::sqrt(var(M));
 }
 
-template <class T> int quickselect(const Matrix<T>& M, int order)
-{
-    Matrix<T> Mcopy = M;
-    return quickselect(Mcopy, 0, M.size()-1, order);
-}
-
-template <class T> Matrix<T> quicksort(const Matrix<T>& M)
-{
-    Matrix<T> Mcopy = M;
-    quicksort(Mcopy, 0, M.size()-1);
-    return Mcopy;
-}
-
 template <class T> Matrix<T> sort(const Matrix<T>& M)
 {
     Matrix<T> Mcopy = M;
@@ -312,45 +299,3 @@ template <class T> T var(const Matrix<T>& M)
     T m = mean(M);
     return mean(M*M)-m*m;
 }
-
-
-template <class T> static int partition(Matrix<T>& M, int first, int last, int pivot)
-{
-    std::swap(M(pivot/M.colNb(), pivot%M.colNb()), M(last/M.colNb(), last%M.colNb()));
-    int j = first;
-    for(int i=first;i<last;++i)
-    {
-        if(M(i/M.colNb(), i%M.colNb())<M(last/M.colNb(), last%M.colNb()))
-        {
-            std::swap(M(i/M.colNb(), i%M.colNb()), M(j/M.colNb(), j%M.colNb()));
-            ++j;
-        }
-    }
-    std::swap(M(last/M.colNb(), last%M.colNb()), M(j/M.colNb(), j%M.colNb()));
-    return j;
-}
-
-template <class T> static int quickselect(Matrix<T>& M, int first, int last, int order)
-{
-    if(first==last)
-        return M(first/M.colNb(), first%M.colNb());
-
-    int pivot = partition(M, first, last, first);
-    if(order==pivot)
-        return M(order/M.colNb(), order%M.colNb());
-    else if(order<pivot)
-        return quickselect(M, first, pivot-1, order);
-    else
-        return quickselect(M, pivot+1, last, order);
-}
-
-template <class T> static void quicksort(Matrix<T>& M, int first, int last)
-{
-    if(first<last)
-    {
-        int pivot = partition(M, first, last, first);
-        quicksort(M, first, pivot-1);
-        quicksort(M, pivot+1, last);
-    }
-}
-

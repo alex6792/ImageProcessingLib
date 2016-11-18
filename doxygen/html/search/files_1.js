@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['color_2ehpp',['color.hpp',['../color_8hpp.html',1,'']]],
-  ['csvio_2ehpp',['csvIO.hpp',['../csv_i_o_8hpp.html',1,'']]]
+  ['bernoulli_5fnaive_5fbayes_2ehpp',['bernoulli_naive_bayes.hpp',['../bernoulli__naive__bayes_8hpp.html',1,'']]],
+  ['birch_2ehpp',['birch.hpp',['../birch_8hpp.html',1,'']]],
+  ['bmpio_2ehpp',['bmpIO.hpp',['../bmp_i_o_8hpp.html',1,'']]]
 ];

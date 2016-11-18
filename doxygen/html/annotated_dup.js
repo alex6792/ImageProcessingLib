@@ -1,10 +1,16 @@
 var annotated_dup =
 [
+    [ "AffinityPropagation", "class_affinity_propagation.html", "class_affinity_propagation" ],
     [ "BernoulliNaiveBayes", "class_bernoulli_naive_bayes.html", "class_bernoulli_naive_bayes" ],
+    [ "Birch", "class_birch.html", "class_birch" ],
     [ "BPMLists", "struct_b_p_m_lists.html", "struct_b_p_m_lists" ],
     [ "BPMNode", "struct_b_p_m_node.html", "struct_b_p_m_node" ],
+    [ "ClusteringFeature", "class_clustering_feature.html", "class_clustering_feature" ],
     [ "Color", "class_color.html", "class_color" ],
     [ "ColorTree", "struct_color_tree.html", "struct_color_tree" ],
+    [ "Dtree", "class_dtree.html", "class_dtree" ],
+    [ "DtreeNode", "struct_dtree_node.html", "struct_dtree_node" ],
+    [ "Edge", "struct_edge.html", "struct_edge" ],
     [ "GaussianNaiveBayes", "class_gaussian_naive_bayes.html", "class_gaussian_naive_bayes" ],
     [ "GMM", "class_g_m_m.html", "class_g_m_m" ],
     [ "Hash", "struct_hash.html", "struct_hash" ],
@@ -28,8 +34,10 @@ var annotated_dup =
     [ "MLP", "class_m_l_p.html", "class_m_l_p" ],
     [ "PCA", "class_p_c_a.html", "class_p_c_a" ],
     [ "Perceptron", "class_perceptron.html", "class_perceptron" ],
+    [ "Polynomial", "class_polynomial.html", "class_polynomial" ],
     [ "Snake", "class_snake.html", "class_snake" ],
     [ "StandardScaler", "class_standard_scaler.html", "class_standard_scaler" ],
     [ "ucvector", "structucvector.html", "structucvector" ],
-    [ "uivector", "structuivector.html", "structuivector" ]
+    [ "uivector", "structuivector.html", "structuivector" ],
+    [ "Zernike", "class_zernike.html", "class_zernike" ]
 ];

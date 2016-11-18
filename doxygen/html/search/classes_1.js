@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['color',['Color',['../class_color.html',1,'']]],
-  ['colortree',['ColorTree',['../struct_color_tree.html',1,'']]]
+  ['bernoullinaivebayes',['BernoulliNaiveBayes',['../class_bernoulli_naive_bayes.html',1,'']]],
+  ['birch',['Birch',['../class_birch.html',1,'']]],
+  ['bpmlists',['BPMLists',['../struct_b_p_m_lists.html',1,'']]],
+  ['bpmnode',['BPMNode',['../struct_b_p_m_node.html',1,'']]]
 ];

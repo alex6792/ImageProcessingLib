@@ -36,14 +36,9 @@ template <class T> T moment(const Matrix<T>&, int);
 template <class T> T moment(const Matrix<T>&, int, int);
 template <class T> T prod(const Matrix<T>&);
 template <class T> T stdev(const Matrix<T>&);
-template <class T> int quickselect(const Matrix<T>&, int);
-template <class T> Matrix<T> quicksort(const Matrix<T>&);
 template <class T> Matrix<T> sort(const Matrix<T>&);
 template <class T> T sum(const Matrix<T>&);
 template <class T> T var(const Matrix<T>&);
-template <class T> static int partition(Matrix<T>&, int, int, int);
-template <class T> static int quickselect(Matrix<T>&, int, int, int);
-template <class T> static void quicksort(Matrix<T>&, int, int);
 
 
 #include "statistics.tcc"

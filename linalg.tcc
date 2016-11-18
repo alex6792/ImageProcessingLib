@@ -163,11 +163,11 @@ template <class T> Matrix<T> cholesky(const Matrix<T>& M)
     if(M.rowNb()==M.colNb())
     {
         Matrix<T> L(M.rowNb(), M.colNb());
-        for(std::size_t j=0, J=M.colNb();j<J;++j)
+        for(std::size_t j=0, J=M.rowNb();j<J;++j)
         {
-            Matrix<T> V = M.getSubmat(j, M.rowNb(), j, j+1);
+            Matrix<T> V = M.getSubmat(j, J, j, j+1);
             for(std::size_t i=0;i<j;++i)
-                V-=L(j, i)*L.getSubmat(j, M.rowNb(), i, i+1);
+                V-=L(j, i)*L.getSubmat(j, J, i, i+1);
             if(V(0, 0)>0)
                 L.setSubmat(j, j, V/sqrt(V(0, 0)));
             else
@@ -326,10 +326,15 @@ template <class T> std::pair<Matrix<T>, Matrix<T> > rq(const Matrix<T>& M)
     return std::make_pair(R, Q);
 }
 
-template <class T> std::pair<Matrix<T>, Matrix<T> > svd(const Matrix<T>& M)
+template <class T> std::tuple<Matrix<T>, Matrix<T>, Matrix<T> > svd(const Matrix<T>& M)
 {
-    Matrix<float> A = M;
-    return std::make_pair(zeros<T>(1), zeros<T>(1));
+    std::size_t H = M.rowNb();
+    std::size_t W = M.colNb();//H>=W
+
+    Matrix<float> U = M;
+    Matrix<float> S(W, W);
+    Matrix<float> V(W, W);
+    return std::make_tuple(U,S,V);
 }
 
 template <class T> T trace(const Matrix<T>& M)
@@ -395,5 +400,33 @@ template <class T> std::pair<Matrix<T>, Matrix<T> > Jacobi(const Matrix<T>& M)
         Matrix<T> Pq = P.getCol(q);
         P.setCol(p, cos*Pp-sin*Pq);
         P.setCol(q, cos*Pq+sin*Pp);
+    }
+}
+
+
+template <class T> Matrix<T> Vander(const Matrix<T>& M)
+{
+    std::size_t H = M.rowNb();
+    std::size_t W = M.colNb();
+    if(H==1)
+    {
+        Matrix<T> V(W, W);
+        V.setRow(0, ones<T>(1, W));
+        for(std::size_t i=1;i<W;++i)
+            V.setRow(0, pow(M, i));
+        return V;
+    }
+    else if(W==1)
+    {
+        Matrix<T> V(H, H);
+        V.setCol(0, ones<T>(H, 1));
+        for(std::size_t i=1;i<W;++i)
+            V.setCol(0, pow(M, i));
+        return V;
+    }
+    else
+    {
+        std::cout<<"The argument must be a vector"<<std::endl;
+        return Matrix<T>();
     }
 }

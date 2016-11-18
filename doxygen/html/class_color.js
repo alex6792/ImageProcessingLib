@@ -7,11 +7,14 @@ var class_color =
     [ "alpha", "class_color.html#a7a25d5aee9fc72224886dbc6b94fcc3d", null ],
     [ "blue", "class_color.html#ace5f9c44c50f01f5c10c70bdde02223d", null ],
     [ "blue", "class_color.html#aaeee41b6ac91b02796e0fa43ba680e7b", null ],
+    [ "chromab", "class_color.html#a66b6e725964ad16ffa15bda1f64fa54e", null ],
+    [ "chromar", "class_color.html#ac5a3156060aaed0a0ed2aadbd2bad295", null ],
     [ "gray", "class_color.html#ac6d60f5403df36027ed40428e2cb6b6a", null ],
     [ "green", "class_color.html#ae195e124ee9e24874c3ca859262af20f", null ],
     [ "green", "class_color.html#aff7c92f91f99032c9722795f78bacaa6", null ],
     [ "HSV2RGB", "class_color.html#acf1c76fec95dc0f49de5231b286d4358", null ],
     [ "hue", "class_color.html#a8fdc9308fd4d4e5c6c976fe801c4537f", null ],
+    [ "luma", "class_color.html#a2f10b4dda627282b9e7c2b9fff27b5e5", null ],
     [ "operator!=", "class_color.html#aaf59a748668bac802a1626dab57bf193", null ],
     [ "operator*", "class_color.html#add56fca66c4827e467194502b59aedbc", null ],
     [ "operator*", "class_color.html#aa7e487ad3d0d398ee9fcfca2a8270d91", null ],
@@ -31,5 +34,6 @@ var class_color =
     [ "red", "class_color.html#a77365036fed6e8c5dfec4827f7cb3c2d", null ],
     [ "red", "class_color.html#aad701a874362a4ea739b4af96aa46ca9", null ],
     [ "saturation", "class_color.html#a81b4e3857a86212f1d62fb45da3e2f41", null ],
-    [ "value", "class_color.html#a9dddf5c68aee66ff57c64fa2c60cd87b", null ]
+    [ "value", "class_color.html#a9dddf5c68aee66ff57c64fa2c60cd87b", null ],
+    [ "YCbCr2RGB", "class_color.html#ae275f14e29b23c845ab6a5fd7203d81f", null ]
 ];

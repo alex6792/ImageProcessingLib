@@ -81,7 +81,6 @@ Matrix<Color> read_gif(std::string filename)
                     myfile.putback(c1);
                 }
 
-
                 myfile.get(c);
                 c1=(unsigned char)c;
                 myfile.get(reinterpret_cast<char>(c));
@@ -98,7 +97,7 @@ Matrix<Color> read_gif(std::string filename)
                         myfile.get(c);
                     }
                 }
-                else
+                else // image data
                 {
 
                     myfile.putback(c2);
@@ -125,8 +124,13 @@ Matrix<Color> read_gif(std::string filename)
 
                     // local color table
                     int n_img = M_img?pow(2, Pixel_img)*3:0;
+                    std::cout<<n_img<<std::endl;
                     unsigned char local_color_map[n_img];
                     myfile.read(reinterpret_cast<char*>(local_color_map), n_img);
+
+                    // current color map
+                    unsigned char* color_map = M_img?local_color_map:global_color_map;
+                    int n_color_map = M_img?n_img:n;
 
                     // LZW_minimum_size
                     char LZW_minimum_size;
@@ -139,32 +143,31 @@ Matrix<Color> read_gif(std::string filename)
                     myfile.get(nb_bytes_following);
                     nb_bytes_following_u = nb_bytes_following;
                     unsigned code_size = LZW_minimum_size+1;
+                    int cpt_subblock = 0;
 
+                    // init dictionnary
                     std::string Dictionnary[4096];
                     bool Existence_in_dic[4096];
-                    std::size_t limit_dic = M_img?n_img/3+2:n/3+2;
+                    std::size_t limit_dic = n_color_map/3+2;
                     std::size_t cur_idx_in_Dic = limit_dic;
                     std::cout<<limit_dic<<std::endl;
-
-                    int cpt_subblock = 0;
+                    std::fill(Dictionnary, Dictionnary+4096, "");
+                    std::fill(Existence_in_dic, Existence_in_dic+4096, false);
+                    for(std::size_t i=0;i<limit_dic;++i)
+                    {
+                        Dictionnary[i] = char(i);
+                        Existence_in_dic[i] = true;
+                    }
+                    cur_idx_in_Dic = limit_dic;
+                    std::string output = "";
 
                     while(nb_bytes_following_u!=0)
                     {
-                        std::fill(Dictionnary, Dictionnary+4096, "");
-                        std::fill(Existence_in_dic, Existence_in_dic+4096, false);
-                        for(std::size_t i=0;i<limit_dic;++i)
-                        {
-                            Dictionnary[i] = char(i);
-                            Existence_in_dic[i] = true;
-                        }
-                        cur_idx_in_Dic = limit_dic;
 
-
-
-                        std::cout<<"coucou"<<std::endl;
-                        std::cout<<cpt_subblock<<std::endl;
+                        // read next subblock
+                        //std::cout<<cpt_subblock<<std::endl;
                         cpt_subblock++;
-                        std::cout<<(int)nb_bytes_following_u<<std::endl;
+                        //std::cout<<(int)nb_bytes_following_u<<std::endl;
                         unsigned char subblock[nb_bytes_following_u];
                         myfile.read(reinterpret_cast<char*>(subblock), nb_bytes_following_u);
                         std::queue<bool> cur_bitset;
@@ -176,12 +179,11 @@ Matrix<Color> read_gif(std::string filename)
                                 subblock[i]/=2;
                             }
                         }
-                        std::cout<<cur_bitset.size()<<std::endl;
-                        std::cout<<code_size<<std::endl;
-                        std::string output = "";
+                        //std::cout<<cur_bitset.size()<<std::endl;
+                        //std::cout<<code_size<<std::endl;
 
 
-                        ///read first index
+                        // read first index
                         unsigned code = 0;
                         unsigned previous_code = 0;
                         for(unsigned i=0; i<code_size;++i)
@@ -189,7 +191,9 @@ Matrix<Color> read_gif(std::string filename)
                             previous_code+=cur_bitset.front()?pow(2, i):0;
                             cur_bitset.pop();
                         }
-                        std::cout<<previous_code<<std::endl;
+                        //if(previous_code!=limit_dic-2)
+                            //output+=Dictionnary[code];
+
                         for(unsigned i=0; i<code_size;++i)
                         {
                             code+=cur_bitset.front()?pow(2, i):0;
@@ -197,9 +201,9 @@ Matrix<Color> read_gif(std::string filename)
                         }
                         previous_code = code;
                         output+=Dictionnary[code];
-                        std::cout<<previous_code<<std::endl;
+                        //std::cout<<previous_code<<std::endl;
 
-                        while(cur_bitset.size()>code_size)
+                        while(cur_bitset.size()>=code_size)
                         {
                             code = 0;
                             for(unsigned i=0; i<code_size;++i)
@@ -208,8 +212,7 @@ Matrix<Color> read_gif(std::string filename)
                                 cur_bitset.pop();
                             }
 
-                            //std::cout<<code<<std::endl;
-                            if(code==limit_dic-2)//clear code
+                            if(code==limit_dic-2)// clear code
                             {
                                 std::cout<<"clear code"<<std::endl;
                                 for(std::size_t i=limit_dic;i<4096;++i)
@@ -218,73 +221,50 @@ Matrix<Color> read_gif(std::string filename)
                                     Dictionnary[i] = "";
                                 }
                                 cur_idx_in_Dic = limit_dic;
-                                //Existence_in_dic[limit_dic-2] = true;
-                                //Existence_in_dic[limit_dic-1] = true;
                                 code_size = LZW_minimum_size+1;
+                                //previous_code = code;
                             }
-                            else if(code==limit_dic-1)
+                            else if(code==limit_dic-1)// end code
                             {
+                                std::for_each(output.cbegin(), output.cend(),
+                                            [&it, &color_map](const unsigned char& c)
+                                            {*it = Color(color_map[3*c],
+                                                        color_map[3*c+1],
+                                                        color_map[3*c+2]);
+                                            ++it;});
                                 std::cout<<"end code"<<std::endl;
-                                break;
+                                std::cout<<"nb de pixels ecrits : ";
+                                std::cout<<output.size()<<std::endl;
+                                return img;
                             }
                             else if(Existence_in_dic[code])
                             {
                                 Dictionnary[cur_idx_in_Dic] = Dictionnary[previous_code]+Dictionnary[code][0];
-                                //std::cout<<"added in dictionnary"<<std::endl;
-                                /*std::for_each(Dictionnary[cur_idx_in_Dic].begin(),
-                                              Dictionnary[cur_idx_in_Dic].end(),
-                                                [](char c){std::cout<<(int)(unsigned char)c;});
-                                std::cout<<std::endl;*/
                                 output+=Dictionnary[code];
                                 Existence_in_dic[cur_idx_in_Dic] = true;
                                 ++cur_idx_in_Dic;
+
+                                if(cur_idx_in_Dic==pow(2, code_size))
+                                {
+                                    ++code_size;
+                                }
+
+                                previous_code = code;
                             }
                             else
                             {
                                 Dictionnary[cur_idx_in_Dic] = Dictionnary[previous_code]+Dictionnary[previous_code][0];
-                                /*std::cout<<"added in dictionnary"<<std::endl;
-                                std::for_each(Dictionnary[cur_idx_in_Dic].begin(),
-                                              Dictionnary[cur_idx_in_Dic].end(),
-                                                [](char c){std::cout<<(int)(unsigned char)c;});
-                                std::cout<<std::endl;*/
                                 output+=Dictionnary[cur_idx_in_Dic];
                                 Existence_in_dic[cur_idx_in_Dic] = true;
                                 ++cur_idx_in_Dic;
+
+                                if(cur_idx_in_Dic==pow(2, code_size))
+                                {
+                                    ++code_size;
+                                }
+
+                                previous_code = code;
                             }
-
-                            if(cur_idx_in_Dic==pow(2, code_size))
-                            {
-                                ++code_size;
-                                std::cout<<"augmentation longueur de code"<<std::endl;
-                            }
-
-                            previous_code = code;
-                        }
-
-
-                        std::for_each(output.begin(),
-                                      output.end(),
-                                        [](char c){std::cout<<(int)(unsigned char)c<<" ";});
-                                        std::cout<<std::endl;
-
-                        if(M)
-                        {
-                            std::for_each(output.cbegin(), output.cend(),
-                            [&it, &global_color_map](const unsigned char& c)
-                            {*it = Color(global_color_map[3*c],
-                                        global_color_map[3*c+1],
-                                        global_color_map[3*c+2]);
-                            ++it;});
-                        }
-                        else
-                        {
-                            std::for_each(output.cbegin(), output.cend(),
-                            [&it, &local_color_map](const unsigned char& c)
-                            {*it = Color(local_color_map[3*c],
-                                        local_color_map[3*c+1],
-                                        local_color_map[3*c+2]);
-                            ++it;});
-
                         }
 
                         myfile.get(nb_bytes_following);

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['operator_28_29',['operator()',['../class_matrix.html#ae061f61e76c735184b9874cf89023269',1,'Matrix::operator()(int i, int j) const '],['../class_matrix.html#ae8809f61744c5c424b83236ffab161a0',1,'Matrix::operator()(int i, int j)']]]
+  ['operator_28_29',['operator()',['../class_matrix.html#a0f485dd8d686231dfc1f15255c7ab10e',1,'Matrix::operator()(std::size_t i, std::size_t j) const '],['../class_matrix.html#ade943d401aaf3947e31d39962fd328a9',1,'Matrix::operator()(std::size_t i, std::size_t j)']]]
 ];

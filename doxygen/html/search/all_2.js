@@ -1,4 +1,11 @@
 var searchData=
 [
-  ['end',['end',['../class_matrix.html#aea37754c35ae3c10613b4e7793f7d43c',1,'Matrix']]]
+  ['cbegin',['cbegin',['../class_matrix.html#a5e1944b6a2ee0d44b9f58007703093b9',1,'Matrix']]],
+  ['cend',['cend',['../class_matrix.html#a20209d7748f9c3d3aeb625cd23b9eb50',1,'Matrix']]],
+  ['clusteringfeature',['ClusteringFeature',['../class_clustering_feature.html',1,'']]],
+  ['clusteringfeature_2ehpp',['clusteringfeature.hpp',['../clusteringfeature_8hpp.html',1,'']]],
+  ['color',['Color',['../class_color.html',1,'']]],
+  ['color_2ehpp',['color.hpp',['../color_8hpp.html',1,'']]],
+  ['colortree',['ColorTree',['../struct_color_tree.html',1,'']]],
+  ['csvio_2ehpp',['csvIO.hpp',['../csv_i_o_8hpp.html',1,'']]]
 ];

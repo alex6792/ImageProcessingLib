@@ -122,12 +122,12 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix.html#a9d567e3a121b1be0c3f9c461cab524fe">Matrix</a> ()</td></tr>
 <tr class="memdesc:a9d567e3a121b1be0c3f9c461cab524fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor that construct a matrix 1X1. <br /></td></tr>
 <tr class="separator:a9d567e3a121b1be0c3f9c461cab524fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7de16801b5d2c7d07276d5b1798fae3f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix.html#a7de16801b5d2c7d07276d5b1798fae3f">Matrix</a> (int N)</td></tr>
-<tr class="memdesc:a7de16801b5d2c7d07276d5b1798fae3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Square NxN matrix constructor.  <a href="#a7de16801b5d2c7d07276d5b1798fae3f">More...</a><br /></td></tr>
-<tr class="separator:a7de16801b5d2c7d07276d5b1798fae3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc9a52f41b624b54418fc28fadbc999a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix.html#adc9a52f41b624b54418fc28fadbc999a">Matrix</a> (int M, int N)</td></tr>
-<tr class="memdesc:adc9a52f41b624b54418fc28fadbc999a"><td class="mdescLeft">&#160;</td><td class="mdescRight">MxN matrix constructor.  <a href="#adc9a52f41b624b54418fc28fadbc999a">More...</a><br /></td></tr>
-<tr class="separator:adc9a52f41b624b54418fc28fadbc999a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ddd0c0ddc809ab75d70a98bb6df08e4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix.html#a0ddd0c0ddc809ab75d70a98bb6df08e4">Matrix</a> (std::size_t N)</td></tr>
+<tr class="memdesc:a0ddd0c0ddc809ab75d70a98bb6df08e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Square NxN matrix constructor.  <a href="#a0ddd0c0ddc809ab75d70a98bb6df08e4">More...</a><br /></td></tr>
+<tr class="separator:a0ddd0c0ddc809ab75d70a98bb6df08e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd432f805029dc656f5df6a861e92180"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix.html#abd432f805029dc656f5df6a861e92180">Matrix</a> (std::size_t M, std::size_t N)</td></tr>
+<tr class="memdesc:abd432f805029dc656f5df6a861e92180"><td class="mdescLeft">&#160;</td><td class="mdescRight">MxN matrix constructor.  <a href="#abd432f805029dc656f5df6a861e92180">More...</a><br /></td></tr>
+<tr class="separator:abd432f805029dc656f5df6a861e92180"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a0412449ffe1fd6750982da77d3e742"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
 <tr class="memitem:a6a0412449ffe1fd6750982da77d3e742"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_matrix.html#a6a0412449ffe1fd6750982da77d3e742">Matrix</a> (const <a class="el" href="class_matrix.html">Matrix</a>&lt; Type &gt; &amp;M)</td></tr>
 <tr class="memdesc:a6a0412449ffe1fd6750982da77d3e742"><td class="mdescLeft">&#160;</td><td class="mdescRight">cast a matrix of type T1 to a matrix of type T2  <a href="#a6a0412449ffe1fd6750982da77d3e742">More...</a><br /></td></tr>
@@ -143,60 +143,66 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3578f3fa694545317d6511e91eed26b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea37754c35ae3c10613b4e7793f7d43c"><td class="memItemLeft" align="right" valign="top">std::deque&lt; T &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix.html#aea37754c35ae3c10613b4e7793f7d43c">end</a> ()</td></tr>
 <tr class="separator:aea37754c35ae3c10613b4e7793f7d43c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae061f61e76c735184b9874cf89023269"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix.html#ae061f61e76c735184b9874cf89023269">operator()</a> (int i, int j) const </td></tr>
-<tr class="memdesc:ae061f61e76c735184b9874cf89023269"><td class="mdescLeft">&#160;</td><td class="mdescRight">getter on the element on the i-th row and the j-th column  <a href="#ae061f61e76c735184b9874cf89023269">More...</a><br /></td></tr>
-<tr class="separator:ae061f61e76c735184b9874cf89023269"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8809f61744c5c424b83236ffab161a0"><td class="memItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix.html#ae8809f61744c5c424b83236ffab161a0">operator()</a> (int i, int j)</td></tr>
-<tr class="memdesc:ae8809f61744c5c424b83236ffab161a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">setter for the element on the i-th row and the j-th column  <a href="#ae8809f61744c5c424b83236ffab161a0">More...</a><br /></td></tr>
-<tr class="separator:ae8809f61744c5c424b83236ffab161a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6593922c4908e9ef8447a7bf344f0573"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6593922c4908e9ef8447a7bf344f0573"></a>
-<a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getCol</b> (int) const </td></tr>
-<tr class="separator:a6593922c4908e9ef8447a7bf344f0573"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe58d487862eaea9fd8f1884ab20d566"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe58d487862eaea9fd8f1884ab20d566"></a>
-<a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getCols</b> (int, int) const </td></tr>
-<tr class="separator:abe58d487862eaea9fd8f1884ab20d566"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b6dcebaeb4690bdcf5203c3d3fed87c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b6dcebaeb4690bdcf5203c3d3fed87c"></a>
-<a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getRow</b> (int) const </td></tr>
-<tr class="separator:a3b6dcebaeb4690bdcf5203c3d3fed87c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe376c19071d25dc5ff8ba5e09108506"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe376c19071d25dc5ff8ba5e09108506"></a>
-<a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getRows</b> (int, int) const </td></tr>
-<tr class="separator:abe376c19071d25dc5ff8ba5e09108506"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a423327004566b6c50f7f1ad20120443b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a423327004566b6c50f7f1ad20120443b"></a>
-<a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getSubmat</b> (int, int, int, int) const </td></tr>
-<tr class="separator:a423327004566b6c50f7f1ad20120443b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46ddd0b7e76cc651c35656d7e0fd35ac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a46ddd0b7e76cc651c35656d7e0fd35ac"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setCol</b> (int, const <a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt; &amp;)</td></tr>
-<tr class="separator:a46ddd0b7e76cc651c35656d7e0fd35ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56c8c244b5af07e9a2fcb2bd9eefa090"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a56c8c244b5af07e9a2fcb2bd9eefa090"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setCols</b> (int, const <a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt; &amp;)</td></tr>
-<tr class="separator:a56c8c244b5af07e9a2fcb2bd9eefa090"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcfb6340bee5d5743b4803749722be76"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adcfb6340bee5d5743b4803749722be76"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setRow</b> (int, const <a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt; &amp;)</td></tr>
-<tr class="separator:adcfb6340bee5d5743b4803749722be76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adab65e81434c5ee2557a6c512e820ad6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adab65e81434c5ee2557a6c512e820ad6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setRows</b> (int, const <a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt; &amp;)</td></tr>
-<tr class="separator:adab65e81434c5ee2557a6c512e820ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7ff8157d4cc6d4734fd9454f49e7bf9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7ff8157d4cc6d4734fd9454f49e7bf9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setSubmat</b> (int, int, const <a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt; &amp;)</td></tr>
-<tr class="separator:ae7ff8157d4cc6d4734fd9454f49e7bf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b2998a0683b5ee689ae06da718a9c61"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b2998a0683b5ee689ae06da718a9c61"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>colNb</b> () const </td></tr>
-<tr class="separator:a2b2998a0683b5ee689ae06da718a9c61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ac5215c66f19c974d5bd022820f482d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ac5215c66f19c974d5bd022820f482d"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>rowNb</b> () const </td></tr>
-<tr class="separator:a3ac5215c66f19c974d5bd022820f482d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29b33c4f5767d78d2a90a9459a1aa5a9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a29b33c4f5767d78d2a90a9459a1aa5a9"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const </td></tr>
-<tr class="separator:a29b33c4f5767d78d2a90a9459a1aa5a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f485dd8d686231dfc1f15255c7ab10e"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix.html#a0f485dd8d686231dfc1f15255c7ab10e">operator()</a> (std::size_t i, std::size_t j) const </td></tr>
+<tr class="memdesc:a0f485dd8d686231dfc1f15255c7ab10e"><td class="mdescLeft">&#160;</td><td class="mdescRight">getter on the element on the i-th row and the j-th column  <a href="#a0f485dd8d686231dfc1f15255c7ab10e">More...</a><br /></td></tr>
+<tr class="separator:a0f485dd8d686231dfc1f15255c7ab10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade943d401aaf3947e31d39962fd328a9"><td class="memItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_matrix.html#ade943d401aaf3947e31d39962fd328a9">operator()</a> (std::size_t i, std::size_t j)</td></tr>
+<tr class="memdesc:ade943d401aaf3947e31d39962fd328a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">setter for the element on the i-th row and the j-th column  <a href="#ade943d401aaf3947e31d39962fd328a9">More...</a><br /></td></tr>
+<tr class="separator:ade943d401aaf3947e31d39962fd328a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad715b0259501c9834af0a1741bf35120"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad715b0259501c9834af0a1741bf35120"></a>
+<a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getCol</b> (std::size_t) const </td></tr>
+<tr class="separator:ad715b0259501c9834af0a1741bf35120"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa15ab5dbbfc85bf09d464811a0c0227f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa15ab5dbbfc85bf09d464811a0c0227f"></a>
+<a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getCols</b> (std::size_t, std::size_t) const </td></tr>
+<tr class="separator:aa15ab5dbbfc85bf09d464811a0c0227f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cc94dbd3cee07ec42025f8a989b0665"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7cc94dbd3cee07ec42025f8a989b0665"></a>
+<a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getDiag</b> () const </td></tr>
+<tr class="separator:a7cc94dbd3cee07ec42025f8a989b0665"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7263aabc12acace6906b056b1cb5156b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7263aabc12acace6906b056b1cb5156b"></a>
+<a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getRow</b> (std::size_t) const </td></tr>
+<tr class="separator:a7263aabc12acace6906b056b1cb5156b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b06a80ffad9bcb93ad5f16194e00bf1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8b06a80ffad9bcb93ad5f16194e00bf1"></a>
+<a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getRows</b> (std::size_t, std::size_t) const </td></tr>
+<tr class="separator:a8b06a80ffad9bcb93ad5f16194e00bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fc5cde11cc1eb967c6a33ca9619442e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4fc5cde11cc1eb967c6a33ca9619442e"></a>
+<a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getSubmat</b> (std::size_t, std::size_t, std::size_t, std::size_t) const </td></tr>
+<tr class="separator:a4fc5cde11cc1eb967c6a33ca9619442e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29b48e5d465a9e734787808473dd4b28"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a29b48e5d465a9e734787808473dd4b28"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setCol</b> (std::size_t, const <a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt; &amp;)</td></tr>
+<tr class="separator:a29b48e5d465a9e734787808473dd4b28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50b9a324a5c3a3ef594b7fc14de9c2e7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a50b9a324a5c3a3ef594b7fc14de9c2e7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setCols</b> (std::size_t, const <a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt; &amp;)</td></tr>
+<tr class="separator:a50b9a324a5c3a3ef594b7fc14de9c2e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a0d833a0c27b2ec239f96e6d30c6f5e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a0d833a0c27b2ec239f96e6d30c6f5e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setDiag</b> (const <a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt; &amp;)</td></tr>
+<tr class="separator:a8a0d833a0c27b2ec239f96e6d30c6f5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50bd9595f3752c1e88128229da306bab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a50bd9595f3752c1e88128229da306bab"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setRow</b> (std::size_t, const <a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt; &amp;)</td></tr>
+<tr class="separator:a50bd9595f3752c1e88128229da306bab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accb6b9d6127a250ada1e1dbf94006461"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="accb6b9d6127a250ada1e1dbf94006461"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setRows</b> (std::size_t, const <a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt; &amp;)</td></tr>
+<tr class="separator:accb6b9d6127a250ada1e1dbf94006461"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b5dee65be20e28dcbd7159890012a86"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b5dee65be20e28dcbd7159890012a86"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setSubmat</b> (std::size_t, std::size_t, const <a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt; &amp;)</td></tr>
+<tr class="separator:a0b5dee65be20e28dcbd7159890012a86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11108609cd38a746798b1abf753c3b8c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a11108609cd38a746798b1abf753c3b8c"></a>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>colNb</b> () const </td></tr>
+<tr class="separator:a11108609cd38a746798b1abf753c3b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8ad4fd54a8f7554315f7b61c1fa2875"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad8ad4fd54a8f7554315f7b61c1fa2875"></a>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>rowNb</b> () const </td></tr>
+<tr class="separator:ad8ad4fd54a8f7554315f7b61c1fa2875"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3da8c171794fc672fe9b0dfb2d895c8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad3da8c171794fc672fe9b0dfb2d895c8"></a>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const </td></tr>
+<tr class="separator:ad3da8c171794fc672fe9b0dfb2d895c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65ef036c92f07f6d04e725df675853f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65ef036c92f07f6d04e725df675853f1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>fliplr</b> ()</td></tr>
 <tr class="separator:a65ef036c92f07f6d04e725df675853f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6edc7f7dff8274727df84c0f3ac1417a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6edc7f7dff8274727df84c0f3ac1417a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>flipud</b> ()</td></tr>
 <tr class="separator:a6edc7f7dff8274727df84c0f3ac1417a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcea81665a8f0a6dcf7547f9bc1a6108"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adcea81665a8f0a6dcf7547f9bc1a6108"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>reshape</b> (int, int)</td></tr>
-<tr class="separator:adcea81665a8f0a6dcf7547f9bc1a6108"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abaf94fb08101f3b26f381baf538089a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abaf94fb08101f3b26f381baf538089a1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>reshape</b> (std::size_t, std::size_t)</td></tr>
+<tr class="separator:abaf94fb08101f3b26f381baf538089a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ec11f9c6c681703fffd10f4784668b0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ec11f9c6c681703fffd10f4784668b0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>rot90</b> ()</td></tr>
 <tr class="separator:a9ec11f9c6c681703fffd10f4784668b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -206,33 +212,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>rot180</b> ()</td></t
 <tr class="memitem:a588ca484c81e8fb24a6db26aa3d8a7fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a588ca484c81e8fb24a6db26aa3d8a7fd"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>rot270</b> ()</td></tr>
 <tr class="separator:a588ca484c81e8fb24a6db26aa3d8a7fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd5331e6ecc9b33055852faf7d7bc47f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd5331e6ecc9b33055852faf7d7bc47f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>swapcol</b> (int, int)</td></tr>
-<tr class="separator:afd5331e6ecc9b33055852faf7d7bc47f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f908fb9f45438cd3dc687efcd776688"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1f908fb9f45438cd3dc687efcd776688"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>swaprow</b> (int, int)</td></tr>
-<tr class="separator:a1f908fb9f45438cd3dc687efcd776688"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6fa8396aef12bcec718c27ba19731b6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac6fa8396aef12bcec718c27ba19731b6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>swapcol</b> (std::size_t, std::size_t)</td></tr>
+<tr class="separator:ac6fa8396aef12bcec718c27ba19731b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1e3a099746511c68ab3412abbe3f230"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad1e3a099746511c68ab3412abbe3f230"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>swaprow</b> (std::size_t, std::size_t)</td></tr>
+<tr class="separator:ad1e3a099746511c68ab3412abbe3f230"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b360b44312566fb94cd3e66e7088890"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4b360b44312566fb94cd3e66e7088890"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>transpose</b> ()</td></tr>
 <tr class="separator:a4b360b44312566fb94cd3e66e7088890"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04a541f7f348fb783ff99d54bfc4fb3d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a04a541f7f348fb783ff99d54bfc4fb3d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>delCol</b> (int)</td></tr>
-<tr class="separator:a04a541f7f348fb783ff99d54bfc4fb3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9b81c179f315abe5544a0c13de0bf14"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9b81c179f315abe5544a0c13de0bf14"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>delRow</b> (int)</td></tr>
-<tr class="separator:ab9b81c179f315abe5544a0c13de0bf14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a603029cf06d981a41382580f179e21c0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a603029cf06d981a41382580f179e21c0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>delCol</b> (std::size_t)</td></tr>
+<tr class="separator:a603029cf06d981a41382580f179e21c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af62a22ccdec5e92b49862c7902cee09c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af62a22ccdec5e92b49862c7902cee09c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>delRow</b> (std::size_t)</td></tr>
+<tr class="separator:af62a22ccdec5e92b49862c7902cee09c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dbf996cf66dab23c23f318771363381"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2dbf996cf66dab23c23f318771363381"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>newCol</b> ()</td></tr>
 <tr class="separator:a2dbf996cf66dab23c23f318771363381"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af36164e58d4f5d7d60ed948a200cdf2d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af36164e58d4f5d7d60ed948a200cdf2d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>newCol</b> (int)</td></tr>
-<tr class="separator:af36164e58d4f5d7d60ed948a200cdf2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d5cd9d25827ca96346f11c0c5e75551"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5d5cd9d25827ca96346f11c0c5e75551"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>newCol</b> (std::size_t)</td></tr>
+<tr class="separator:a5d5cd9d25827ca96346f11c0c5e75551"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a191c41714d655f5239d1a9a251806a4b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a191c41714d655f5239d1a9a251806a4b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>newRow</b> ()</td></tr>
 <tr class="separator:a191c41714d655f5239d1a9a251806a4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec7cdb73a42cef295a87499d1e743440"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec7cdb73a42cef295a87499d1e743440"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>newRow</b> (int)</td></tr>
-<tr class="separator:aec7cdb73a42cef295a87499d1e743440"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a890da3992207a8ae577017dedb91767f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a890da3992207a8ae577017dedb91767f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>newRow</b> (std::size_t)</td></tr>
+<tr class="separator:a890da3992207a8ae577017dedb91767f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5377aa12976b86ee48d390fabfdd62df"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5377aa12976b86ee48d390fabfdd62df"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (const <a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt; &amp;)</td></tr>
 <tr class="separator:a5377aa12976b86ee48d390fabfdd62df"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -327,7 +333,7 @@ class Matrix&lt; T &gt;</h3>
 
 <p>template class representing a matrix </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a7de16801b5d2c7d07276d5b1798fae3f"></a>
+<a class="anchor" id="a0ddd0c0ddc809ab75d70a98bb6df08e4"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -339,7 +345,7 @@ template&lt;class T&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt;::<a class="el" href="class_matrix.html">Matrix</a> </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>N</em></td><td>)</td>
           <td></td>
         </tr>
@@ -361,7 +367,7 @@ template&lt;class T&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="adc9a52f41b624b54418fc28fadbc999a"></a>
+<a class="anchor" id="abd432f805029dc656f5df6a861e92180"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -370,13 +376,13 @@ template&lt;class T&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt;::<a class="el" href="class_matrix.html">Matrix</a> </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>M</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>N</em>&#160;</td>
         </tr>
         <tr>
@@ -533,7 +539,7 @@ template&lt;class T&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="ae061f61e76c735184b9874cf89023269"></a>
+<a class="anchor" id="a0f485dd8d686231dfc1f15255c7ab10e"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -542,13 +548,13 @@ template&lt;class T&gt; </div>
         <tr>
           <td class="memname">T <a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt;::operator() </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>i</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>j</em>&#160;</td>
         </tr>
         <tr>
@@ -571,7 +577,7 @@ template&lt;class T&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="ae8809f61744c5c424b83236ffab161a0"></a>
+<a class="anchor" id="ade943d401aaf3947e31d39962fd328a9"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -580,13 +586,13 @@ template&lt;class T&gt; </div>
         <tr>
           <td class="memname">T&amp; <a class="el" href="class_matrix.html">Matrix</a>&lt; T &gt;::operator() </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>i</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">std::size_t&#160;</td>
           <td class="paramname"><em>j</em>&#160;</td>
         </tr>
         <tr>
@@ -618,7 +624,7 @@ template&lt;class T&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_matrix.html">Matrix</a></li>
-    <li class="footer">Generated on Fri Aug 12 2016 21:39:46 for ImageProcessingLib by
+    <li class="footer">Generated on Wed Nov 9 2016 01:50:19 for ImageProcessingLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

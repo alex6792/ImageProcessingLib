@@ -6,6 +6,7 @@
 #include <functional>
 #include <deque>
 #include "linalg.hpp"
+#include "ImageProcessing/linear_filtering.hpp"
 
 float entropy(const Matrix<bool>& M)
 {
@@ -29,16 +30,6 @@ float entropy(const Matrix<unsigned char>& M)
 
 int main()
 {
-    /*Matrix<float> A = {
-    {0.8147,    0.0975,    0.1576},
-    {0.9058,    0.2785,    0.9706},
-    {0.1270,    0.5469,    0.9572},
-    {0.9134,    0.9575,    0.4854},
-    {0.6324,    0.9649,    0.8003}};
-    std::cout<<A<<std::endl;
-    std::cout<<pinv(A)<<std::endl;
-    std::cout<<dot(pinv(A), A)<<std::endl;*/
-
     Matrix<bool> M = {
                     { 1, 0, 0, 0, 0},
                     { 0, 0, 0, 0, 0}
@@ -50,5 +41,7 @@ int main()
                             {1, 2, 3, 4, 5}
                             };
     std::cout<<entropy(N)<<std::endl;
+
+    test_filtrage__lineaire();
     return 0;
 }
