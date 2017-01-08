@@ -114,10 +114,14 @@
 		<Unit filename="MachineLearning/SupervisedLearning/gaussian_naive_bayes.hpp" />
 		<Unit filename="MachineLearning/SupervisedLearning/knn.cpp" />
 		<Unit filename="MachineLearning/SupervisedLearning/knn.hpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/lda.cpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/lda.hpp" />
 		<Unit filename="MachineLearning/SupervisedLearning/mlp.cpp" />
 		<Unit filename="MachineLearning/SupervisedLearning/mlp.hpp" />
 		<Unit filename="MachineLearning/SupervisedLearning/perceptron.cpp" />
 		<Unit filename="MachineLearning/SupervisedLearning/perceptron.hpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/qda.cpp" />
+		<Unit filename="MachineLearning/SupervisedLearning/qda.hpp" />
 		<Unit filename="MachineLearning/pca.cpp" />
 		<Unit filename="MachineLearning/pca.hpp" />
 		<Unit filename="MachineLearning/scaler.cpp" />
@@ -144,6 +148,7 @@
 		<Unit filename="regression.tcc" />
 		<Unit filename="statistics.hpp" />
 		<Unit filename="statistics.tcc" />
+		<Unit filename="svd.hpp" />
 		<Unit filename="test_functions.cpp" />
 		<Unit filename="test_functions.hpp" />
 		<Extensions>

@@ -68,11 +68,11 @@ Matrix<Color> read_gif(std::string filename)
             }
             else
             {
-                char extension_introducer[6];
+                unsigned char extension_introducer[6];
                 if(c1==0x21 && c2==0xF9)// graphic control extension
                 {
                     std::cout<<"graphic control extension"<<std::endl;
-                    myfile.read(extension_introducer, 6);
+                    myfile.read(reinterpret_cast<char*>(extension_introducer), 6);
                 }
                 else
                 {
@@ -133,9 +133,11 @@ Matrix<Color> read_gif(std::string filename)
                     int n_color_map = M_img?n_img:n;
 
                     // LZW_minimum_size
-                    char LZW_minimum_size;
-                    myfile.get(LZW_minimum_size);
-                    std::cout<<(int)(unsigned char)LZW_minimum_size<<std::endl;
+                    unsigned char LZW_minimum_size;
+                    char temp;
+                    myfile.get(temp);
+                    LZW_minimum_size = (unsigned char)temp;
+                    std::cout<<"LZW min size "<<(int)LZW_minimum_size<<std::endl;
 
                     // nb bytes subblock
                     char nb_bytes_following;
@@ -150,7 +152,7 @@ Matrix<Color> read_gif(std::string filename)
                     bool Existence_in_dic[4096];
                     std::size_t limit_dic = n_color_map/3+2;
                     std::size_t cur_idx_in_Dic = limit_dic;
-                    std::cout<<limit_dic<<std::endl;
+                    std::cout<<"limit dict "<<limit_dic<<std::endl;
                     std::fill(Dictionnary, Dictionnary+4096, "");
                     std::fill(Existence_in_dic, Existence_in_dic+4096, false);
                     for(std::size_t i=0;i<limit_dic;++i)
@@ -166,14 +168,14 @@ Matrix<Color> read_gif(std::string filename)
 
                         // read next subblock
                         //std::cout<<cpt_subblock<<std::endl;
-                        cpt_subblock++;
+                        ++cpt_subblock;
                         //std::cout<<(int)nb_bytes_following_u<<std::endl;
                         unsigned char subblock[nb_bytes_following_u];
                         myfile.read(reinterpret_cast<char*>(subblock), nb_bytes_following_u);
                         std::queue<bool> cur_bitset;
-                        for(std::size_t i=0;i<nb_bytes_following_u;++i)
+                        for(unsigned char i=0;i<nb_bytes_following_u;++i)
                         {
-                            for(std::size_t j=0;j<8;++j)
+                            for(unsigned char j=0;j<8;++j)
                             {
                                 cur_bitset.push(subblock[i]%2);
                                 subblock[i]/=2;
@@ -214,7 +216,7 @@ Matrix<Color> read_gif(std::string filename)
 
                             if(code==limit_dic-2)// clear code
                             {
-                                std::cout<<"clear code"<<std::endl;
+                                std::cout<<"clear code "<<limit_dic-2<<std::endl;
                                 for(std::size_t i=limit_dic;i<4096;++i)
                                 {
                                     Existence_in_dic[i] = false;
@@ -222,7 +224,8 @@ Matrix<Color> read_gif(std::string filename)
                                 }
                                 cur_idx_in_Dic = limit_dic;
                                 code_size = LZW_minimum_size+1;
-                                //previous_code = code;
+                                previous_code = code;
+                                continue;
                             }
                             else if(code==limit_dic-1)// end code
                             {
@@ -232,7 +235,7 @@ Matrix<Color> read_gif(std::string filename)
                                                         color_map[3*c+1],
                                                         color_map[3*c+2]);
                                             ++it;});
-                                std::cout<<"end code"<<std::endl;
+                                std::cout<<"end code "<<limit_dic-1<<std::endl;
                                 std::cout<<"nb de pixels ecrits : ";
                                 std::cout<<output.size()<<std::endl;
                                 return img;

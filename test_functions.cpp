@@ -24,8 +24,10 @@
 #include "MachineLearning/SupervisedLearning/dtree.hpp"
 #include "MachineLearning/SupervisedLearning/gaussian_naive_bayes.hpp"
 #include "MachineLearning/SupervisedLearning/knn.hpp"
+#include "MachineLearning/SupervisedLearning/lda.hpp"
 #include "MachineLearning/SupervisedLearning/mlp.hpp"
 #include "MachineLearning/SupervisedLearning/perceptron.hpp"
+#include "MachineLearning/SupervisedLearning/qda.hpp"
 
 #include "ImageProcessing/color.hpp"
 #include "ImageProcessing/fourier.hpp"
@@ -53,26 +55,22 @@ void test_clustering()
 {
      ///////////test clustering
     //create data
-    std::size_t n_samples = 400;
+    std::size_t n_samples = 240;
     std::size_t n_features = 2;
     std::size_t n_classes = 4;
     Matrix<float> Data(n_samples, n_features);
     Matrix<std::size_t> Labels(n_samples, 1);
     Matrix<float> means = {{10.0f, 20.0f, 30.0f, 40.0f},
                             {15.0f, 40.0f, 5.0f, 30.0f}};
-    Matrix<float> stddevs = {{1.0f, 2.0f, 3.0f, 4.0f},
-                            {2.5f, 1.5f, 1.0f, 2.0f}};
-
+    Matrix<float> stddevs = ones<float>(n_features, n_classes);
     Matrix<float> results;
 
-    stddevs = full<float>(n_features, n_classes, 1.0f);
     for(std::size_t i=0;i<n_classes;++i)
     {
         for(std::size_t j=0;j<n_features;++j)
             Data.setSubmat(i*n_samples/n_classes, j, randn(n_samples/n_classes, 1, means(j, i), stddevs(j, i)));
         Labels.setSubmat(i*n_samples/n_classes, 0, full<std::size_t>(n_samples/n_classes, 1, i));
     }
-
 
     // test Affinity Propagation
     std::cout<<"Affinity Propagation"<<std::endl;
@@ -89,7 +87,7 @@ void test_clustering()
     Kmeans clf(n_classes);
     results = Matrix<float>(clf.fit_predict(Data));
     results.reshape(n_classes, n_samples/n_classes);
-        std::cout<<(histogram(Matrix<std::size_t>(results))).getCols(0, n_classes)<<std::endl;
+    std::cout<<(histogram(Matrix<std::size_t>(results))).getCols(0, n_classes)<<std::endl;
     std::cout<<axismean(results, 1)<<std::endl;
     std::cout<<axisstdev(results, 1)<<std::endl;
     std::cout<<clf.getCenters()<<std::endl;
@@ -99,7 +97,7 @@ void test_clustering()
     Kmedoids kmed_clf(n_classes);
     results = Matrix<float>(kmed_clf.fit_predict(Data));
     results.reshape(n_classes, n_samples/n_classes);
-        std::cout<<(histogram(Matrix<std::size_t>(results))).getCols(0, n_classes)<<std::endl;
+    std::cout<<(histogram(Matrix<std::size_t>(results))).getCols(0, n_classes)<<std::endl;
     std::cout<<axismean(results, 1)<<std::endl;
     std::cout<<axisstdev(results, 1)<<std::endl;
     std::cout<<kmed_clf.getCenters()<<std::endl;
@@ -109,64 +107,65 @@ void test_clustering()
     HierarchicalClustering hier_clf(n_classes);
     results = Matrix<float>(hier_clf.fit_predict(Data));
     results.reshape(n_classes, n_samples/n_classes);
-        std::cout<<(histogram(Matrix<std::size_t>(results))).getCols(0, n_classes)<<std::endl;
+    std::cout<<(histogram(Matrix<std::size_t>(results))).getCols(0, n_classes)<<std::endl;
     std::cout<<axismean(results, 1)<<std::endl;
     std::cout<<axisstdev(results, 1)<<std::endl;
 
-    //test gmm
-    std::cout<<"GMM"<<std::endl;
-    GMM clf_gmm(n_classes);
-    results = Matrix<float>(clf_gmm.fit_predict(Data));
-    results.reshape(n_classes, n_samples/n_classes);
-        std::cout<<(histogram(Matrix<std::size_t>(results))).getCols(0, n_classes)<<std::endl;
-    std::cout<<axismean(results, 1)<<std::endl;
-    std::cout<<axisstdev(results, 1)<<std::endl;
-    std::cout<<clf_gmm.getCenters()<<std::endl;
-    std::cout<<clf_gmm.getStddevs()<<std::endl;
-    std::cout<<clf_gmm.getWeights()<<std::endl;
 
     //test meanshift
     std::cout<<"Mean Shift"<<std::endl;
     MeanShift clf_meanshift = MeanShift();
     results = Matrix<float>(clf_meanshift.fit_predict(Data));
     results.reshape(n_classes, n_samples/n_classes);
-        std::cout<<(histogram(Matrix<std::size_t>(results))).getCols(0, n_classes)<<std::endl;
+    std::cout<<(histogram(Matrix<std::size_t>(results))).getCols(0, n_classes)<<std::endl;
     std::cout<<axismean(results, 1)<<std::endl;
     std::cout<<axisstdev(results, 1)<<std::endl;
-}
 
-void test_supervisedlearning()
-{
-        //create data
-    std::size_t n_samples = 200;
-    std::size_t n_features = 2;
-    std::size_t n_classes = 4;
-    Matrix<float> Data(n_samples, n_features);
-    Matrix<std::size_t> Labels(n_samples, 1);
-    Matrix<float> means = {{10.0f, 20.0f, 30.0f, 40.0f},
-                            {15.0f, 40.0f, 5.0f, 30.0f}};
-    Matrix<float> stddevs = {{1.0f, 2.0f, 3.0f, 4.0f},
-                            {2.5f, 1.5f, 1.0f, 2.0f}};
-
-    Matrix<float> results;
-
-    stddevs = full<float>(n_features, n_classes, 1.0f);
+    //test gmm
+    std::cout<<"diagonal GMM"<<std::endl;
+    stddevs = {{1.0f, 3.0f, 1.0f, 1.0f},
+                {2.0f, 1.5f, 2.5f, 2.0f}};
     for(std::size_t i=0;i<n_classes;++i)
     {
         for(std::size_t j=0;j<n_features;++j)
             Data.setSubmat(i*n_samples/n_classes, j, randn(n_samples/n_classes, 1, means(j, i), stddevs(j, i)));
         Labels.setSubmat(i*n_samples/n_classes, 0, full<std::size_t>(n_samples/n_classes, 1, i));
     }
+    GMM clf_gmm(n_classes, "diag");
+    clf_gmm.fit(Data);
+    results = Matrix<float>(clf_gmm.fit_predict(Data));
+    results.reshape(n_classes, n_samples/n_classes);
+    std::cout<<(histogram(Matrix<std::size_t>(results))).getCols(0, n_classes)<<std::endl;
+    std::cout<<axismean(results, 1)<<std::endl;
+    std::cout<<axisstdev(results, 1)<<std::endl;
+    std::cout<<clf_gmm.getCenters()<<std::endl;
+    for(std::size_t i=0;i<n_classes;++i)
+        std::cout<<clf_gmm.getCovariances()[i]<<std::endl;
+    std::cout<<clf_gmm.getWeights()<<std::endl;
 
-    ///// test gaussian_naives_bayes
-    std::cout<<"Gaussian naives bayes"<<std::endl;
-    GaussianNaiveBayes clf_gnb;
-    clf_gnb.fit(Data, Labels);
-    results = Matrix<float>(clf_gnb.fit_predict(Data, Labels));
-    std::cout<<count_nonzero(Matrix<std::size_t>(results) == Labels)<<std::endl;
-    std::cout<<clf_gnb.getCenters()<<std::endl;
-    std::cout<<clf_gnb.getStddevs()<<std::endl;
-    std::cout<<clf_gnb.getPriors()<<std::endl;
+}
+
+void test_supervisedlearning()
+{
+    //create data
+    std::size_t n_samples = 2000;
+    std::size_t n_features = 2;
+    std::size_t n_classes = 4;
+    Matrix<float> Data(n_samples, n_features);
+    Matrix<std::size_t> Labels(n_samples, 1);
+    Matrix<float> means = {{10.0f, 20.0f, 30.0f, 40.0f},
+                            {15.0f, 40.0f, 5.0f, 30.0f}};
+
+    Matrix<float> stddevs = ones<float>(n_features, n_classes);
+
+    Matrix<float> results;
+
+    for(std::size_t i=0;i<n_classes;++i)
+    {
+        for(std::size_t j=0;j<n_features;++j)
+            Data.setSubmat(i*n_samples/n_classes, j, randn(n_samples/n_classes, 1, means(j, i), stddevs(j, i)));
+        Labels.setSubmat(i*n_samples/n_classes, 0, full<std::size_t>(n_samples/n_classes, 1, i));
+    }
 
     ///// test Dtree
     std::cout<<"Dtree"<<std::endl;
@@ -191,6 +190,37 @@ void test_supervisedlearning()
     results = Matrix<float>(clf_mlp.fit_predict(Data, Labels));
     clf_mlp.export_graphviz("test.dot");
     std::cout<<count_nonzero(Matrix<std::size_t>(results) == Labels)<<std::endl;
+
+    ///// test gaussian_naives_bayes
+    std::cout<<"Gaussian naives bayes"<<std::endl;
+    GaussianNaiveBayes clf_gnb;
+    clf_gnb.fit(Data, Labels);
+    results = Matrix<float>(clf_gnb.fit_predict(Data, Labels));
+    std::cout<<count_nonzero(Matrix<std::size_t>(results) == Labels)<<std::endl;
+    std::cout<<clf_gnb.getCenters()<<std::endl;
+    std::cout<<clf_gnb.getStddevs()<<std::endl;
+    std::cout<<clf_gnb.getPriors()<<std::endl;
+
+    ///// test LDA
+    std::cout<<"LDA"<<std::endl;
+    LDA clf_lda;
+    clf_lda.fit(Data, Labels);
+    results = Matrix<float>(clf_lda.fit_predict(Data, Labels));
+    std::cout<<count_nonzero(Matrix<std::size_t>(results) == Labels)<<std::endl;
+    std::cout<<clf_lda.getCenters()<<std::endl;
+    std::cout<<clf_lda.getCovariances()<<std::endl;
+    std::cout<<clf_lda.getPriors()<<std::endl;
+
+    ///// test QDA
+    std::cout<<"QDA"<<std::endl;
+    QDA clf_qda;
+    clf_qda.fit(Data, Labels);
+    results = Matrix<float>(clf_qda.fit_predict(Data, Labels));
+    std::cout<<count_nonzero(Matrix<std::size_t>(results) == Labels)<<std::endl;
+    std::cout<<clf_qda.getCenters()<<std::endl;
+    for(std::size_t i=0;i<n_classes;++i)
+        std::cout<<clf_qda.getCovariances()[i]<<std::endl;
+    std::cout<<clf_qda.getPriors()<<std::endl;
 }
 
 void test_morpho_binaire()
@@ -340,7 +370,7 @@ void test_lecture_img()
     std::string extensions[] = { "bmp", "tga", "ico", "pbm", "pcx", "pgm", "ppm", "jpg", "gif", "png", "tiff"};
 
     std::for_each(
-                  extensions+4,
+                  extensions+8,
                   extensions+9,
                   [renderer](std::string s){auto cur_list = get_files_recursively(".", s);
                                                 std::for_each(cur_list.begin(),
@@ -419,7 +449,7 @@ void test_fourier()
     SDL_Quit();
 }
 
-void test_filtrage__lineaire()
+void test_filtrage_lineaire()
 {
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window* pWindow = SDL_CreateWindow("Image Processing Library",
@@ -587,7 +617,18 @@ void test_matrix()
 
 void test_statistics()
 {
-
+    Matrix<float> M = arange(0.0f, 12.0f);
+    M.reshape(3,4);
+    std::cout<<M<<std::endl;
+    std::cout<<min(M)<<std::endl;
+    std::cout<<max(M)<<std::endl;
+    std::cout<<mean(M)<<std::endl;
+    std::cout<<var(M)<<std::endl;
+    std::cout<<median(M)<<std::endl;
+    std::cout<<geometric_mean(M)<<std::endl;
+    std::cout<<sum(M)<<std::endl;
+    std::cout<<prod(M)<<std::endl;
+    std::cout<<cumsum(M)<<std::endl;
 }
 
 void test_linalg()
@@ -600,13 +641,21 @@ void test_linalg()
                         {2,4,7,8,9},
                         {3,2,1,4,5}};
 
+    Matrix<float> D;
+
+    std::cout<<"pinv"<<std::endl;
+    std::cout<<B<<std::endl;
+    std::cout<<pinv(B)<<std::endl;
+    std::cout<<dot(pinv(B), B)<<std::endl;
+
+    std::cout<<"bwdsub"<<std::endl;
     Matrix<float> X = bwdsub(U, B);// solve UX = B with U an upper triangular matrix
     std::cout<<U<<std::endl;
     std::cout<<B<<std::endl;
     std::cout<<X<<std::endl;
     std::cout<<dot(U, X)<<std::endl;
 
-
+    std::cout<<"fwdsub"<<std::endl;
     Matrix<float> L = transpose(U);
     X = fwdsub(L, B);// solve LX = B with L a lower triangular matrix
     std::cout<<L<<std::endl;
@@ -652,6 +701,36 @@ void test_linalg()
     std::cout<<R<<std::endl;
     std::cout<<dot(R, Q)<<std::endl;
 
+    std::cout<<"LQ decomposition"<<std::endl;
+    auto LQ = lq(A);
+    std::tie(L, Q) = LQ;
+    std::cout<<A<<std::endl;
+    std::cout<<Q<<std::endl;
+    std::cout<<dot(Q, transpose(Q))<<std::endl;
+    std::cout<<dot(transpose(Q), Q)<<std::endl;
+    std::cout<<L<<std::endl;
+    std::cout<<dot(L, Q)<<std::endl;
+
+    std::cout<<"QL decomposition"<<std::endl;
+    auto QL = ql(A);
+    std::tie(Q, L) = QL;
+    std::cout<<A<<std::endl;
+    std::cout<<Q<<std::endl;
+    std::cout<<dot(Q, transpose(Q))<<std::endl;
+    std::cout<<dot(transpose(Q), Q)<<std::endl;
+    std::cout<<L<<std::endl;
+    std::cout<<dot(Q, L)<<std::endl;
+
+    std::cout<<"crout"<<std::endl;
+    auto LD = crout(dot(A, transpose(A)));
+    std::tie(L, D) = LD;
+    U = transpose(L);
+    std::cout<<dot(A, transpose(A))<<std::endl;
+    std::cout<<L<<std::endl;
+    std::cout<<D<<std::endl;
+    std::cout<<dot(dot(L, D),U)<<std::endl;
+
+
     std::cout<<"decomposition de cholesky"<<std::endl;
     A = {{1, 2, 3},
         {2, 20, 26},
@@ -661,11 +740,50 @@ void test_linalg()
     std::cout<<L<<std::endl;
     std::cout<<dot(L, transpose(L))<<std::endl;
 
+    std::cout<<"jacobi"<<std::endl;
+    A = {{3, 6, 10},
+        {7, 3, 3},
+        {7, 0, 0},
+        {0, 3, 10},
+        {9, 9, 2}};
+    auto J = jacobi(dot(transpose(A),A));
+    std::cout<<J.first<<std::endl;
+    std::cout<<J.second<<std::endl;
+    std::cout<<dot(transpose(A),A)<<std::endl;
+    std::cout<<dot(J.second, dot(J.first, transpose(J.second)))<<std::endl;
+
+    std::cout<<"bidiagonalisation"<<std::endl;
+    auto ubv = bidiag_reduction(A);
+    Matrix<float> V;
+    std::tie(U,B,V) = ubv;
+    std::cout<<U<<std::endl;
+    std::cout<<B<<std::endl;
+    std::cout<<V<<std::endl;
+    std::cout<<A<<std::endl;
+    std::cout<<dot(U, dot(B, V))<<std::endl;
+
+
+    std::cout<<"svd"<<std::endl;
+    auto USV = svd(A);
+    Matrix<float> S;
+    std::tie(U,S,V) = USV;
+    std::cout<<A<<std::endl;
+    std::cout<<U<<std::endl;
+    std::cout<<S<<std::endl;
+    std::cout<<V<<std::endl;
+    std::cout<<dot(U, dot(S, transpose(V)))<<std::endl;
+
 }
 
 void test_regression()
 {
+    Matrix<double> X = arange<double>(-10.0,10.0);
+    Matrix<double> Y = 10.0*X*X+X*5.0+2.0;
+    Y+=randn(X.rowNb(), X.colNb(), 0.0, 0.3);
 
+    std::cout<<X<<std::endl;
+    std::cout<<Y<<std::endl;
+    std::cout<<poly_regression(Y, X, 2)<<std::endl;
 }
 
 void test_segmentation()
@@ -995,4 +1113,13 @@ void test_polynomials()
         std::cout<<Hermite_phi(i).differentiate()<<std::endl;
     }
 
+}
+
+void test_pca()
+{
+    PCA pca;
+    Matrix<float> X = arange<float>(-10.0,10.0);
+    Matrix<float> Y = 5.0f*X+2.0f;
+    Y+=randn(Y.rowNb(), Y.colNb(), 0.0f, 0.3f);
+    pca.fit(Y);
 }

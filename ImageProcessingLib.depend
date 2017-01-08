@@ -29,7 +29,7 @@
 	<iostream>
 	"matrix.tcc"
 
-1476282890 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.tcc
+1480436874 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.tcc
 	<algorithm>
 	<chrono>
 	<cmath>
@@ -66,7 +66,7 @@
 	"../../matrix.hpp"
 	"../color.hpp"
 
-1478369054 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\gifio.cpp
+1483283627 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\gifio.cpp
 	"gifIO.hpp"
 	<fstream>
 	<iostream>
@@ -220,11 +220,11 @@
 	"linear_filtering.hpp"
 	"snake.hpp"
 
-1479257763 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.hpp
+1483643553 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.hpp
 	"matrix.hpp"
 	"linalg.tcc"
 
-1479258643 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.tcc
+1483709022 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.tcc
 	<cmath>
 	<tuple>
 	<utility>
@@ -235,11 +235,11 @@
 1471040579 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\snake.hpp
 	"../matrix.hpp"
 
-1478651065 source:c:\users\hp\documents\mes programmes\imageprocessinglib\logical_operators.cpp
+1481451625 source:c:\users\hp\documents\mes programmes\imageprocessinglib\logical_operators.cpp
 	"matrix.hpp"
 	"logical_operators.hpp"
 
-1471812616 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\gmm.cpp
+1481995274 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\gmm.cpp
 	<cfloat>
 	"../../linalg.hpp"
 	"../../mmath.hpp"
@@ -247,7 +247,7 @@
 	"gmm.hpp"
 	"kmeans.hpp"
 
-1471037504 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\gmm.hpp
+1481991030 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\gmm.hpp
 	"../../matrix.hpp"
 
 1471090286 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\hierarchicalclustering.cpp
@@ -258,7 +258,7 @@
 1471037504 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\hierarchicalclustering.hpp
 	"../../matrix.hpp"
 
-1472979795 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\kmeans.cpp
+1479484416 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\kmeans.cpp
 	<cfloat>
 	<set>
 	"kmeans.hpp"
@@ -279,7 +279,7 @@
 1471102137 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\kmedoids.hpp
 	"../../matrix.hpp"
 
-1471864210 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\meanshift.cpp
+1481995278 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\meanshift.cpp
 	"meanshift.hpp"
 	"../../linalg.hpp"
 	"../../mmath.hpp"
@@ -287,7 +287,7 @@
 1471037121 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\meanshift.hpp
 	"../../matrix.hpp"
 
-1476345184 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\pca.cpp
+1483645429 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\pca.cpp
 	"pca.hpp"
 	"../mmath.hpp"
 	"../linalg.hpp"
@@ -312,7 +312,7 @@
 1471039016 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\bernoulli_naive_bayes.hpp
 	"../../matrix.hpp"
 
-1471039535 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\dtree.cpp
+1481452816 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\dtree.cpp
 	<fstream>
 	<sstream>
 	<string>
@@ -320,7 +320,7 @@
 	"../../ImageProcessing/imgconverter.hpp"
 	"dtree.hpp"
 
-1471039276 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\dtree.hpp
+1481403218 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\dtree.hpp
 	"../../matrix.hpp"
 
 1471728813 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\gaussian_naive_bayes.cpp
@@ -357,7 +357,7 @@
 1471039016 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\perceptron.hpp
 	"../../matrix.hpp"
 
-1479410118 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
+1483647296 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
 	"test_functions.hpp"
 	"matrix.hpp"
 	"statistics.hpp"
@@ -719,7 +719,7 @@
 	"matrix.hpp"
 	"regression.tcc"
 
-1471102137 c:\users\hp\documents\mes programmes\imageprocessinglib\regression.tcc
+1479905693 c:\users\hp\documents\mes programmes\imageprocessinglib\regression.tcc
 	"linalg.hpp"
 	"statistics.hpp"
 
@@ -795,9 +795,9 @@
 	<queue>
 	<vector>
 
-1474150074 c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.hpp
+1483887099 c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.hpp
 
-1478651670 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
+1483646716 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
 	"csvIO.hpp"
 	"file_explorer.hpp"
 	"linalg.hpp"
@@ -823,8 +823,10 @@
 	"MachineLearning/SupervisedLearning/dtree.hpp"
 	"MachineLearning/SupervisedLearning/gaussian_naive_bayes.hpp"
 	"MachineLearning/SupervisedLearning/knn.hpp"
+	"MachineLearning/SupervisedLearning/lda.hpp"
 	"MachineLearning/SupervisedLearning/mlp.hpp"
 	"MachineLearning/SupervisedLearning/perceptron.hpp"
+	"MachineLearning/SupervisedLearning/qda.hpp"
 	"ImageProcessing/color.hpp"
 	"ImageProcessing/fourier.hpp"
 	"ImageProcessing/hough.hpp"
@@ -876,4 +878,22 @@
 	<utility>
 	<string>
 	<sstream>
+
+1481993858 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\lda.cpp
+	"lda.hpp"
+	"../../mmath.hpp"
+	"../../linalg.hpp"
+	"../../statistics.hpp"
+
+1480694577 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\lda.hpp
+	"../../matrix.hpp"
+
+1481401935 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\qda.cpp
+	"qda.hpp"
+	"../../mmath.hpp"
+	"../../linalg.hpp"
+	"../../statistics.hpp"
+
+1481395470 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\qda.hpp
+	"../../matrix.hpp"
 

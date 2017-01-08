@@ -158,6 +158,7 @@ std::pair<std::size_t, float> Dtree::find_best_split(const Matrix<float>& M, con
             }
         }
     }
+
     return std::make_pair(best_feature, best_thresh);
 }
 
@@ -167,28 +168,41 @@ void Dtree::split_node(DtreeNode& node, const Matrix<float>& M, const Matrix<std
     if(unique_label.size()>1)
     {
         std::pair<std::size_t, float> split = find_best_split(M, label);
-        std::size_t n = tree.size();
+
         node.feature = split.first;
         node.thresh = split.second;
         node.samples = M.rowNb();
-        node.left_child = n;
-        node.right_child = n+1;
-        node.is_a_leaf = false;
+
+        Matrix<float> cur_feature = M.getCol(node.feature);
+        Matrix<bool> cdt = cur_feature > node.thresh;
+        std::size_t count_cdt = count(cdt, true);
+
         Matrix<float> H = Matrix<float>(histogram(label));
         node.value = H;
         H/=node.samples;
         node.gini = sum(H*(1.0f-H));
-        Matrix<float> cur_feature = M.getCol(node.feature);
-        Matrix<bool> cdt = cur_feature > node.thresh;
-        Matrix<bool> not_cdt = NOT(cdt);
-        Matrix<float> A = compress(cdt, M, 1);
-        Matrix<float> B = compress(not_cdt, M, 1);
-        Matrix<std::size_t> C = compress(cdt, label, 1);
-        Matrix<std::size_t> D = compress(not_cdt, label, 1);
-        tree.push_back(DtreeNode());
-        tree.push_back(DtreeNode());
-        split_node(tree[n], A, C);
-        split_node(tree[n+1], B, D);
+
+        if(count_cdt!=0 && count_cdt!=node.samples)
+        {
+            Matrix<bool> not_cdt = NOT(cdt);
+            Matrix<float> A = compress(cdt, M, 1);
+            Matrix<float> B = compress(not_cdt, M, 1);
+            Matrix<std::size_t> C = compress(cdt, label, 1);
+            Matrix<std::size_t> D = compress(not_cdt, label, 1);
+            std::size_t n = tree.size();
+            node.is_a_leaf = false;
+            node.left_child = n;
+            node.right_child = n+1;
+            tree.push_back(DtreeNode());
+            tree.push_back(DtreeNode());
+            split_node(tree[n], A, C);
+            split_node(tree[n+1], B, D);
+        }
+        else
+        {
+            node.label = unique_label(0, 0);
+            node.is_a_leaf = true;
+        }
     }
     else
     {
@@ -196,5 +210,6 @@ void Dtree::split_node(DtreeNode& node, const Matrix<float>& M, const Matrix<std
         node.samples = M.rowNb();
         node.value = Matrix<float>(histogram(label));
         node.label = unique_label(0, 0);
+        node.is_a_leaf = true;
     }
 }

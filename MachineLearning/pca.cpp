@@ -16,7 +16,7 @@ void PCA::fit(const Matrix<float>& M)
     covar.transpose();
     covar = dot(covar, centered_mat);
     covar/=M.rowNb();
-    std::pair<Matrix<float>, Matrix<float> > DP = Jacobi(covar);
+    std::pair<Matrix<float>, Matrix<float> > DP = jacobi(covar);
     eigenvalues = DP.first;
     eigenvectors = DP.second;
 }
@@ -29,12 +29,7 @@ Matrix<float> PCA::fit_transform(const Matrix<float>& M)
 
 Matrix<float> PCA::inverse_transform(const Matrix<float>& M)
 {
-    Matrix<float> D = eigenvalues;
-    for(std::size_t i = 0, I = D.rowNb();i<I;++i)
-    {
-        if(std::abs(D(i, i))>10e-7)
-            D(i,i)=1.0/D(i,i);
-    }
+    Matrix<float> D = pinv(eigenvalues);
     eigenvectors.transpose();
     Matrix<float> temp = dot(M, dot(sqrt(D),eigenvectors));
     eigenvectors.transpose();

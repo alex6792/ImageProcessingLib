@@ -41,7 +41,9 @@ int main()
                             {1, 2, 3, 4, 5}
                             };
     std::cout<<entropy(N)<<std::endl;
-
-    test_filtrage__lineaire();
+    test_linalg();
+    //test_statistics();
+    //test_lecture_img();
+    //test_supervisedlearning();
     return 0;
 }

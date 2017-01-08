@@ -69,7 +69,7 @@ bool XNOR(bool a, bool b)
 // logical operators on matrix
 Matrix<bool> NOT(const Matrix<bool>& M)
 {
-    return true-M;
+    return M==false;
 }
 
 Matrix<bool> AND(const Matrix<bool>& A, const Matrix<bool>& B)

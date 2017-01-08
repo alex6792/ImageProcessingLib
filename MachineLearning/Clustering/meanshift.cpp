@@ -21,7 +21,7 @@ void MeanShift::fit(const Matrix<float>& M)
     Matrix<float> M_copy = M;
     std::size_t it = 0;
     M_copy = iterate(M_copy);
-    while(it<max_iteration && max(pow(M_copy-data,2.0f)>1e-9))
+    while(it<max_iteration && max(pow(M_copy-data,2.0f)>10e-9))
     {
         data = M_copy;
         M_copy = iterate(M_copy);
@@ -35,7 +35,7 @@ void MeanShift::fit(const Matrix<float>& M)
         for(std::size_t j=0;j<i;++j)
         {
             Matrix<float> B = M_copy.getRow(j);
-            if(max(pow(A-B, 2.0f))<1e-9)
+            if(max(pow(A-B, 2.0f))<10e-9)
             {
                 labels(i, 0) = labels(j, 0);
                 break;

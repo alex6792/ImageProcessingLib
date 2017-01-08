@@ -26,10 +26,14 @@ template <class T> std::tuple<Matrix<T>, Matrix<T>, Matrix<T> > lu(const Matrix<
 template <class T> Matrix<T> pinv(const Matrix<T>&);
 template <class T> std::pair<Matrix<T>, Matrix<T> > qr(const Matrix<T>&);
 template <class T> std::pair<Matrix<T>, Matrix<T> > rq(const Matrix<T>&);
+template <class T> std::pair<Matrix<T>, Matrix<T> > ql(const Matrix<T>&);
+template <class T> std::pair<Matrix<T>, Matrix<T> > lq(const Matrix<T>&);
 template <class T> std::tuple<Matrix<T>, Matrix<T>, Matrix<T> > svd(const Matrix<T>&);
 template <class T> T trace(const Matrix<T>&);
-template <class T> std::pair<Matrix<T>, Matrix<T> > Jacobi(const Matrix<T>&);
-template <class T> Matrix<T> Vander(const Matrix<T>&);
+template <class T> std::pair<Matrix<T>, Matrix<T> > jacobi(const Matrix<T>&);
+template <class T> Matrix<T> vander(const Matrix<T>&);
+template <class T> std::tuple<Matrix<T>, Matrix<T>, Matrix<T> > bidiag_reduction(const Matrix<T>&);
+template <class T> Matrix<T> householder(const Matrix<T>&, std::size_t);
 
 
 #include "linalg.tcc"

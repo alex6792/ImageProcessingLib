@@ -10,16 +10,17 @@ template <class T> Matrix<T> dot(const Matrix<T>& A, const Matrix<T>& B)
 {
     if(A.colNb()==B.rowNb())
     {
-        Matrix<T> my_matrix = zeros<T>(A.rowNb(), B.colNb());
+        std::size_t H = A.rowNb(), W = B.colNb();
+        Matrix<T> my_matrix = zeros<T>(H, W);
         Matrix<T> Bt = transpose(B);
 
         auto A_begin = A.cbegin();
         auto B_begin = Bt.cbegin();
         std::size_t n = A.colNb();
 
-        for(std::size_t i=0, I=my_matrix.rowNb();i<I;++i)
+        for(std::size_t i=0;i<H;++i)
         {
-            for(std::size_t j=0, J=my_matrix.colNb();j<J;++j)
+            for(std::size_t j=0;j<W;++j)
                 my_matrix(i, j) = std::inner_product(A_begin+i*n, A_begin+(i+1)*n, B_begin+j*n, T(0));
         }
 
@@ -31,7 +32,8 @@ template <class T> Matrix<T> dot(const Matrix<T>& A, const Matrix<T>& B)
 
 template <class T> Matrix<T> inv(const Matrix<T>& M)
 {
-    if(M.rowNb()!=M.colNb())
+    std::size_t H = M.rowNb(), W = M.colNb();
+    if(H!=W)
     {
         std::cout<<"the matrix is not a square matrix"<<std::endl;
         return M;
@@ -44,10 +46,10 @@ template <class T> Matrix<T> inv(const Matrix<T>& M)
     }
     else
     {
-        Matrix<T> new_mat(M.rowNb());
-        if(M.rowNb()==1)
+        Matrix<T> new_mat(H);
+        if(H==1)
             new_mat(0, 0) = T(1);
-        else if(M.rowNb()==2)
+        else if(H==2)
         {
             new_mat(0, 0) = M(1, 1);
             new_mat(0, 1) = -M(0, 1);
@@ -56,9 +58,9 @@ template <class T> Matrix<T> inv(const Matrix<T>& M)
         }
         else
         {
-            for(std::size_t i=0;i<M.rowNb();++i)
+            for(std::size_t i=0;i<H;++i)
             {
-                for(std::size_t j=0, J=M.colNb();j<J;++j)
+                for(std::size_t j=0;j<W;++j)
                 {
                     Matrix<T> temp = M;
                     temp.delRow(i);
@@ -73,20 +75,21 @@ template <class T> Matrix<T> inv(const Matrix<T>& M)
 
 template <class T> T det(const Matrix<T>& M)
 {
-    if(M.rowNb()!=M.colNb())
+    std::size_t H = M.rowNb(), W = M.colNb();
+    if(H!=W)
     {
         std::cout<<"the matrix is not a square matrix"<<std::endl;
         return T(0);
     }
-    else if(M.rowNb()==1)
+    else if(H==1)
         return M(0, 0);
-    else if(M.rowNb()==2)
+    else if(H==2)
         return M(0, 0)*M(1, 1)-M(0, 1)*M(1, 0);
     else
     {
         T determinant = T(1);
         Matrix<T> Mcopy = M;
-        for(std::size_t i=0;i<M.rowNb()-2;++i)
+        for(std::size_t i=0;i<H-2;++i)
         {
             Matrix<T> cur_col = Mcopy.getSubmat(i, Mcopy.rowNb(), i, Mcopy.rowNb());
             cur_col = abs(cur_col);
@@ -145,7 +148,7 @@ template <class T> Matrix<T> fwdsub(const Matrix<T>& L, const Matrix<T>& B)
     {
         Matrix<T> X(B.rowNb(), B.colNb());
         X.setRow(0, B.getRow(0)/L(0,0));
-        for(std::size_t i=1;i<X.rowNb();++i)
+        for(std::size_t i=1, I=X.rowNb();i<I;++i)
         {
             Matrix<T> new_row = B.getRow(i);
             for(std::size_t j=0;j<i;++j)
@@ -246,7 +249,7 @@ template <class T> Matrix<T> pinv(const Matrix<T>& M)
         A = dot(transpose(M), M);
 
     Matrix<T> da = A.getDiag();
-    T tol = 1e-12;
+    T tol = 10e-9;
     Matrix<T> L = zeros<T>(W, W);
     std::size_t r = 0;
     for(std::size_t k=0;k<W;++k)
@@ -326,15 +329,89 @@ template <class T> std::pair<Matrix<T>, Matrix<T> > rq(const Matrix<T>& M)
     return std::make_pair(R, Q);
 }
 
+template <class T> std::pair<Matrix<T>, Matrix<T> > ql(const Matrix<T>& M)
+{
+    std::size_t H = M.rowNb(), W = M.colNb();
+    Matrix<T> Q, L;
+    Q = zeros<T>(H, W);
+    L = zeros<T>(W, W);
+    std::vector<Matrix<float> > V(W);
+    for(std::size_t i=0;i<W;++i)
+    {
+        V[i] = M.getCol(i);
+    }
+    for(std::size_t i=W;i>0;--i)
+    {
+        L(i-1, i-1) = norm(V[i-1]);
+        Q.setCol(i-1, V[i-1]/L(i-1, i-1));
+        Matrix<T> cur_col = Q.getCol(i-1);
+        for(std::size_t j=W;j>i-1;--j)
+        {
+            L(j-1, i-1) = sum(V[j-1]*cur_col);
+            V[j-1]-=L(j-1, i-1)*cur_col;
+        }
+    }
+    return std::make_pair(Q, L);
+}
+
+template <class T> std::pair<Matrix<T>, Matrix<T> > lq(const Matrix<T>& M)
+{
+    std::size_t H = M.rowNb(), W = M.colNb();
+    Matrix<T> Q, L;
+    Q = zeros<T>(H, W);
+    L = zeros<T>(H, H);
+    std::vector<Matrix<float> > V(H);
+    for(std::size_t i=0;i<H;++i)
+    {
+        V[i] = M.getRow(i);
+    }
+    for(std::size_t i=0;i<H;++i)
+    {
+        L(i, i) = norm(V[i]);
+        Q.setRow(i, V[i]/L(i, i));
+        Matrix<T> cur_row = Q.getRow(i);
+        for(std::size_t j=i+1;j<H;++j)
+        {
+            L(j, i) = sum(V[j]*cur_row);
+            V[j]-=L(j, i)*cur_row;
+        }
+    }
+    return std::make_pair(L, Q);
+}
+
 template <class T> std::tuple<Matrix<T>, Matrix<T>, Matrix<T> > svd(const Matrix<T>& M)
 {
     std::size_t H = M.rowNb();
     std::size_t W = M.colNb();//H>=W
 
-    Matrix<float> U = M;
-    Matrix<float> S(W, W);
+    Matrix<float> Mt = transpose(M);
+    Matrix<float> temp1 = dot(Mt, M);
+    Matrix<float> temp2 = dot(M, Mt);
+
+    Matrix<float> U(H, H);
     Matrix<float> V(W, W);
-    return std::make_tuple(U,S,V);
+
+    auto J1 = jacobi(temp1);
+    auto J2 = jacobi(temp2);
+
+    if(H>W)
+    {
+        Matrix<float> S(W, W);
+        std::tie(S, V) = J1;
+        U = J2.second;
+        for(std::size_t i=0;i<H-W;++i)
+            U.delCol(W);
+        return std::make_tuple(U,sqrt(S),V);
+    }
+    else
+    {
+        Matrix<float> S(H, H);
+        std::tie(S, U) = J2;
+        V = J1.second;
+        for(std::size_t i=0;i<W-H;++i)
+            S.newCol();
+        return std::make_tuple(U,sqrt(S),V);
+    }
 }
 
 template <class T> T trace(const Matrix<T>& M)
@@ -342,8 +419,10 @@ template <class T> T trace(const Matrix<T>& M)
     return sum(M.getDiag());
 }
 
-template <class T> std::pair<Matrix<T>, Matrix<T> > Jacobi(const Matrix<T>& M)
+template <class T> std::pair<Matrix<T>, Matrix<T> > jacobi(const Matrix<T>& M)
 {
+    std::size_t H = M.rowNb();
+    std::size_t W = M.colNb();
     Matrix<T> A = M;
     Matrix<T> P = id<T>(M.rowNb(), M.colNb());
     while(true)
@@ -358,10 +437,28 @@ template <class T> std::pair<Matrix<T>, Matrix<T> > Jacobi(const Matrix<T>& M)
         }
         std::size_t p = cur_value(0, 0);
         std::size_t q = cur_value(0, 1);
-        if(std::abs(A(p,q))<10e-10)
+        if(std::abs(A(p,q))<10e-9)
         {
             A(p, q) = 0;
             A(q, p) = 0;
+            Matrix<T> dA = A.getDiag();
+            std::size_t n = dA.size();
+            A*=id<T>(n);
+            Matrix<std::size_t> sorted_idx = argsort(dA);
+            sorted_idx.flipud();
+            for(std::size_t i=0;i<n;++i)
+            {
+                std::cout<<A<<std::endl;
+                std::cout<<sorted_idx<<std::endl;
+                std::size_t cur_idx = sorted_idx(i, 0);
+                std::swap(A(i,i), A(cur_idx, cur_idx));
+                P.swapcol(i, cur_idx);
+
+                Matrix<T> dA = A.getDiag();
+                sorted_idx = argsort(dA);
+                sorted_idx.flipud();
+            }
+
             return std::make_pair(A, P);
         }
 
@@ -404,24 +501,23 @@ template <class T> std::pair<Matrix<T>, Matrix<T> > Jacobi(const Matrix<T>& M)
 }
 
 
-template <class T> Matrix<T> Vander(const Matrix<T>& M)
+template <class T> Matrix<T> vander(const Matrix<T>& M)
 {
-    std::size_t H = M.rowNb();
-    std::size_t W = M.colNb();
+    std::size_t H = M.rowNb(), W = M.colNb();
     if(H==1)
     {
         Matrix<T> V(W, W);
         V.setRow(0, ones<T>(1, W));
         for(std::size_t i=1;i<W;++i)
-            V.setRow(0, pow(M, i));
+            V.setRow(i, pow(M, T(i)));
         return V;
     }
     else if(W==1)
     {
         Matrix<T> V(H, H);
         V.setCol(0, ones<T>(H, 1));
-        for(std::size_t i=1;i<W;++i)
-            V.setCol(0, pow(M, i));
+        for(std::size_t i=1;i<H;++i)
+            V.setCol(i, pow(M, T(i)));
         return V;
     }
     else
@@ -429,4 +525,59 @@ template <class T> Matrix<T> Vander(const Matrix<T>& M)
         std::cout<<"The argument must be a vector"<<std::endl;
         return Matrix<T>();
     }
+}
+
+
+template <class T> std::tuple<Matrix<T>, Matrix<T>, Matrix<T> > bidiag_reduction(const Matrix<T>& M)
+{
+    std::size_t m = M.rowNb(), n = M.colNb();
+
+    Matrix<T> B = M;
+    Matrix<T> U = id<T>(m);
+    Matrix<T> V = id<T>(n);
+    Matrix<T> H;
+
+    for(std::size_t i=0;i<n;++i)
+    {
+        H = householder(B.getCol(i),i);
+        B = dot(H, B);
+        U = dot(U, H);
+        if(i<n-2)
+        {
+            H = householder(transpose(B.getRow(i)),i+1);
+            B = dot(B, H);
+            V = dot(H, V);
+        }
+    }
+
+    return std::make_tuple(U, B, V);
+}
+
+
+template <class T> Matrix<T> householder(const Matrix<T>& M, std::size_t idx)
+{
+    std::size_t m = M.rowNb(), n = M.colNb();
+    Matrix<T> d;
+    if(m>1)
+        d = M.getRows(idx, m);
+    else
+        d = M.getCols(idx, n);
+
+    T alpha;
+    if(d(0,0)>=0)
+        alpha = -norm(d);
+    else
+        alpha = norm(d);
+
+    if(std::abs(alpha)<10e-9)
+        return id<T>(m*n);
+
+    std::size_t len_d = d.size();
+    Matrix<T> v = zeros<T>(len_d, 1);
+    v(0, 0) = std::sqrt(0.5*(1-d(0,0)/alpha));
+    T p = -alpha*v(0,0);
+    v.setRows(1, d.getRows(1,len_d)/(2*p));//warning
+    Matrix<T> w = zeros<T>(m*n, 1);
+    w.setRows(idx, v);
+    return id<T>(m*n)-T(2)*dot(w, transpose(w));
 }
