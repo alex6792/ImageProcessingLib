@@ -69,10 +69,27 @@ Matrix<float> StandardScaler::fit_transform(const Matrix<float>& M)
 Matrix<float> StandardScaler::inverse_transform(const Matrix<float>& M)
 {
     Matrix<float> result = M;
-    if(with_std)
-        result*=data_std;
-    if(with_mean)
-        result+=data_mean;
+    if(axis==1)
+    {
+        if(with_std)
+            result*=dot(data_std, ones<float>(1, M.colNb()));
+        if(with_mean)
+            result+=dot(data_mean, ones<float>(1, M.colNb()));
+    }
+    else if(axis==2)
+    {
+        if(with_std)
+            result*=dot(ones<float>(M.rowNb(), 1), data_std);
+        if(with_mean)
+            result+=dot(ones<float>(M.rowNb(), 1), data_mean);
+    }
+    else
+    {
+        if(with_std)
+            result*=data_std(0, 0);
+        if(with_mean)
+            result+=data_mean(0, 0);
+    }
     return result;
 }
 

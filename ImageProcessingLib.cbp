@@ -141,6 +141,8 @@
 		<Unit filename="matrix.tcc" />
 		<Unit filename="mmath.hpp" />
 		<Unit filename="mmath.tcc" />
+		<Unit filename="optimization.cpp" />
+		<Unit filename="optimization.hpp" />
 		<Unit filename="polynomial.cpp" />
 		<Unit filename="polynomial.hpp" />
 		<Unit filename="polynomial_equation_solver.hpp" />

@@ -41,7 +41,10 @@ int main()
                             {1, 2, 3, 4, 5}
                             };
     std::cout<<entropy(N)<<std::endl;
-    test_linalg();
+    test_interp();
+    test_pca();
+    //test_linprog();
+    //test_linalg();
     //test_statistics();
     //test_lecture_img();
     //test_supervisedlearning();

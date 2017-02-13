@@ -31,8 +31,8 @@ Matrix<bool> closing_by_reconstruction(const Matrix<bool>&, const Mask& = square
 Matrix<bool> conservative_smoothing(const Matrix<bool>&);
 Matrix<bool> contrast_enhancement(const Matrix<bool>&);
 Matrix<bool> convex_hull(const Matrix<bool>&);
-Matrix<bool> erode(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> dilate(const Matrix<bool>&, const Mask& = square(3));
+Matrix<bool> erode(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> gradient(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> HitOrMiss(const Matrix<bool>&, const Mask&, const Mask&);
 Matrix<bool> inner_gradient(const Matrix<bool>&, const Mask& = square(3));
@@ -52,10 +52,12 @@ Matrix<unsigned char> close(const Matrix<unsigned char>&, const Mask& = square(3
 Matrix<unsigned char> closing_by_reconstruction(const Matrix<unsigned char>&, const Mask& = square(3));
 Matrix<unsigned char> conservative_smoothing(const Matrix<unsigned char>&);
 Matrix<unsigned char> contrast_enhancement(const Matrix<unsigned char>&);
-Matrix<unsigned char> erode(const Matrix<unsigned char>&, const Mask& = square(3));
 Matrix<unsigned char> dilate(const Matrix<unsigned char>&, const Mask& = square(3));
+Matrix<unsigned char> erode(const Matrix<unsigned char>&, const Mask& = square(3));
 Matrix<unsigned char> gradient(const Matrix<unsigned char>&, const Mask& = square(3));
 Matrix<unsigned char> HitOrMiss(const Matrix<unsigned char>&, const Mask&, const Mask&);
+Matrix<unsigned char> hmax(const Matrix<unsigned char>&, const Mask& = square(3));
+Matrix<unsigned char> hmin(const Matrix<unsigned char>&, const Mask& = square(3));
 Matrix<unsigned char> inner_gradient(const Matrix<unsigned char>&, const Mask& = square(3));
 Matrix<unsigned char> median_filter(const Matrix<unsigned char>&, const Mask& = square(3));
 Matrix<unsigned char> open(const Matrix<unsigned char>&, const Mask& = square(3));

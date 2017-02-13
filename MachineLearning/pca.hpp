@@ -12,6 +12,7 @@
 
 
 #include "../matrix.hpp"
+#include "scaler.hpp"
 
 
 /*!
@@ -21,13 +22,14 @@
 class PCA
 {
     private :
-        Matrix<float> mean; /*!< mean matrix*/
+        std::size_t nb_components; /*!< number of components*/
+        StandardScaler StdSc; /*!< std scaler*/
         Matrix<float> covar; /*!< covariance matrix*/
         Matrix<float> eigenvalues; /*!< eigenvalues*/
         Matrix<float> eigenvectors; /*!< eigenvectors*/
 
     public :
-        PCA();
+        PCA(std::size_t = 0);
         void fit(const Matrix<float>&);
         Matrix<float> fit_transform(const Matrix<float>&);
         Matrix<float> inverse_transform(const Matrix<float>&);

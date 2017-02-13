@@ -4,13 +4,13 @@
 #include "logical_operators.hpp"
 #include "matrix.hpp"
 #include "mmath.hpp"
+#include "optimization.hpp"
 #include "polynomial.hpp"
 #include "polynomial_equation_solver.hpp"
 #include "regression.hpp"
 #include "SDL_interface.hpp"
 #include "statistics.hpp"
 #include "test_functions.hpp"
-#include <tuple>
 
 #include "MachineLearning/pca.hpp"
 #include "MachineLearning/scaler.hpp"
@@ -1117,9 +1117,72 @@ void test_polynomials()
 
 void test_pca()
 {
-    PCA pca;
+    PCA pca(1);
     Matrix<float> X = arange<float>(-10.0,10.0);
     Matrix<float> Y = 5.0f*X+2.0f;
     Y+=randn(Y.rowNb(), Y.colNb(), 0.0f, 0.3f);
-    pca.fit(Y);
+    Matrix<float> Data = horzcat(X,Y);
+    Matrix<float> Z = pca.fit_transform(Data);
+
+    std::cout<<Data<<std::endl;
+    std::cout<<Z<<std::endl;
+    std::cout<<pca.inverse_transform(Z)<<std::endl;
+}
+
+
+void test_linprog()
+{
+    Matrix<float> f = {{-1},{-2}};
+    Matrix<float> A = {{-3,2},{-1,2},{1,1}};
+    Matrix<float> b = {{2},{4},{5}};
+    std::cout<<linprog_can(f, A, b)<<std::endl;// answer {{2},{3}}
+
+    f = {{-3},{-2}};
+    A = {{2,1},{1,1},{1,0}};
+    b = {{100},{80},{40}};
+    std::cout<<linprog_can(f, A, b)<<std::endl;// answer {{20},{60}}
+
+    f = {{-6},{-4}};
+    A = {{3,9},{4,5},{2,1}};
+    b = {{81},{55},{20}};
+    std::cout<<linprog_can(f, A, b)<<std::endl;// answer {{15/2},{5}}
+
+    f = {{1},{1}};
+    A = {{-1,-2}};
+    b = {{-2}};
+    std::cout<<linprog_can(f, A, b)<<std::endl;// answer {{0},{1}}
+
+    f = {{2},{-5}};
+    A = {{1,0},{-1,0},{0,1},{0,-1},{-1,-1}};
+    b = {{200},{-100},{170},{-80},{-200}};
+    std::cout<<linprog_can(f, A, b)<<std::endl;// answer {{100},{170}}
+}
+
+void test_quadprog()
+{
+    Matrix<float> H = {{2,0},{0,2}};
+    Matrix<float> f = {{-2},{-4}};
+    Matrix<float> A = {{1,2}};
+    Matrix<float> b = {{4}};
+    Matrix<float> Aeq = {{0,0}};
+    Matrix<float> beq = {{0}};
+    Matrix<float> x0 = {{2},{0}};
+    std::cout<<-dot(pinv(H), f)<<std::endl;
+    std::cout<<quadprog(H, f, A, b, Aeq, beq, x0);
+}
+
+void test_interp()
+{
+    Matrix<float> X = {{0.0f,1.0f,2.0f,3.0f,4.0f,5.0f,6.0f,7.0f,8.0f,9.0f,10.0f}};
+    Matrix<float> Y = X*4.2f+1.3f;
+    Matrix<float> X2 = X+0.4f;
+    X2.newCol(0);
+    X2(0, 0) = -0.6f;
+    std::cout<<X<<std::endl;
+    std::cout<<Y<<std::endl;
+    std::cout<<X2<<std::endl;
+    std::cout<<X2*4.2f+1.3f<<std::endl;
+    std::cout<<interp1(X, Y, X2, "linear")<<std::endl;
+    std::cout<<interp1(X, Y, X2, "nearest")<<std::endl;
+
 }

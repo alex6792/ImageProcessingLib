@@ -448,8 +448,6 @@ template <class T> std::pair<Matrix<T>, Matrix<T> > jacobi(const Matrix<T>& M)
             sorted_idx.flipud();
             for(std::size_t i=0;i<n;++i)
             {
-                std::cout<<A<<std::endl;
-                std::cout<<sorted_idx<<std::endl;
                 std::size_t cur_idx = sorted_idx(i, 0);
                 std::swap(A(i,i), A(cur_idx, cur_idx));
                 P.swapcol(i, cur_idx);

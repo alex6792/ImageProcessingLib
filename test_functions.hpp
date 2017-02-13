@@ -19,3 +19,6 @@ void test_zernike();
 void test_digits();
 void test_polynomials();
 void test_pca();
+void test_linprog();
+void test_quadprog();
+void test_interp();

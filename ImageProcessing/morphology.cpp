@@ -111,6 +111,7 @@ Matrix<bool> conservative_smoothing(const Matrix<bool>& M)
 
 Matrix<bool> contrast_enhancement(const Matrix<bool>& M)
 {
+    //ne sert a  rien return M
     Matrix<bool> dil = dilate(M);
     Matrix<bool> ero = erode(M);
     Matrix<bool> I = where(dil-M<M-ero, dil, ero);
@@ -449,6 +450,20 @@ Matrix<unsigned char> gradient(const Matrix<unsigned char>& M, const Mask& mask)
 Matrix<unsigned char> HitOrMiss(const Matrix<unsigned char>& M, const Mask& maskFG, const Mask& maskBG)
 {
     return min(erode(M, maskFG), erode((unsigned char)255-M, maskBG));
+}
+
+
+Matrix<unsigned char> hmax(const Matrix<unsigned char>& M, const Mask& mask)
+{
+    Matrix<unsigned char> M_1 = M;
+    replace(M_1, (unsigned char)0, (unsigned char)1);
+    M_1-=1;
+    return reconstruct(M, M_1, mask);
+}
+
+Matrix<unsigned char> hmin(const Matrix<unsigned char>& M, const Mask& mask)
+{
+    return (unsigned char)255-hmax((unsigned char)255-M, mask);
 }
 
 Matrix<unsigned char> inner_gradient(const Matrix<unsigned char>& M, const Mask& mask)

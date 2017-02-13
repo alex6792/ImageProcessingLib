@@ -821,6 +821,32 @@ template <class T> Matrix<T> where(const Matrix<bool>& cdt, const Matrix<T>& A, 
     return A;
 }
 
+template <class T> Matrix<T> horzcat(const Matrix<T>& A, const Matrix<T>& B)
+{
+    if(A.rowNb()==B.rowNb())
+    {
+        Matrix<T> my_matrix(A.rowNb(), A.colNb()+B.colNb());
+        my_matrix.setCols(0, A);
+        my_matrix.setCols(A.colNb(), B);
+        return my_matrix;
+    }
+    std::cout<<"dimension mismatch"<<std::endl;
+    return A;
+}
+
+template <class T> Matrix<T> vertcat(const Matrix<T>& A, const Matrix<T>& B)
+{
+    if(A.colNb()==B.colNb())
+    {
+        Matrix<T> my_matrix(A.rowNb()+B.rowNb(), A.colNb());
+        my_matrix.setRows(0, A);
+        my_matrix.setRows(A.rowNb(), B);
+        return my_matrix;
+    }
+    std::cout<<"dimension mismatch"<<std::endl;
+    return A;
+}
+
 template <class T> Matrix<T> compress(const Matrix<bool>& cdt, const Matrix<T>& M, int axis)
 {
     if(axis==1)

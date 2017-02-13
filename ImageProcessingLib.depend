@@ -24,12 +24,12 @@
 	<complex>
 	"../matrix.hpp"
 
-1472978435 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.hpp
+1485362009 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.hpp
 	<deque>
 	<iostream>
 	"matrix.tcc"
 
-1480436874 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.tcc
+1485459632 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.tcc
 	<algorithm>
 	<chrono>
 	<cmath>
@@ -66,7 +66,7 @@
 	"../../matrix.hpp"
 	"../color.hpp"
 
-1483283627 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\gifio.cpp
+1483897041 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\gifio.cpp
 	"gifIO.hpp"
 	<fstream>
 	<iostream>
@@ -183,18 +183,18 @@
 	"color.hpp"
 	"../matrix.hpp"
 
-1477071728 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.hpp
+1485793338 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.hpp
 	"../matrix.hpp"
 
-1479410527 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.cpp
+1486910040 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.cpp
 	"linear_filtering.hpp"
 	"../linalg.hpp"
 	"../statistics.hpp"
 
-1479410491 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.hpp
+1486892509 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.hpp
 	"../matrix.hpp"
 
-1478219601 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
+1486399496 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
 	<cmath>
 	<vector>
 	"../logical_operators.hpp"
@@ -224,7 +224,7 @@
 	"matrix.hpp"
 	"linalg.tcc"
 
-1483709022 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.tcc
+1486826418 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.tcc
 	<cmath>
 	<tuple>
 	<utility>
@@ -287,16 +287,17 @@
 1471037121 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\meanshift.hpp
 	"../../matrix.hpp"
 
-1483645429 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\pca.cpp
+1486825722 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\pca.cpp
 	"pca.hpp"
 	"../mmath.hpp"
 	"../linalg.hpp"
 	"../statistics.hpp"
 
-1466705927 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\pca.hpp
+1486764298 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\pca.hpp
 	"../matrix.hpp"
+	"scaler.hpp"
 
-1464885097 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\scaler.cpp
+1486763100 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\scaler.cpp
 	"scaler.hpp"
 	"../linalg.hpp"
 	"../statistics.hpp"
@@ -357,7 +358,7 @@
 1471039016 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\perceptron.hpp
 	"../../matrix.hpp"
 
-1483647296 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
+1486894747 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
 	"test_functions.hpp"
 	"matrix.hpp"
 	"statistics.hpp"
@@ -795,22 +796,22 @@
 	<queue>
 	<vector>
 
-1483887099 c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.hpp
+1486894361 c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.hpp
 
-1483646716 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
+1486910180 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
 	"csvIO.hpp"
 	"file_explorer.hpp"
 	"linalg.hpp"
 	"logical_operators.hpp"
 	"matrix.hpp"
 	"mmath.hpp"
+	"optimization.hpp"
 	"polynomial.hpp"
 	"polynomial_equation_solver.hpp"
 	"regression.hpp"
 	"SDL_interface.hpp"
 	"statistics.hpp"
 	"test_functions.hpp"
-	<tuple>
 	"MachineLearning/pca.hpp"
 	"MachineLearning/scaler.hpp"
 	"MachineLearning/Clustering/affinitypropagation.hpp"
@@ -896,4 +897,12 @@
 
 1481395470 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\qda.hpp
 	"../../matrix.hpp"
+
+1485641316 source:c:\users\hp\documents\mes programmes\imageprocessinglib\optimization.cpp
+	"optimization.hpp"
+	"linalg.hpp"
+	<cfloat>
+
+1485362823 c:\users\hp\documents\mes programmes\imageprocessinglib\optimization.hpp
+	"matrix.hpp"
 

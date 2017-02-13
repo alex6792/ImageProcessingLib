@@ -167,7 +167,7 @@ Matrix<Color> read_gif(std::string filename)
                     {
 
                         // read next subblock
-                        //std::cout<<cpt_subblock<<std::endl;
+                        std::cout<<"new subblock "<<cpt_subblock<<std::endl;
                         ++cpt_subblock;
                         //std::cout<<(int)nb_bytes_following_u<<std::endl;
                         unsigned char subblock[nb_bytes_following_u];
@@ -250,6 +250,7 @@ Matrix<Color> read_gif(std::string filename)
                                 if(cur_idx_in_Dic==pow(2, code_size))
                                 {
                                     ++code_size;
+                                    std::cout<<"new code size "<<code_size<<std::endl;
                                 }
 
                                 previous_code = code;
@@ -264,6 +265,7 @@ Matrix<Color> read_gif(std::string filename)
                                 if(cur_idx_in_Dic==pow(2, code_size))
                                 {
                                     ++code_size;
+                                    std::cout<<"new code size "<<code_size<<std::endl;
                                 }
 
                                 previous_code = code;

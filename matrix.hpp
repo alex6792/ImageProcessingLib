@@ -204,6 +204,10 @@ template <typename T1, typename T2, class T> Matrix<T> apply(const Matrix<T1>&, 
 template <class T> Matrix<T> where(const Matrix<bool>&, const T&, const T&);
 template <class T> Matrix<T> where(const Matrix<bool>&, const Matrix<T>&, const Matrix<T>&);
 
+//concatenation
+template <class T> Matrix<T> horzcat(const Matrix<T>&, const Matrix<T>&);
+template <class T> Matrix<T> vertcat(const Matrix<T>&, const Matrix<T>&);
+
 // compression
 template <class T> Matrix<T> compress(const Matrix<bool>&, const Matrix<T>&, int);
 

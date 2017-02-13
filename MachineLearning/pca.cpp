@@ -4,21 +4,19 @@
 #include "../statistics.hpp"
 
 
-PCA::PCA()
+PCA::PCA(std::size_t nb_components_arg)
 {
+    nb_components = nb_components_arg;
 }
 
 void PCA::fit(const Matrix<float>& M)
 {
-    mean = axismean(M, 2);
-    Matrix<float> centered_mat = M-dot(ones<float>(M.rowNb(), mean.rowNb()), mean);
-    covar = centered_mat;
-    covar.transpose();
-    covar = dot(covar, centered_mat);
-    covar/=M.rowNb();
+    StdSc = StandardScaler(true, false, 2);
+    Matrix<float> scaled_mat = StdSc.fit_transform(M);
+    covar = dot(transpose(scaled_mat), scaled_mat);
     std::pair<Matrix<float>, Matrix<float> > DP = jacobi(covar);
     eigenvalues = DP.first;
-    eigenvectors = DP.second;
+    eigenvectors = DP.second.getCols(0, nb_components);
 }
 
 Matrix<float> PCA::fit_transform(const Matrix<float>& M)
@@ -29,16 +27,14 @@ Matrix<float> PCA::fit_transform(const Matrix<float>& M)
 
 Matrix<float> PCA::inverse_transform(const Matrix<float>& M)
 {
-    Matrix<float> D = pinv(eigenvalues);
-    eigenvectors.transpose();
-    Matrix<float> temp = dot(M, dot(sqrt(D),eigenvectors));
-    eigenvectors.transpose();
-    temp+=dot(ones<float>(M.rowNb(), mean.rowNb()), mean);
-    return temp;
+    Matrix<float> temp = transpose(eigenvectors);
+    temp = dot(M, temp);
+    return StdSc.inverse_transform(temp);
 }
 
 Matrix<float> PCA::transform(const Matrix<float>& M)
 {
-    Matrix<float> temp = dot(M-dot(ones<float>(M.rowNb(), mean.rowNb()), mean), eigenvectors);
-    return dot(temp , sqrt(eigenvalues));
+    Matrix<float> centered_data = StdSc.transform(M);
+    Matrix<float> temp = eigenvectors;
+    return dot(centered_data, temp);
 }

@@ -441,6 +441,48 @@ Matrix<float> xcorr(Matrix<float> M, Matrix<float> f, std::string mode)
     }
     return filtered_img;
 }
+
+
+Matrix<float> interp1(Matrix<float> x, Matrix<float> v, Matrix<float> xq, std::string mode)
+{
+    std::size_t nb_elem_x = x.colNb();
+    std::size_t nb_elem_xq = xq.colNb();
+    Matrix<float> vq(1, nb_elem_xq);
+    if(!mode.compare("linear"))
+    {
+        for(std::size_t i=0;i<nb_elem_xq;++i)
+        {
+            if(xq(0, i)<=x(0, 0))
+                vq(0, i) = v(0, 0);
+            else if(xq(0, i)>=x(0, nb_elem_x-1))
+                vq(0, i) = v(0, nb_elem_x-1);
+            else
+            {
+                std::size_t cur_idx = 1;
+                while(xq(0, i)>=x(0, cur_idx))
+                {
+                    ++cur_idx;
+                }
+                vq(0, i) = v(0, cur_idx-1)+(xq(0,i)-x(0, cur_idx-1))*((v(0, cur_idx)-v(0, cur_idx-1))/(x(0, cur_idx)-x(0, cur_idx-1)));
+            }
+        }
+    }
+    else if(!mode.compare("nearest"))
+    {
+        for(std::size_t i=0;i<nb_elem_xq;++i)
+        {
+            Matrix<float> dist = abs(xq(0,i)-x);
+            Matrix<std::size_t> idx = argmin(dist);
+            vq(0,i) = v(0, idx(0,1));
+        }
+    }
+    else if(!mode.compare("cubic"))
+    {
+
+    }
+    return vq;
+}
+
 /*
 pyramidal
 1 2 3 2 1

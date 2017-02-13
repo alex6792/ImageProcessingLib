@@ -43,6 +43,6 @@ Matrix<unsigned char> gradient(Matrix<unsigned char>, std::string = "sobel");
 Matrix<unsigned char> filter(Matrix<unsigned char>, Matrix<float>, int = 0);
 Matrix<float> conv(Matrix<float>, Matrix<float>, std::string = "same");
 Matrix<float> xcorr(Matrix<float>, Matrix<float>, std::string = "same");
-
+Matrix<float> interp1(Matrix<float>, Matrix<float>, Matrix<float>, std::string = "linear");
 
 #endif // LINEAR_FILTERING_HPP
