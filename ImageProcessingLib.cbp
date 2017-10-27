@@ -150,7 +150,6 @@
 		<Unit filename="regression.tcc" />
 		<Unit filename="statistics.hpp" />
 		<Unit filename="statistics.tcc" />
-		<Unit filename="svd.hpp" />
 		<Unit filename="test_functions.cpp" />
 		<Unit filename="test_functions.hpp" />
 		<Extensions>

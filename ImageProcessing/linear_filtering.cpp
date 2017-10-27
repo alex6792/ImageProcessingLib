@@ -38,8 +38,9 @@ Matrix<float> gaussian(std::size_t filtersize, float stddev)
     Matrix<float>& Y = XY.second;
     X-=filtersize/2.0f-0.5f;
     Y-=filtersize/2.0f-0.5f;
-    Matrix<float> F = exp(-(X*X+Y*Y)/(2*stddev*stddev));
-    return F/sum(F);
+    float var = stddev*stddev;
+    Matrix<float> F = exp(-(X*X+Y*Y)/(2*var))/(2*PI*var);
+    return F;
 }
 
 Matrix<float> isotropicx()
@@ -84,7 +85,7 @@ Matrix<float> log(std::size_t filtersize, float stddev)
     X*=X;
     Y*=Y;
     float var = stddev*stddev;
-    Matrix<float> F = (X+Y-2*var)*exp(-(X+Y)/(2*var));
+    Matrix<float> F = (X+Y-2.0f*var)*exp(-(X+Y)/(2.0f*var));
     return F;
 }
 
@@ -96,9 +97,8 @@ Matrix<float> mdifx(std::size_t filtersize, float stddev)
     X-=filtersize/2.0f-0.5f;
     Y-=filtersize/2.0f-0.5f;
     float variance = stddev*stddev;
-    Matrix<float> F = X*exp(-(X*X+Y*Y)/(2*variance));
-    float alpha = 2.0f/sum(abs(F));
-    return alpha*F;
+    Matrix<float> F = (X/variance)*exp(-(X*X+Y*Y)/(2.0f*variance))/(2.0f*PI*variance);
+    return F;
 }
 
 Matrix<float> mdify(std::size_t filtersize, float stddev)
@@ -109,9 +109,8 @@ Matrix<float> mdify(std::size_t filtersize, float stddev)
     X-=filtersize/2.0f-0.5f;
     Y-=filtersize/2.0f-0.5f;
     float variance = stddev*stddev;
-    Matrix<float> F = Y*exp(-(X*X+Y*Y)/(2*variance));
-    float alpha = 2.0f/sum(abs(F));
-    return alpha*F;
+    Matrix<float> F = (Y/variance)*exp(-(X*X+Y*Y)/(2.0f*variance))/(2.0f*PI*variance);
+    return F;
 }
 
 Matrix<float> mdifxx(std::size_t filtersize, float stddev)
@@ -122,9 +121,8 @@ Matrix<float> mdifxx(std::size_t filtersize, float stddev)
     X-=filtersize/2.0f-0.5f;
     Y-=filtersize/2.0f-0.5f;
     float variance = stddev*stddev;
-    Matrix<float> F = (X*X-variance)*exp(-(X*X+Y*Y)/(2*variance));
-    float alpha = 2.0f/sum(abs(F));
-    return alpha*F;
+    Matrix<float> F = (X*X/variance/variance-1.0f/variance)*exp(-(X*X+Y*Y)/(2.0f*variance))/(2.0f*PI*variance);
+    return F;
 }
 
 Matrix<float> mdifxy(std::size_t filtersize, float stddev)
@@ -135,9 +133,8 @@ Matrix<float> mdifxy(std::size_t filtersize, float stddev)
     X-=filtersize/2.0f-0.5f;
     Y-=filtersize/2.0f-0.5f;
     float variance = stddev*stddev;
-    Matrix<float> F = X*Y*exp(-(X*X+Y*Y)/(2*variance));
-    float alpha = 2.0f/sum(abs(F));
-    return alpha*F;
+    Matrix<float> F = (X*Y/(variance*variance))*exp(-(X*X+Y*Y)/(2.0f*variance))/(2.0f*PI*variance);
+    return F;
 }
 
 Matrix<float> mdifyy(std::size_t filtersize, float stddev)
@@ -148,9 +145,8 @@ Matrix<float> mdifyy(std::size_t filtersize, float stddev)
     X-=filtersize/2.0f-0.5f;
     Y-=filtersize/2.0f-0.5f;
     float variance = stddev*stddev;
-    Matrix<float> F = (Y*Y-variance)*exp(-(X*X+Y*Y)/(2*variance));
-    float alpha = 2.0f/sum(abs(F));
-    return alpha*F;
+    Matrix<float> F = (Y*Y/variance/variance-1.0f/variance)*exp(-(X*X+Y*Y)/(2.0f*variance))/(2.0f*PI*variance);
+    return F;
 }
 
 Matrix<float> prewittx()
@@ -167,6 +163,15 @@ Matrix<float> prewitty()
                     {-1.0f,0.0f,1.0f},
                     {-1.0f,0.0f,1.0f}});
     return pre/3.0f;
+}
+
+Matrix<float> pyramidal(std::size_t filtersize)
+{
+    Matrix<float> v(1, filtersize);
+    for(std::size_t i=0;i<filtersize;++i)
+        v(0, i) = (filtersize+1)/2.0f - std::abs(1+i-(filtersize+1)/2.0f);
+    v = dot(transpose(v), v);
+    return v/sum(v);
 }
 
 Matrix<float> robertsx()
@@ -217,20 +222,10 @@ Matrix<float> savgol(std::size_t filtersize, std::size_t degree, std::size_t der
     }
 
     Matrix<float> F = pinv(J);
-    if(derivx==0 && derivy==0)
-        F = F.getRow(0);
-    else if(derivx==1 && derivy==0)
-        F = F.getRow(1);
-    else if(derivx==0 && derivy==1)
-        F = F.getRow(2);
-    else if(derivx==2 && derivy==0)
-        F = F.getRow(3)*2.0f;
-    else if(derivx==1 && derivy==1)
-        F = F.getRow(4);
-    else if(derivx==0 && derivy==2)
-        F = F.getRow(5)*2.0f;
-
+    std::size_t idx = derivy+(derivx+derivy)*(derivx+derivy+1)/2;
+    F = F.getRow(idx)*std::tgamma(derivx+1)*std::tgamma(derivy+1);
     F.reshape(filtersize, filtersize);
+
     return F;
 }
 
@@ -274,7 +269,7 @@ Matrix<float> unsharp(float alpha)
     return unsharp/4.0f;
 }
 
-Matrix<unsigned char> gradient(Matrix<unsigned char> M, std::string method)
+Matrix<unsigned char> gradient(const Matrix<unsigned char>& M, std::string method)
 {
     Matrix<float> M_copy = Matrix<float>(M);
     Matrix<float> fx, fy;
@@ -282,6 +277,11 @@ Matrix<unsigned char> gradient(Matrix<unsigned char> M, std::string method)
     {
         fx = sobelx();
         fy = sobely();
+    }
+    else if(!method.compare("prewitt"))
+    {
+        fx = prewittx();
+        fy = prewitty();
     }
     else if(!method.compare("scharr"))
     {
@@ -298,13 +298,18 @@ Matrix<unsigned char> gradient(Matrix<unsigned char> M, std::string method)
         fx = mdifx();
         fy = mdify();
     }
+    else if(!method.compare("savgol"))
+    {
+        fx = savgol(5,2,1,0);
+        fy = savgol(5,2,0,1);
+    }
 
     Matrix<float> Gx = conv(M_copy, fx);
     Matrix<float> Gy = conv(M_copy, fy);
     return Matrix<unsigned char>(sqrt((Gx*Gx+Gy*Gy)/2.0f));
 }
 
-Matrix<unsigned char> filter(Matrix<unsigned char> M, Matrix<float> f, int mode)
+Matrix<unsigned char> filter(const Matrix<unsigned char>& M, const Matrix<float>& f, int mode)
 {
     Matrix<unsigned char> filtered_img(M.rowNb(), M.colNb());
     for(std::size_t i=0, I=M.rowNb();i<I;++i)
@@ -332,62 +337,12 @@ Matrix<unsigned char> filter(Matrix<unsigned char> M, Matrix<float> f, int mode)
     return filtered_img;
 }
 
-Matrix<float> conv(Matrix<float> M, Matrix<float> f, std::string mode)
+Matrix<float> conv(const Matrix<float>& M, const Matrix<float>& f, std::string mode)
 {
-    std::size_t H = f.rowNb(), W = f.colNb();
-    Matrix<float> filtered_img = zeros<float>(M.rowNb(), M.colNb());
-    for(std::size_t i=0;i<H;++i)
-    {
-        for(std::size_t j=0;j<W;++j)
-        {
-            Matrix<float> temp = f(H-i, W-j)*M;
-            for(std::size_t k=H/2;k<i;++k)
-            {
-                if(mode.compare("valid"))
-                {
-                    temp.newRow();
-                    temp.setRow(temp.rowNb()-1, temp.getRow(temp.rowNb()-2));
-                }
-                if(mode.compare("full"))
-                    temp.delRow(0);
-            }
-            for(std::size_t k=i;k<H/2;++k)
-            {
-                if(mode.compare("valid"))
-                {
-                    temp.newRow(0);
-                    temp.setRow(0, temp.getRow(1));
-                }
-                if(mode.compare("full"))
-                    temp.delRow(temp.rowNb()-1);
-            }
-            for(std::size_t k=W/2;k<j;++k)
-            {
-                if(mode.compare("valid"))
-                {
-                    temp.newCol();
-                    temp.setCol(temp.colNb()-1, temp.getCol(temp.colNb()-2));
-                }
-                if(mode.compare("full"))
-                    temp.delCol(0);
-            }
-            for(std::size_t k=j;k<W/2;++k)
-            {
-                if(mode.compare("valid"))
-                {
-                    temp.newCol(0);
-                    temp.setCol(0, temp.getCol(1));
-                }
-                if(mode.compare("full"))
-                    temp.delCol(temp.colNb()-1);
-            }
-            filtered_img+=temp;
-        }
-    }
-    return filtered_img;
+    return xcorr(M, transpose(f), mode);
 }
 
-Matrix<float> xcorr(Matrix<float> M, Matrix<float> f, std::string mode)
+Matrix<float> xcorr(const Matrix<float>& M, const Matrix<float>& f, std::string mode)
 {
     std::size_t H = f.rowNb(), W = f.colNb();
     Matrix<float> filtered_img = zeros<float>(M.rowNb(), M.colNb());
@@ -443,7 +398,7 @@ Matrix<float> xcorr(Matrix<float> M, Matrix<float> f, std::string mode)
 }
 
 
-Matrix<float> interp1(Matrix<float> x, Matrix<float> v, Matrix<float> xq, std::string mode)
+Matrix<float> interp1(const Matrix<float>& x, const Matrix<float>& v, const Matrix<float>& xq, std::string mode)
 {
     std::size_t nb_elem_x = x.colNb();
     std::size_t nb_elem_xq = xq.colNb();
@@ -463,7 +418,9 @@ Matrix<float> interp1(Matrix<float> x, Matrix<float> v, Matrix<float> xq, std::s
                 {
                     ++cur_idx;
                 }
-                vq(0, i) = v(0, cur_idx-1)+(xq(0,i)-x(0, cur_idx-1))*((v(0, cur_idx)-v(0, cur_idx-1))/(x(0, cur_idx)-x(0, cur_idx-1)));
+                float alpha = (v(0, cur_idx)-v(0, cur_idx-1))/(x(0, cur_idx)-x(0, cur_idx-1));
+                float beta = v(0,cur_idx)-alpha*x(0, cur_idx);
+                vq(0, i) = alpha*xq(0,i)+beta;
             }
         }
     }
@@ -478,16 +435,48 @@ Matrix<float> interp1(Matrix<float> x, Matrix<float> v, Matrix<float> xq, std::s
     }
     else if(!mode.compare("cubic"))
     {
-
+        std::vector<Matrix<float> > polynomials(nb_elem_x-3);
+        for(std::size_t i=0;i<nb_elem_x-3;++i)// construct 3rd degree polynomials
+        {
+            Matrix<float> P = vander(transpose(x.getCols(i,i+4)));
+            polynomials[i] = dot(inv(P), transpose(v.getCols(i,i+4)));
+        }
+        for(std::size_t i=0;i<nb_elem_xq;++i)
+        {
+            if(xq(0, i)<=x(0, 0))//if under the first, linear interp
+            {
+                float alpha = (v(0, 1)-v(0, 0))/(x(0, 1)-x(0, 0));
+                float beta = v(0,0)-alpha*x(0, 0);
+                vq(0, i) = alpha*xq(0, i)+beta;
+            }
+            else if(xq(0, i)<=x(0, 1))// if between the first and the second, quadratic interp
+            {
+                Matrix<float> P = vander(transpose(x.getCols(0,3)));
+                P = dot(inv(P), transpose(v.getCols(0,3)));
+                vq(0, i) = P(0,0)+xq(0, i)*P(1,0)+xq(0, i)*xq(0, i)*P(2,0);
+            }
+            else if(xq(0, i)>=x(0, nb_elem_x-1))// if over the last, linear interp
+            {
+                float alpha = (v(0, nb_elem_x-1)-v(0, nb_elem_x-2))/(x(0, nb_elem_x-1)-x(0, nb_elem_x-2));
+                float beta = v(0, nb_elem_x-1)-alpha*x(0, nb_elem_x-1);
+                vq(0, i) = alpha*xq(0, i)+beta;
+            }
+            else if(xq(0, i)>=x(0, nb_elem_x-2))// if between the two last, quadratic interp
+            {
+                Matrix<float> P = vander(transpose(x.getCols(nb_elem_x-3,nb_elem_x)));
+                P = dot(inv(P), transpose(v.getCols(nb_elem_x-3,nb_elem_x)));
+                vq(0, i) = P(0,0)+xq(0, i)*P(1,0)+xq(0, i)*xq(0, i)*P(2,0);
+            }
+            else// general case
+            {
+                std::size_t cur_idx = 2;
+                while(xq(0, i)>=x(0, cur_idx))
+                {
+                    ++cur_idx;
+                }
+                vq(0, i) = polynomials[cur_idx-2](0,0)+xq(0, i)*polynomials[cur_idx-2](1,0)+xq(0, i)*xq(0, i)*polynomials[cur_idx-2](2,0)+xq(0, i)*xq(0, i)*xq(0,i)*polynomials[cur_idx-2](3,0);
+            }
+        }
     }
     return vq;
 }
-
-/*
-pyramidal
-1 2 3 2 1
-2 4 6 4 2
-3 6 9 6 3
-2 4 6 4 2
-1 2 3 2 1
-*/

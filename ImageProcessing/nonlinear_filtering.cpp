@@ -4,7 +4,34 @@
 #include "nonlinear_filtering.hpp"
 
 
-Matrix<unsigned char> bilateral(Matrix<unsigned char> M, std::size_t filtersize, float range_var, float spatial_var)
+Matrix<float> variance_filter(const Matrix<float>& M, std::size_t filtersize)
+{
+    Matrix<float> M_copy(M);
+    Matrix<float> f = average(filtersize);
+    Matrix<float> mean_img = conv(M_copy, f);
+    Matrix<float> var_img = conv(M_copy*M_copy, f)-mean_img*mean_img;
+    return var_img;
+}
+
+Matrix<float> geometric_mean_filter(const Matrix<float>& M, std::size_t filtersize)
+{
+    Matrix<float> filtered_img = log(M);
+    Matrix<float> f = average(filtersize);
+    filtered_img = conv(filtered_img, f);
+    filtered_img = exp(filtered_img);
+    return filtered_img;
+}
+
+Matrix<float> harmonic_mean_filter(const Matrix<float>& M, std::size_t filtersize)
+{
+    Matrix<float> filtered_img = 1.0f/M;
+    Matrix<float> f = average(filtersize);
+    filtered_img = conv(filtered_img, f);
+    filtered_img = 1.0f/filtered_img;
+    return filtered_img;
+}
+
+Matrix<unsigned char> bilateral(const Matrix<unsigned char>& M, std::size_t filtersize, float range_var, float spatial_var)
 {
     Matrix<unsigned char> filtered_img(M.rowNb(), M.colNb());
     Matrix<float> M_copy(M);
@@ -44,7 +71,7 @@ Matrix<unsigned char> bilateral(Matrix<unsigned char> M, std::size_t filtersize,
     return filtered_img;
 }
 
-Matrix<unsigned char> despeckle(Matrix<unsigned char> M, std::size_t filtersize)
+Matrix<unsigned char> despeckle(const Matrix<unsigned char>& M, std::size_t filtersize)
 {
     Matrix<float> M_copy = Matrix<float>(M);
     Matrix<float> f = ones<float>(filtersize);
@@ -52,11 +79,11 @@ Matrix<unsigned char> despeckle(Matrix<unsigned char> M, std::size_t filtersize)
     f/=sum(f);
     Matrix<float> mean_img = conv(M_copy, f);
     Matrix<float> dif_img = M_copy-mean_img;
-    Matrix<float> stddev_img = conv(M_copy*M_copy, f)-mean_img*mean_img;
-    return where(dif_img*dif_img>stddev_img, Matrix<unsigned char>(mean_img), M);
+    Matrix<float> var_img = conv(M_copy*M_copy, f)-mean_img*mean_img;
+    return where(dif_img*dif_img>var_img, Matrix<unsigned char>(mean_img), M);
 }
 
-Matrix<unsigned char> nagao(Matrix<unsigned char> M, std::size_t filtersize)
+Matrix<unsigned char> nagao(const Matrix<unsigned char>& M, std::size_t filtersize)
 {
     Matrix<float> M_copy = Matrix<float>(M);
     Matrix<float> f = average(filtersize);

@@ -11,7 +11,7 @@ PCA::PCA(std::size_t nb_components_arg)
 
 void PCA::fit(const Matrix<float>& M)
 {
-    StdSc = StandardScaler(true, false, 2);
+    StdSc = StandardScaler(true, true, 2);
     Matrix<float> scaled_mat = StdSc.fit_transform(M);
     covar = dot(transpose(scaled_mat), scaled_mat);
     std::pair<Matrix<float>, Matrix<float> > DP = jacobi(covar);

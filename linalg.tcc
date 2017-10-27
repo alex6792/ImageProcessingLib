@@ -384,34 +384,83 @@ template <class T> std::tuple<Matrix<T>, Matrix<T>, Matrix<T> > svd(const Matrix
     std::size_t H = M.rowNb();
     std::size_t W = M.colNb();//H>=W
 
-    Matrix<float> Mt = transpose(M);
-    Matrix<float> temp1 = dot(Mt, M);
-    Matrix<float> temp2 = dot(M, Mt);
-
-    Matrix<float> U(H, H);
-    Matrix<float> V(W, W);
-
-    auto J1 = jacobi(temp1);
-    auto J2 = jacobi(temp2);
-
-    if(H>W)
+    // intial value
+    Matrix<float> U, S, V;
+    if(H<W)
     {
-        Matrix<float> S(W, W);
-        std::tie(S, V) = J1;
-        U = J2.second;
-        for(std::size_t i=0;i<H-W;++i)
-            U.delCol(W);
-        return std::make_tuple(U,sqrt(S),V);
+        auto USV = svd(transpose(M));
+        std::tie(U,S,V) = USV;
+        return std::make_tuple(V,S,U);
     }
-    else
+    U = M;
+    S = id<float>(W, W);
+    V = id<float>(W, W);
+
+
+    float alpha = 1.0f, beta = 1.0f, gamma = 1.0f, zeta = 1.0f, t = 1.0f, c = 1.0f, s = 1.0f;
+    int cpt = 0;
+    float convergence = 1.0f;
+
+    while(convergence>10e-4)
     {
-        Matrix<float> S(H, H);
-        std::tie(S, U) = J2;
-        V = J1.second;
-        for(std::size_t i=0;i<W-H;++i)
-            S.newCol();
-        return std::make_tuple(U,sqrt(S),V);
+        convergence = 0.0f;
+        for(std::size_t idx_j=0;idx_j<W;++idx_j)
+        {
+            for(std::size_t idx_i=0;idx_i<idx_j;++idx_i)
+            {
+                //save old values
+                Matrix<float> Ui = U.getCol(idx_i);
+                Matrix<float> Uj = U.getCol(idx_j);
+                Matrix<float> Vi = V.getCol(idx_i);
+                Matrix<float> Vj = V.getCol(idx_j);
+
+                //compute jacobi rotation
+                alpha = sum(Ui*Ui);
+                beta = sum(Uj*Uj);
+                gamma = sum(Ui*Uj);
+                zeta = (beta-alpha)/(2.0f*gamma);
+                if(zeta>0.0f)
+                    t = 1.0f/(zeta+std::sqrt(1+zeta*zeta));
+                else
+                    t = -1.0f/(-zeta+std::sqrt(1+zeta*zeta));
+                c = 1/std::sqrt(1+t*t);
+                s = c*t;
+
+                //update convergence
+                float new_convergence = std::abs(gamma)/std::sqrt(alpha*beta);
+                convergence = std::max(new_convergence, convergence);
+
+                //update U and V
+                U.setCol(idx_i, c*Ui-s*Uj);
+                U.setCol(idx_j, s*Ui+c*Uj);
+                V.setCol(idx_i, c*Vi-s*Vj);
+                V.setCol(idx_j, s*Vi+c*Vj);
+            }
+        }
     }
+
+    // normalize U and build S
+    for(std::size_t i=0;i<W;++i)
+    {
+        Matrix<float> Ui = U.getCol(i);
+        S(i, i) = sum(Ui*Ui);
+        U.setCol(i,Ui/S(i,i));
+    }
+
+    // sort eigenvalues and eigenvectors
+    Matrix<float> final_U = U;
+    Matrix<float> final_S = S;
+    Matrix<float> final_V = V;
+    Matrix<std::size_t> indices_sorted = argsort(S.getDiag());
+    std::cout<<indices_sorted<<std::endl;
+    for(std::size_t i=0;i<W;++i)
+    {
+        std::size_t cur_idx = indices_sorted(W-1-i,0);
+        final_U.setCol(i, U.getCol(cur_idx));
+        final_V.setCol(i, V.getCol(cur_idx));
+        final_S(i, i) = S(cur_idx, cur_idx);
+    }
+    return std::make_tuple(final_U,final_S,final_V);
 }
 
 template <class T> T trace(const Matrix<T>& M)

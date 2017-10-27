@@ -469,28 +469,57 @@ void test_filtrage_lineaire()
     Y-=filtersize/2.0f-0.5f;
     std::cout<<X<<Y<<std::endl;
 
+    std::cout<<"savgol"<<std::endl;
+    XY = meshgrid<float>(7,10);
+    X = XY.first;
+    Y = XY.second;
+    Matrix<float> I = 5.0f+X*2.0f+Y*3.0f+7.0f*X*X+6.0f*Y*Y+9.0f*X*Y;
+    std::cout<<I<<std::endl;
+    std::cout<<xcorr(I,savgol(3,2,0,0))<<std::endl;
+    std::cout<<2.0f+14.0f*X+9.0f*Y<<std::endl;
+    std::cout<<xcorr(I,savgol(3,2,1,0))<<std::endl;
+    std::cout<<3.0f+12.0f*Y+9.0f*X<<std::endl;
+    std::cout<<xcorr(I,savgol(3,2,0,1))<<std::endl;
+    std::cout<<14.0f*ones<float>(7,10)<<std::endl;
+    std::cout<<xcorr(I,savgol(3,2,2,0))<<std::endl;
+    std::cout<<9.0f*ones<float>(7,10)<<std::endl;
+    std::cout<<xcorr(I,savgol(3,2,1,1))<<std::endl;
+    std::cout<<12.0f*ones<float>(7,10)<<std::endl;
+    std::cout<<xcorr(I,savgol(3,2,0,2))<<std::endl;
+
+    // smoothing filters
+    std::cout<<"smoothing filters"<<std::endl;
+    std::cout<<savgol(7, 2)<<std::endl;
     std::cout<<average()<<std::endl;
     std::cout<<disk()<<std::endl;
     std::cout<<binomial()<<std::endl;
     std::cout<<gaussian()<<std::endl;
+    std::cout<<pyramidal()<<std::endl;
     std::cout<<savgol(7,3)<<std::endl;
 
+    std::cout<<"derivative filters x"<<std::endl;
     std::cout<<sobelx()<<std::endl;
     std::cout<<prewittx()<<std::endl;
     std::cout<<isotropicx()<<std::endl;
     std::cout<<mdifx()<<std::endl;
     std::cout<<savgol(7, 3, 1, 0)<<std::endl;
-    std::cout<<mdifxx()<<std::endl;
-    std::cout<<savgol(7, 3, 2, 0)<<std::endl;
 
+    std::cout<<"derivative filters y"<<std::endl;
     std::cout<<sobely()<<std::endl;
     std::cout<<prewitty()<<std::endl;
     std::cout<<isotropicy()<<std::endl;
     std::cout<<mdify()<<std::endl;
     std::cout<<savgol(7, 3, 0, 1)<<std::endl;
+
+    std::cout<<"derivative filters xx"<<std::endl;
+    std::cout<<mdifxx()<<std::endl;
+    std::cout<<savgol(7, 3, 2, 0)<<std::endl;
+
+    std::cout<<"derivative filters yy"<<std::endl;
     std::cout<<mdifyy()<<std::endl;
     std::cout<<savgol(7, 3, 0, 2)<<std::endl;
 
+    std::cout<<"derivative filters xy"<<std::endl;
     std::cout<<mdifxy()<<std::endl;
     std::cout<<savgol(7, 3, 1, 1)<<std::endl;
 
@@ -643,33 +672,34 @@ void test_linalg()
 
     Matrix<float> D;
 
-    std::cout<<"pinv"<<std::endl;
+    std::cout<<"pinv"<<std::endl;// pseudo inverse
     std::cout<<B<<std::endl;
     std::cout<<pinv(B)<<std::endl;
     std::cout<<dot(pinv(B), B)<<std::endl;
+    std::cout<<dot(B, pinv(B))<<std::endl;
 
-    std::cout<<"bwdsub"<<std::endl;
-    Matrix<float> X = bwdsub(U, B);// solve UX = B with U an upper triangular matrix
+    std::cout<<"bwdsub"<<std::endl;// solve UX = B with U an upper triangular matrix
+    Matrix<float> X = bwdsub(U, B);
     std::cout<<U<<std::endl;
     std::cout<<B<<std::endl;
     std::cout<<X<<std::endl;
     std::cout<<dot(U, X)<<std::endl;
 
-    std::cout<<"fwdsub"<<std::endl;
+    std::cout<<"fwdsub"<<std::endl;// solve LX = B with L a lower triangular matrix
     Matrix<float> L = transpose(U);
-    X = fwdsub(L, B);// solve LX = B with L a lower triangular matrix
+    X = fwdsub(L, B);
     std::cout<<L<<std::endl;
     std::cout<<B<<std::endl;
     std::cout<<X<<std::endl;
     std::cout<<dot(L, X)<<std::endl;
 
-    std::cout<<"LU decomposition"<<std::endl;
+    std::cout<<"LU decomposition"<<std::endl;// LU decomposition PA = LU
     Matrix<float> A = {{2,3,5},
                         {6,4,1},
                         {2,9,8}};
-    auto PLU = lu(A);// LU decomposition PA = LU
+    auto LUP = lu(A);
     Matrix<float> P;
-    std::tie(L, U, P) = PLU;
+    std::tie(L, U, P) = LUP;
     std::cout<<P<<std::endl;
     std::cout<<A<<std::endl;
     std::cout<<L<<std::endl;
@@ -677,10 +707,7 @@ void test_linalg()
     std::cout<<dot(P, A)<<std::endl;
     std::cout<<dot(L, U)<<std::endl;
 
-    std::cout<<"QR decomposition"<<std::endl;
-    /*A = {{5,4,2,6,5},
-        {2,4,7,8,9},
-        {3,2,1,4,5}};*/
+    std::cout<<"QR decomposition"<<std::endl;// QR decomposition A = QR
     auto QR = qr(A);
     Matrix<float> Q,R;
     std::tie(Q,R) = QR;
@@ -691,7 +718,7 @@ void test_linalg()
     std::cout<<R<<std::endl;
     std::cout<<dot(Q, R)<<std::endl;
 
-    std::cout<<"RQ decomposition"<<std::endl;
+    std::cout<<"RQ decomposition"<<std::endl;// RQ decomposition A = RQ
     auto RQ = rq(A);
     std::tie(R, Q) = RQ;
     std::cout<<A<<std::endl;
@@ -701,7 +728,7 @@ void test_linalg()
     std::cout<<R<<std::endl;
     std::cout<<dot(R, Q)<<std::endl;
 
-    std::cout<<"LQ decomposition"<<std::endl;
+    std::cout<<"LQ decomposition"<<std::endl;// LQ decomposition A = LQ
     auto LQ = lq(A);
     std::tie(L, Q) = LQ;
     std::cout<<A<<std::endl;
@@ -711,7 +738,7 @@ void test_linalg()
     std::cout<<L<<std::endl;
     std::cout<<dot(L, Q)<<std::endl;
 
-    std::cout<<"QL decomposition"<<std::endl;
+    std::cout<<"QL decomposition"<<std::endl;// RQ decomposition A = QL
     auto QL = ql(A);
     std::tie(Q, L) = QL;
     std::cout<<A<<std::endl;
@@ -721,7 +748,7 @@ void test_linalg()
     std::cout<<L<<std::endl;
     std::cout<<dot(Q, L)<<std::endl;
 
-    std::cout<<"crout"<<std::endl;
+    std::cout<<"crout"<<std::endl;// Crout decomposition A = LDU
     auto LD = crout(dot(A, transpose(A)));
     std::tie(L, D) = LD;
     U = transpose(L);
@@ -731,7 +758,7 @@ void test_linalg()
     std::cout<<dot(dot(L, D),U)<<std::endl;
 
 
-    std::cout<<"decomposition de cholesky"<<std::endl;
+    std::cout<<"decomposition de cholesky"<<std::endl;// Cholesky decomposition A = LL'
     A = {{1, 2, 3},
         {2, 20, 26},
         {3, 26, 70}};
@@ -740,7 +767,7 @@ void test_linalg()
     std::cout<<L<<std::endl;
     std::cout<<dot(L, transpose(L))<<std::endl;
 
-    std::cout<<"jacobi"<<std::endl;
+    std::cout<<"jacobi"<<std::endl;// Jacobi decomposition A = LDL'
     A = {{3, 6, 10},
         {7, 3, 3},
         {7, 0, 0},
@@ -835,7 +862,7 @@ void test_segmentation()
     SDL_Quit();
 }
 
-void test_sclaler()
+void test_scaler()
 {
     Matrix<unsigned char> testimg = {{0,0,1,4,4,5},
                                     {0,1,3,4,3,4},
@@ -1168,6 +1195,7 @@ void test_quadprog()
     Matrix<float> beq = {{0}};
     Matrix<float> x0 = {{2},{0}};
     std::cout<<-dot(pinv(H), f)<<std::endl;
+    std::cout<<conjugate_gradient(H,f,x0)<<std::endl;
     std::cout<<quadprog(H, f, A, b, Aeq, beq, x0);
 }
 
@@ -1175,14 +1203,52 @@ void test_interp()
 {
     Matrix<float> X = {{0.0f,1.0f,2.0f,3.0f,4.0f,5.0f,6.0f,7.0f,8.0f,9.0f,10.0f}};
     Matrix<float> Y = X*4.2f+1.3f;
+    Matrix<float> Z = 2.0f*X*X+5.0f*X+3.0f;
     Matrix<float> X2 = X+0.4f;
     X2.newCol(0);
     X2(0, 0) = -0.6f;
+    Matrix<float> Y2 = X2*4.2f+1.3f;
+    Matrix<float> Z2 = 2.0f*X2*X2+5.0f*X2+3.0f;
     std::cout<<X<<std::endl;
-    std::cout<<Y<<std::endl;
     std::cout<<X2<<std::endl;
-    std::cout<<X2*4.2f+1.3f<<std::endl;
+    std::cout<<Y<<std::endl;
+    std::cout<<Y2<<std::endl;
     std::cout<<interp1(X, Y, X2, "linear")<<std::endl;
     std::cout<<interp1(X, Y, X2, "nearest")<<std::endl;
+    std::cout<<interp1(X, Y, X2, "cubic")<<std::endl;
+    std::cout<<Z<<std::endl;
+    std::cout<<Z2<<std::endl;
+    std::cout<<interp1(X, Z, X2, "linear")<<std::endl;
+    std::cout<<interp1(X, Z, X2, "nearest")<<std::endl;
+    std::cout<<interp1(X, Z, X2, "cubic")<<std::endl;
 
+}
+
+
+void test_optim()
+{
+    Matrix<float> A = {{3.0f,1.0f},{1.0f,8.0f}};
+    Matrix<float> b = {{42.6f},{2.7f}};
+    Matrix<float> X0 = {{34.2f},{34.2f}};
+    std::cout<<A<<std::endl;
+    std::cout<<b<<std::endl;
+    std::cout<<X0<<std::endl;
+    std::cout<<conjugate_gradient(A,b,X0)<<std::endl;
+    std::cout<<dot(A,conjugate_gradient(A,b,X0))<<std::endl;
+    std::cout<<"himmelblau"<<std::endl;
+    std::cout<<steepest_descent(himmelblau, {{34.2f},{34.2f}})<<std::endl;
+    std::cout<<"rosenbrock"<<std::endl;
+    std::cout<<steepest_descent(rosenbrock, {{34.2f},{34.2f}})<<std::endl;
+    std::cout<<"himmelblau"<<std::endl;
+    std::cout<<steepest_descent(himmelblau, {{34.2f},{34.2f}})<<std::endl;
+    std::cout<<"rosenbrock"<<std::endl;
+    std::cout<<steepest_descent(rosenbrock, {{34.2f},{34.2f}})<<std::endl;
+    std::cout<<"himmelblau lbfgs"<<std::endl;
+    std::cout<<lbfgs(himmelblau, {{34.2f},{34.2f}})<<std::endl;
+    std::cout<<"rosenbrock lbfgs"<<std::endl;
+    std::cout<<lbfgs(rosenbrock, {{34.2f},{34.2f}})<<std::endl;
+    std::cout<<"himmelblau bfgs"<<std::endl;
+    std::cout<<bfgs(himmelblau, {{34.2f},{34.2f}})<<std::endl;
+    std::cout<<"rosenbrock bfgs"<<std::endl;
+    std::cout<<bfgs(rosenbrock, {{34.2f},{34.2f}})<<std::endl;
 }

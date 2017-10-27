@@ -34,16 +34,31 @@ int main()
                     { 1, 0, 0, 0, 0},
                     { 0, 0, 0, 0, 0}
                     };
-    std::cout<<entropy(M)<<std::endl;;
+    //std::cout<<entropy(M)<<std::endl;;
 
     Matrix<unsigned char> N = {
                             { 1, 2, 3, 4, 5},
-                            {1, 2, 3, 4, 5}
+                            {6, 7, 8, 9, 10}
                             };
-    std::cout<<entropy(N)<<std::endl;
-    test_interp();
-    test_pca();
+    //std::cout<<entropy(N)<<std::endl;
+    /*std::cout<<NOT(N>2)<<std::endl;
+    std::cout<<AND(N>2,N>3)<<std::endl;
+    std::cout<<axismean(Matrix<float>(N),0)<<std::endl;
+    std::cout<<axismean(Matrix<float>(N),1)<<std::endl;
+    std::cout<<axismean(Matrix<float>(N),2)<<std::endl;
+    std::cout<<axismin(Matrix<float>(N),0)<<std::endl;
+    std::cout<<axismin(Matrix<float>(N),1)<<std::endl;
+    std::cout<<axismin(Matrix<float>(N),2)<<std::endl;
+    std::cout<<axismax(Matrix<float>(N),0)<<std::endl;
+    std::cout<<axismax(Matrix<float>(N),1)<<std::endl;
+    std::cout<<axismax(Matrix<float>(N),2)<<std::endl;*/
+    //test_filtrage_lineaire();
+    test_optim();
+    //test_regression();
+    //test_interp();
+    //test_pca();
     //test_linprog();
+    //test_quadprog();
     //test_linalg();
     //test_statistics();
     //test_lecture_img();

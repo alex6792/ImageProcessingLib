@@ -83,17 +83,17 @@ template <class T> Matrix<T> axismin(const Matrix<T>& M, int axis)
         return min(M)*ones<T>(1);
     else if(axis==1)
     {
-        Matrix<T> maximum = M.getCol(0);
+        Matrix<T> minimum = M.getCol(0);
         for(std::size_t j=1, J=M.colNb();j<J;++j)
-            maximum = min(maximum, M.getCol(j));
-        return maximum;
+            minimum = min(minimum, M.getCol(j));
+        return minimum;
     }
     else if(axis==2)
     {
-        Matrix<T> maximum = M.getRow(0);
+        Matrix<T> minimum = M.getRow(0);
         for(std::size_t i=1, I=M.rowNb();i<I;++i)
-            maximum = min(maximum, M.getRow(i));
-        return maximum;
+            minimum = min(minimum, M.getRow(i));
+        return minimum;
     }
     else
     {
@@ -109,21 +109,15 @@ template <class T> Matrix<T> axisprod(const Matrix<T>& M, int axis)
     else if(axis==1)
     {
         Matrix<T> prod = M.getCol(0);
-        for(std::size_t i=0, I=M.rowNb();i<I;++i)
-        {
-            for(std::size_t j=1;j<M.colNb();++j)
-                prod(i, 0)*=M(i, j);
-        }
+        for(std::size_t j=1;j<M.colNb();++j)
+            prod*=M.getCol(j);
         return prod;
     }
     else if(axis==2)
     {
         Matrix<T> prod = M.getRow(0);
         for(std::size_t i=1;i<M.rowNb();++i)
-        {
-            for(std::size_t j=0, J=M.colNb();j<J;++j)
-                prod(0, j)*=M(i, j);
-        }
+            prod*=M.getRow(i);
         return prod;
     }
     else
@@ -145,21 +139,15 @@ template <class T> Matrix<T> axissum(const Matrix<T>& M, int axis)
     else if(axis==1)
     {
         Matrix<T> sum = M.getCol(0);
-        for(std::size_t i=0, I=M.rowNb();i<I;++i)
-        {
-            for(std::size_t j=1;j<M.colNb();++j)
-                sum(i, 0)+=M(i, j);
-        }
+        for(std::size_t j=1;j<M.colNb();++j)
+            sum+=M.getCol(j);
         return sum;
     }
     else if(axis==2)
     {
         Matrix<T> sum = M.getRow(0);
         for(std::size_t i=1;i<M.rowNb();++i)
-        {
-            for(std::size_t j=0, J=M.colNb();j<J;++j)
-                sum(0, j)+=M(i, j);
-        }
+            sum+=M.getRow(i);
         return sum;
     }
     else
@@ -172,11 +160,11 @@ template <class T> Matrix<T> axissum(const Matrix<T>& M, int axis)
 template <class T> Matrix<T> axisvar(const Matrix<T>& M, int axis)
 {
     if(axis==0)
-        return full<T>(1, var(M));
+        return var(M)*ones<T>(1);
     else if(axis==1)
-        return axissum(M*M, 1)/(T)M.colNb()-pow(axismean(M, 1), T(2));
+        return axismean(M*M, 1)-pow(axismean(M, 1), T(2));
     else if(axis==2)
-        return axissum(M*M, 2)/(T)M.rowNb()-pow(axismean(M, 2), T(2));
+        return axismean(M*M, 2)-pow(axismean(M, 2), T(2));
     else
     {
         std::cout<<"invalid axis"<<std::endl;

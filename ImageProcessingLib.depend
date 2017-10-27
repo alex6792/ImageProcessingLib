@@ -1,35 +1,35 @@
 # depslib dependency file v1.0
-1478651582 source:c:\users\hp\documents\mes programmes\imageprocessinglib\file_explorer.cpp
+1478655182 source:c:\users\hp\documents\mes programmes\imageprocessinglib\file_explorer.cpp
 	<dirent.h>
 	<iostream>
 	"file_explorer.hpp"
 
-1461408747 c:\users\hp\documents\mes programmes\imageprocessinglib\file_explorer.hpp
+1461412347 c:\users\hp\documents\mes programmes\imageprocessinglib\file_explorer.hpp
 	<string>
 	<vector>
 
-1471285621 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\color.cpp
+1471289221 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\color.cpp
 	<cmath>
 	"color.hpp"
 
-1471275128 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\color.hpp
+1471278728 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\color.hpp
 	<iostream>
 
-1475320836 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\fourier.cpp
+1475324436 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\fourier.cpp
 	"fourier.hpp"
 	"../mmath.hpp"
 	"../statistics.hpp"
 
-1475316948 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\fourier.hpp
+1475320548 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\fourier.hpp
 	<complex>
 	"../matrix.hpp"
 
-1485362009 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.hpp
+1485365609 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.hpp
 	<deque>
 	<iostream>
 	"matrix.tcc"
 
-1485459632 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.tcc
+1485463232 c:\users\hp\documents\mes programmes\imageprocessinglib\matrix.tcc
 	<algorithm>
 	<chrono>
 	<cmath>
@@ -38,35 +38,58 @@
 	<numeric>
 	<random>
 
-1473497339 c:\users\hp\documents\mes programmes\imageprocessinglib\mmath.hpp
+1473500939 c:\users\hp\documents\mes programmes\imageprocessinglib\mmath.hpp
 	"matrix.hpp"
 	"mmath.tcc"
 
-1473521706 c:\users\hp\documents\mes programmes\imageprocessinglib\mmath.tcc
+1473525306 c:\users\hp\documents\mes programmes\imageprocessinglib\mmath.tcc
 	"matrix.hpp"
 	"mmath.hpp"
 
-1478652568 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.hpp
+1478656168 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.hpp
 	"matrix.hpp"
 	"statistics.tcc"
 
-1478652571 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.tcc
+1504989704 c:\users\hp\documents\mes programmes\imageprocessinglib\statistics.tcc
 	<algorithm>
 	<cmath>
 	"mmath.hpp"
 
-1472560317 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\bmpio.cpp
+1471977010 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\hough.cpp
+	"hough.hpp"
+	"../linalg.hpp"
+	"../mmath.hpp"
+
+1471207028 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\hough.hpp
+	"../matrix.hpp"
+
+1483647153 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.hpp
+	"matrix.hpp"
+	"linalg.tcc"
+
+1501840956 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.tcc
+	<cmath>
+	<tuple>
+	<utility>
+	"mmath.hpp"
+	"logical_operators.hpp"
+	"statistics.hpp"
+
+1463072424 c:\users\hp\documents\mes programmes\imageprocessinglib\logical_operators.hpp
+	"matrix.hpp"
+
+1472563917 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\bmpio.cpp
 	"bmpIO.hpp"
 	<fstream>
 	<iostream>
 	<string>
 	<sstream>
 
-1466111836 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\bmpio.hpp
+1466115436 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\bmpio.hpp
 	"../../matrix.hpp"
 	"../color.hpp"
 
-1483897041 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\gifio.cpp
+1483900641 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\gifio.cpp
 	"gifIO.hpp"
 	<fstream>
 	<iostream>
@@ -74,51 +97,92 @@
 	<sstream>
 	<queue>
 
-1466111836 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\gifio.hpp
+1466115436 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\gifio.hpp
 	"../../matrix.hpp"
 	"../color.hpp"
 
-1472811937 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\icoio.cpp
+1472815537 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\icoio.cpp
 	"icoIO.hpp"
 	<fstream>
 	<iostream>
 	<string>
 	<sstream>
 
-1466111836 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\icoio.hpp
+1466115436 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\icoio.hpp
 	"../../matrix.hpp"
 	"../color.hpp"
 
-1472809614 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\jpegio.cpp
+1478580155 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\imageio.cpp
+	"../imgconverter.hpp"
+	"imageIO.hpp"
+	"bmpIO.hpp"
+	"gifIO.hpp"
+	"icoIO.hpp"
+	"jpegIO.hpp"
+	"pcxIO.hpp"
+	"pngIO.hpp"
+	"pnmIO.hpp"
+	"tgaIO.hpp"
+	"tiffIO.hpp"
+
+1471974859 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imgconverter.hpp
+	"color.hpp"
+	"../matrix.hpp"
+
+1471032661 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\imageio.hpp
+	"../../matrix.hpp"
+	"../color.hpp"
+
+1466115436 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\jpegio.hpp
+	"../../matrix.hpp"
+	"../color.hpp"
+
+1478578614 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pcxio.hpp
+	"../../matrix.hpp"
+	"../color.hpp"
+
+1466115436 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pngio.hpp
+	"../../matrix.hpp"
+	"../color.hpp"
+
+1466115436 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pnmio.hpp
+	"../../matrix.hpp"
+	"../color.hpp"
+
+1466115436 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\tgaio.hpp
+	"../../matrix.hpp"
+	"../color.hpp"
+
+1466115436 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\tiffio.hpp
+	"../../matrix.hpp"
+	"../color.hpp"
+
+1472813214 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\jpegio.cpp
 	<stdio.h>
 	<jpeglib.h>
 	<jerror.h>
 	"jpegIO.hpp"
 
-1116156868 c:\program files (x86)\gnuwin32\include\jpeglib.h
+1116160468 c:\program files (x86)\gnuwin32\include\jpeglib.h
 	"jconfig.h"
 	"jmorecfg.h"
 	"jpegint.h"
 	"jerror.h"
 
-1116084264 c:\program files (x86)\gnuwin32\include\jconfig.h
+1116087864 c:\program files (x86)\gnuwin32\include\jconfig.h
 	<windows.h>
 
-1116083860 c:\program files (x86)\gnuwin32\include\jmorecfg.h
+1116087460 c:\program files (x86)\gnuwin32\include\jmorecfg.h
 
-1116142940 c:\program files (x86)\gnuwin32\include\jerror.h
+1116146540 c:\program files (x86)\gnuwin32\include\jerror.h
 
-1466111836 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\jpegio.hpp
-	"../../matrix.hpp"
-	"../color.hpp"
-
-1461867997 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\lodepng\lodepng.cpp
+1461871597 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\lodepng\lodepng.cpp
 	"lodepng.h"
 	<limits.h>
 	<stdio.h>
 	<stdlib.h>
 
-1461867997 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\lodepng\lodepng.h
+1461871597 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\lodepng\lodepng.h
 	<string.h>
 	<vector>
 	<string>
@@ -126,7 +190,15 @@
 	<iostream>
 	"lodepng.h"
 
-1472811742 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pngio.cpp
+1478588959 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pcxio.cpp
+	"pcxIO.hpp"
+	<fstream>
+	<iostream>
+	<utility>
+	<string>
+	<sstream>
+
+1472815342 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pngio.cpp
 	"pngIO.hpp"
 	"lodepng/lodepng.h"
 	<fstream>
@@ -135,66 +207,38 @@
 	<string>
 	<sstream>
 
-1466111836 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pngio.hpp
-	"../../matrix.hpp"
-	"../color.hpp"
-
-1471449714 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pnmio.cpp
+1471453314 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pnmio.cpp
 	"pnmIO.hpp"
 	<fstream>
 	<iostream>
 	<string>
 	<sstream>
 
-1466111836 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pnmio.hpp
-	"../../matrix.hpp"
-	"../color.hpp"
-
-1472811937 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\tgaio.cpp
+1472815537 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\tgaio.cpp
 	"tgaIO.hpp"
 	<fstream>
 	<iostream>
 	<string>
 	<sstream>
 
-1466111836 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\tgaio.hpp
-	"../../matrix.hpp"
-	"../color.hpp"
-
-1463584063 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\tiffio.cpp
+1463587663 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\tiffio.cpp
 	"tiffIO.hpp"
 	<fstream>
 	<iostream>
 	<string>
 	<sstream>
 
-1466111836 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\tiffio.hpp
-	"../../matrix.hpp"
-	"../color.hpp"
-
-1471971226 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imgconverter.cpp
+1471974826 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imgconverter.cpp
 	<cfloat>
 	<cmath>
 	"imgconverter.hpp"
 	"morphology.hpp"
 	"../statistics.hpp"
 
-1471971259 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imgconverter.hpp
-	"color.hpp"
+1485796938 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.hpp
 	"../matrix.hpp"
 
-1485793338 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.hpp
-	"../matrix.hpp"
-
-1486910040 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.cpp
-	"linear_filtering.hpp"
-	"../linalg.hpp"
-	"../statistics.hpp"
-
-1486892509 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.hpp
-	"../matrix.hpp"
-
-1486399496 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
+1486403096 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\morphology.cpp
 	<cmath>
 	<vector>
 	"../logical_operators.hpp"
@@ -202,44 +246,80 @@
 	"../statistics.hpp"
 	"morphology.hpp"
 
-1463068824 c:\users\hp\documents\mes programmes\imageprocessinglib\logical_operators.hpp
-	"matrix.hpp"
-
-1477421932 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\nonlinear_filtering.cpp
+1506722055 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\nonlinear_filtering.cpp
 	<float.h>
 	"../statistics.hpp"
 	"linear_filtering.hpp"
 	"nonlinear_filtering.hpp"
 
-1471085092 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\nonlinear_filtering.hpp
+1508525520 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.hpp
 	"../matrix.hpp"
 
-1472041271 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\snake.cpp
+1506613352 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\nonlinear_filtering.hpp
+	"../matrix.hpp"
+
+1478657146 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\segmentation.cpp
+	"../mmath.hpp"
+	"../statistics.hpp"
+	"imgconverter.hpp"
+	"morphology.hpp"
+	"segmentation.hpp"
+	<algorithm>
+	<cfloat>
+	<queue>
+	<vector>
+
+1471974859 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\segmentation.hpp
+	"../matrix.hpp"
+
+1472941679 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\shape_features.cpp
+	"shape_features.hpp"
+	"morphology.hpp"
+	"../mmath.hpp"
+	"../statistics.hpp"
+
+1472928694 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\shape_features.hpp
+	"../matrix.hpp"
+	<complex>
+
+1472044871 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\snake.cpp
 	"../linalg.hpp"
 	"../mmath.hpp"
 	"linear_filtering.hpp"
 	"snake.hpp"
 
-1483643553 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.hpp
-	"matrix.hpp"
-	"linalg.tcc"
-
-1486826418 c:\users\hp\documents\mes programmes\imageprocessinglib\linalg.tcc
-	<cmath>
-	<tuple>
-	<utility>
-	"mmath.hpp"
-	"logical_operators.hpp"
-	"statistics.hpp"
-
-1471040579 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\snake.hpp
+1471044179 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\snake.hpp
 	"../matrix.hpp"
 
-1481451625 source:c:\users\hp\documents\mes programmes\imageprocessinglib\logical_operators.cpp
+1504991457 source:c:\users\hp\documents\mes programmes\imageprocessinglib\logical_operators.cpp
 	"matrix.hpp"
 	"logical_operators.hpp"
 
-1481995274 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\gmm.cpp
+1472653545 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\affinitypropagation.cpp
+	<cfloat>
+	"affinitypropagation.hpp"
+	"../../linalg.hpp"
+	"../../statistics.hpp"
+
+1471041104 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\affinitypropagation.hpp
+	"../../matrix.hpp"
+
+1476863927 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\birch.cpp
+	"birch.hpp"
+	<cfloat>
+
+1470150525 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\birch.hpp
+	"../../matrix.hpp"
+	"clusteringfeature.hpp"
+
+1471897867 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\clusteringfeature.hpp
+	"../../matrix.hpp"
+
+1470148051 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\clusteringfeature.cpp
+	"clusteringfeature.hpp"
+	"../../statistics.hpp"
+
+1481998874 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\gmm.cpp
 	<cfloat>
 	"../../linalg.hpp"
 	"../../mmath.hpp"
@@ -247,18 +327,21 @@
 	"gmm.hpp"
 	"kmeans.hpp"
 
-1481991030 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\gmm.hpp
+1481994630 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\gmm.hpp
 	"../../matrix.hpp"
 
-1471090286 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\hierarchicalclustering.cpp
+1472983395 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\kmeans.hpp
+	"../../matrix.hpp"
+
+1471093886 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\hierarchicalclustering.cpp
 	<cfloat>
 	"hierarchicalclustering.hpp"
 	"../../statistics.hpp"
 
-1471037504 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\hierarchicalclustering.hpp
+1471041104 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\hierarchicalclustering.hpp
 	"../../matrix.hpp"
 
-1479484416 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\kmeans.cpp
+1479488016 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\kmeans.cpp
 	<cfloat>
 	<set>
 	"kmeans.hpp"
@@ -267,53 +350,50 @@
 	"../../statistics.hpp"
 	"../../linalg.hpp"
 
-1472979795 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\kmeans.hpp
-	"../../matrix.hpp"
-
-1471108662 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\kmedoids.cpp
+1471112262 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\kmedoids.cpp
 	<cfloat>
 	"kmedoids.hpp"
 	"kmeans.hpp"
 	"../../statistics.hpp"
 
-1471102137 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\kmedoids.hpp
+1471105737 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\kmedoids.hpp
 	"../../matrix.hpp"
 
-1481995278 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\meanshift.cpp
+1481998878 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\meanshift.cpp
 	"meanshift.hpp"
 	"../../linalg.hpp"
 	"../../mmath.hpp"
 
-1471037121 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\meanshift.hpp
+1471040721 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\meanshift.hpp
 	"../../matrix.hpp"
 
-1486825722 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\pca.cpp
+1506723554 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\pca.cpp
 	"pca.hpp"
 	"../mmath.hpp"
 	"../linalg.hpp"
 	"../statistics.hpp"
 
-1486764298 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\pca.hpp
+1486767898 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\pca.hpp
 	"../matrix.hpp"
 	"scaler.hpp"
 
-1486763100 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\scaler.cpp
+1464857949 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\scaler.hpp
+	"../matrix.hpp"
+
+1486766700 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\scaler.cpp
 	"scaler.hpp"
 	"../linalg.hpp"
 	"../statistics.hpp"
 
-1464854349 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\scaler.hpp
-	"../matrix.hpp"
-
-1471728813 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\bernoulli_naive_bayes.cpp
+1471732413 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\bernoulli_naive_bayes.cpp
 	"bernoulli_naive_bayes.hpp"
 	"../../linalg.hpp"
 	"../../statistics.hpp"
 
-1471039016 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\bernoulli_naive_bayes.hpp
+1471042616 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\bernoulli_naive_bayes.hpp
 	"../../matrix.hpp"
 
-1481452816 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\dtree.cpp
+1481456416 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\dtree.cpp
 	<fstream>
 	<sstream>
 	<string>
@@ -321,44 +401,62 @@
 	"../../ImageProcessing/imgconverter.hpp"
 	"dtree.hpp"
 
-1481403218 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\dtree.hpp
+1481406818 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\dtree.hpp
 	"../../matrix.hpp"
 
-1471728813 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\gaussian_naive_bayes.cpp
+1471732413 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\gaussian_naive_bayes.cpp
 	"gaussian_naive_bayes.hpp"
 	"../../mmath.hpp"
 	"../../linalg.hpp"
 	"../../statistics.hpp"
 
-1471039016 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\gaussian_naive_bayes.hpp
+1471042616 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\gaussian_naive_bayes.hpp
 	"../../matrix.hpp"
 
-1471039645 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\knn.cpp
+1471043245 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\knn.cpp
 	"knn.hpp"
 	"../../statistics.hpp"
 	"../../linalg.hpp"
 
-1471039016 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\knn.hpp
+1471042616 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\knn.hpp
 	"../../matrix.hpp"
 
-1471040163 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\mlp.cpp
+1481997458 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\lda.cpp
+	"lda.hpp"
+	"../../mmath.hpp"
+	"../../linalg.hpp"
+	"../../statistics.hpp"
+
+1480698177 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\lda.hpp
+	"../../matrix.hpp"
+
+1471043763 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\mlp.cpp
 	<fstream>
 	<sstream>
 	<string>
 	"../../linalg.hpp"
 	"mlp.hpp"
 
-1471039016 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\mlp.hpp
+1471042616 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\mlp.hpp
 	"../../matrix.hpp"
 
-1471039674 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\perceptron.cpp
+1471043274 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\perceptron.cpp
 	"../../linalg.hpp"
 	"perceptron.hpp"
 
-1471039016 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\perceptron.hpp
+1471042616 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\perceptron.hpp
 	"../../matrix.hpp"
 
-1486894747 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
+1481405535 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\qda.cpp
+	"qda.hpp"
+	"../../mmath.hpp"
+	"../../linalg.hpp"
+	"../../statistics.hpp"
+
+1481399070 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\qda.hpp
+	"../../matrix.hpp"
+
+1508875719 source:c:\users\hp\documents\mes programmes\imageprocessinglib\main.cpp
 	"test_functions.hpp"
 	"matrix.hpp"
 	"statistics.hpp"
@@ -369,7 +467,36 @@
 	"linalg.hpp"
 	"ImageProcessing/linear_filtering.hpp"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl.h
+1494697884 c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.hpp
+
+1509140438 source:c:\users\hp\documents\mes programmes\imageprocessinglib\optimization.cpp
+	"optimization.hpp"
+	"linalg.hpp"
+	<cfloat>
+	<deque>
+
+1509136998 c:\users\hp\documents\mes programmes\imageprocessinglib\optimization.hpp
+	"matrix.hpp"
+
+1476722020 source:c:\users\hp\documents\mes programmes\imageprocessinglib\polynomial.cpp
+	"polynomial.hpp"
+	<algorithm>
+	<functional>
+
+1479488123 c:\users\hp\documents\mes programmes\imageprocessinglib\polynomial.hpp
+	<iostream>
+	<vector>
+
+1471955073 source:c:\users\hp\documents\mes programmes\imageprocessinglib\sdl_interface.cpp
+	"SDL_interface.hpp"
+	"ImageProcessing/imgconverter.hpp"
+
+1471103302 c:\users\hp\documents\mes programmes\imageprocessinglib\sdl_interface.hpp
+	<SDL2/SDL.h>
+	"matrix.hpp"
+	"ImageProcessing/color.hpp"
+
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
 	"SDL_stdinc.h"
 	"SDL_assert.h"
@@ -400,12 +527,12 @@
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_main.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_main.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_stdinc.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_stdinc.h
 	"SDL_config.h"
 	<sys/types.h>
 	<stdio.h>
@@ -434,34 +561,34 @@
 	<stdlib.h>
 	"close_code.h"
 
-1463493956 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_config.h
+1463497556 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_config.h
 	"SDL_platform.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_platform.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_platform.h
 	"AvailabilityMacros.h"
 	"TargetConditionals.h"
 	<winapifamily.h>
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\begin_code.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\begin_code.h
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\close_code.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\close_code.h
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_assert.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_assert.h
 	"SDL_config.h"
 	"begin_code.h"
 	<signal.h>
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_atomic.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_atomic.h
 	"SDL_stdinc.h"
 	"SDL_platform.h"
 	"begin_code.h"
 	<mbarrier.h>
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_audio.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_audio.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_endian.h"
@@ -471,24 +598,24 @@
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_error.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_error.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_endian.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_endian.h
 	"SDL_stdinc.h"
 	<endian.h>
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_mutex.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_mutex.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_thread.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_thread.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_atomic.h"
@@ -497,18 +624,18 @@
 	<process.h>
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_rwops.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_rwops.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_clipboard.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_clipboard.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_cpuinfo.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_cpuinfo.h
 	"SDL_stdinc.h"
 	<intrin.h>
 	<intrin.h>
@@ -520,7 +647,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_events.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_events.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_video.h"
@@ -534,7 +661,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_video.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_video.h
 	"SDL_stdinc.h"
 	"SDL_pixels.h"
 	"SDL_rect.h"
@@ -542,12 +669,12 @@
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_pixels.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_pixels.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_rect.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_rect.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_pixels.h"
@@ -555,7 +682,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_surface.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_surface.h
 	"SDL_stdinc.h"
 	"SDL_pixels.h"
 	"SDL_rect.h"
@@ -564,11 +691,11 @@
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_blendmode.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_blendmode.h
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_keyboard.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_keyboard.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_keycode.h"
@@ -576,27 +703,27 @@
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_keycode.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_keycode.h
 	"SDL_stdinc.h"
 	"SDL_scancode.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_scancode.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_scancode.h
 	"SDL_stdinc.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_mouse.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_mouse.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_video.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_joystick.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_joystick.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_gamecontroller.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_gamecontroller.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_rwops.h"
@@ -604,11 +731,11 @@
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_quit.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_quit.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_gesture.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_gesture.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_video.h"
@@ -616,60 +743,60 @@
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_touch.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_touch.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_video.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_filesystem.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_filesystem.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_haptic.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_haptic.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_joystick.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_hints.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_hints.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_loadso.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_loadso.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_log.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_log.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_messagebox.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_messagebox.h
 	"SDL_stdinc.h"
 	"SDL_video.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_power.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_power.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_render.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_render.h
 	"SDL_stdinc.h"
 	"SDL_rect.h"
 	"SDL_video.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_system.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_system.h
 	"SDL_stdinc.h"
 	"SDL_keyboard.h"
 	"SDL_render.h"
@@ -677,128 +804,18 @@
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_timer.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_timer.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451764693 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_version.h
+1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_version.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1451768293 c:\sdl2-2.0.4\i686-w64-mingw32\include\sdl2\sdl_syswm.h
-	"SDL_stdinc.h"
-	"SDL_error.h"
-	"SDL_video.h"
-	"SDL_version.h"
-	"begin_code.h"
-	<windows.h>
-	<Inspectable.h>
-	<X11/Xlib.h>
-	<X11/Xatom.h>
-	<directfb.h>
-	<UIKit/UIKit.h>
-	"close_code.h"
-
-1463682940 c:\users\hp\documents\mes programmes\imageprocessinglib\csvio.hpp
-	"matrix.hpp"
-	"csvIO.tcc"
-
-1471035102 c:\users\hp\documents\mes programmes\imageprocessinglib\csvio.tcc
-	<fstream>
-	<sstream>
-	<string>
-	"csvIO.hpp"
-
-1461408747 c:\users\hp\documents\mes programmes\imageprocessinglib\polynomial_equation_solver.hpp
-	<complex>
-	"matrix.hpp"
-
-1471102137 c:\users\hp\documents\mes programmes\imageprocessinglib\regression.hpp
-	"matrix.hpp"
-	"regression.tcc"
-
-1479905693 c:\users\hp\documents\mes programmes\imageprocessinglib\regression.tcc
-	"linalg.hpp"
-	"statistics.hpp"
-
-1472649945 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\affinitypropagation.cpp
-	<cfloat>
-	"affinitypropagation.hpp"
-	"../../linalg.hpp"
-	"../../statistics.hpp"
-
-1471037504 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\affinitypropagation.hpp
-	"../../matrix.hpp"
-
-1470144451 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\clusteringfeature.cpp
-	"clusteringfeature.hpp"
-	"../../statistics.hpp"
-
-1471894267 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\clusteringfeature.hpp
-	"../../matrix.hpp"
-
-1476860327 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\birch.cpp
-	"birch.hpp"
-	<cfloat>
-
-1470146925 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\clustering\birch.hpp
-	"../../matrix.hpp"
-	"clusteringfeature.hpp"
-
-1478576555 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\imageio.cpp
-	"../imgconverter.hpp"
-	"imageIO.hpp"
-	"bmpIO.hpp"
-	"gifIO.hpp"
-	"icoIO.hpp"
-	"jpegIO.hpp"
-	"pcxIO.hpp"
-	"pngIO.hpp"
-	"pnmIO.hpp"
-	"tgaIO.hpp"
-	"tiffIO.hpp"
-
-1471029061 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\imageio.hpp
-	"../../matrix.hpp"
-	"../color.hpp"
-
-1471099702 c:\users\hp\documents\mes programmes\imageprocessinglib\sdl_interface.hpp
-	<SDL2/SDL.h>
-	"matrix.hpp"
-	"ImageProcessing/color.hpp"
-
-1471951473 source:c:\users\hp\documents\mes programmes\imageprocessinglib\sdl_interface.cpp
-	"SDL_interface.hpp"
-	"ImageProcessing/imgconverter.hpp"
-
-1471973410 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\hough.cpp
-	"hough.hpp"
-	"../linalg.hpp"
-	"../mmath.hpp"
-
-1471203428 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\hough.hpp
-	"../matrix.hpp"
-
-1471971259 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\segmentation.hpp
-	"../matrix.hpp"
-
-1478653546 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\segmentation.cpp
-	"../mmath.hpp"
-	"../statistics.hpp"
-	"imgconverter.hpp"
-	"morphology.hpp"
-	"segmentation.hpp"
-	<algorithm>
-	<cfloat>
-	<queue>
-	<vector>
-
-1486894361 c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.hpp
-
-1486910180 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
+1509138309 source:c:\users\hp\documents\mes programmes\imageprocessinglib\test_functions.cpp
 	"csvIO.hpp"
 	"file_explorer.hpp"
 	"linalg.hpp"
@@ -849,60 +866,30 @@
 	"ImageProcessing/ImageIO/tiffIO.hpp"
 	<complex>
 
-1472938079 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\shape_features.cpp
-	"shape_features.hpp"
-	"morphology.hpp"
-	"../mmath.hpp"
-	"../statistics.hpp"
-
-1472925094 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\shape_features.hpp
-	"../matrix.hpp"
-	<complex>
-
-1476718420 source:c:\users\hp\documents\mes programmes\imageprocessinglib\polynomial.cpp
-	"polynomial.hpp"
-	<algorithm>
-	<functional>
-
-1479484523 c:\users\hp\documents\mes programmes\imageprocessinglib\polynomial.hpp
-	<iostream>
-	<vector>
-
-1478575014 c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pcxio.hpp
-	"../../matrix.hpp"
-	"../color.hpp"
-
-1478585359 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\imageio\pcxio.cpp
-	"pcxIO.hpp"
-	<fstream>
-	<iostream>
-	<utility>
-	<string>
-	<sstream>
-
-1481993858 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\lda.cpp
-	"lda.hpp"
-	"../../mmath.hpp"
-	"../../linalg.hpp"
-	"../../statistics.hpp"
-
-1480694577 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\lda.hpp
-	"../../matrix.hpp"
-
-1481401935 source:c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\qda.cpp
-	"qda.hpp"
-	"../../mmath.hpp"
-	"../../linalg.hpp"
-	"../../statistics.hpp"
-
-1481395470 c:\users\hp\documents\mes programmes\imageprocessinglib\machinelearning\supervisedlearning\qda.hpp
-	"../../matrix.hpp"
-
-1485641316 source:c:\users\hp\documents\mes programmes\imageprocessinglib\optimization.cpp
-	"optimization.hpp"
-	"linalg.hpp"
-	<cfloat>
-
-1485362823 c:\users\hp\documents\mes programmes\imageprocessinglib\optimization.hpp
+1463686540 c:\users\hp\documents\mes programmes\imageprocessinglib\csvio.hpp
 	"matrix.hpp"
+	"csvIO.tcc"
+
+1471038702 c:\users\hp\documents\mes programmes\imageprocessinglib\csvio.tcc
+	<fstream>
+	<sstream>
+	<string>
+	"csvIO.hpp"
+
+1461412347 c:\users\hp\documents\mes programmes\imageprocessinglib\polynomial_equation_solver.hpp
+	<complex>
+	"matrix.hpp"
+
+1471105737 c:\users\hp\documents\mes programmes\imageprocessinglib\regression.hpp
+	"matrix.hpp"
+	"regression.tcc"
+
+1479909293 c:\users\hp\documents\mes programmes\imageprocessinglib\regression.tcc
+	"linalg.hpp"
+	"statistics.hpp"
+
+1508616941 source:c:\users\hp\documents\mes programmes\imageprocessinglib\imageprocessing\linear_filtering.cpp
+	"linear_filtering.hpp"
+	"../linalg.hpp"
+	"../statistics.hpp"
 

@@ -17,7 +17,7 @@
 Matrix<float> average(std::size_t = 3);
 Matrix<float> binomial(std::size_t = 3);
 Matrix<float> disk(std::size_t = 2);
-Matrix<float> gaussian(std::size_t = 5, float = 1.0f);
+Matrix<float> gaussian(std::size_t = 7, float = 1.0f);
 Matrix<float> isotropicx();
 Matrix<float> isotropicy();
 Matrix<float> kirch();
@@ -30,6 +30,7 @@ Matrix<float> mdifxy(std::size_t = 7, float = 1.0f);
 Matrix<float> mdifyy(std::size_t = 7, float = 1.0f);
 Matrix<float> prewittx();
 Matrix<float> prewitty();
+Matrix<float> pyramidal(std::size_t = 5);
 Matrix<float> robertsx();
 Matrix<float> robertsy();
 Matrix<float> robinson();
@@ -39,10 +40,10 @@ Matrix<float> scharry();
 Matrix<float> sobelx();
 Matrix<float> sobely();
 
-Matrix<unsigned char> gradient(Matrix<unsigned char>, std::string = "sobel");
-Matrix<unsigned char> filter(Matrix<unsigned char>, Matrix<float>, int = 0);
-Matrix<float> conv(Matrix<float>, Matrix<float>, std::string = "same");
-Matrix<float> xcorr(Matrix<float>, Matrix<float>, std::string = "same");
-Matrix<float> interp1(Matrix<float>, Matrix<float>, Matrix<float>, std::string = "linear");
+Matrix<unsigned char> gradient(const Matrix<unsigned char>&, std::string = "sobel");
+Matrix<unsigned char> filter(const Matrix<unsigned char>&, const Matrix<float>&, int = 0);
+Matrix<float> conv(const Matrix<float>&, const Matrix<float>&, std::string = "same");
+Matrix<float> xcorr(const Matrix<float>&, const Matrix<float>&, std::string = "same");
+Matrix<float> interp1(const Matrix<float>&, const Matrix<float>&, const Matrix<float>&, std::string = "linear");
 
 #endif // LINEAR_FILTERING_HPP

@@ -69,45 +69,45 @@ bool XNOR(bool a, bool b)
 // logical operators on matrix
 Matrix<bool> NOT(const Matrix<bool>& M)
 {
-    return M==false;
+    return apply(M,NOT);
 }
 
 Matrix<bool> AND(const Matrix<bool>& A, const Matrix<bool>& B)
 {
-    return A*B;
+    return apply(A,B,AND);
 }
 
 Matrix<bool> CDT(const Matrix<bool>& A, const Matrix<bool>& B)
 {
-    return OR(NOT(A), B);
+    return apply(A,B,CDT);
 }
 
 Matrix<bool> EQ(const Matrix<bool>& A, const Matrix<bool>& B)
 {
-    return A==B;
+    return apply(A,B,EQ);
 }
 
 Matrix<bool> NAND(const Matrix<bool>& A, const Matrix<bool>& B)
 {
-    return NOT(AND(A, B));
+    return apply(A,B,NAND);
 }
 
 Matrix<bool> NOR(const Matrix<bool>& A, const Matrix<bool>& B)
 {
-    return NOT(OR(A, B));
+    return apply(A,B,NOR);
 }
 
 Matrix<bool> OR(const Matrix<bool>& A, const Matrix<bool>& B)
 {
-    return A+B;
+    return apply(A,B,OR);
 }
 
 Matrix<bool> XOR(const Matrix<bool>& A, const Matrix<bool>& B)
 {
-    return A!=B;
+    return apply(A,B,XOR);
 }
 
 Matrix<bool> XNOR(const Matrix<bool>& A, const Matrix<bool>& B)
 {
-    return A==B;
+    return apply(A,B,XNOR);
 }
