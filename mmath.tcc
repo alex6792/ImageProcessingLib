@@ -149,6 +149,7 @@ template <class T> Matrix<T> lgamma(const Matrix<T>& M)
     return apply<T,T>(M, std::lgamma);
 }
 
+
 // rounding functions
 template <class T> Matrix<T> ceil(const Matrix<T>& M)
 {
@@ -168,4 +169,21 @@ template <class T> Matrix<T> trunc(const Matrix<T>& M)
 template <class T> Matrix<T> round(const Matrix<T>& M)
 {
     return apply<T,T>(M, std::round);
+}
+
+
+// classification functions
+template <class T> Matrix<bool> isfinite(const Matrix<T>& M)
+{
+    return apply<T,bool>(M, std::isfinite);
+}
+
+template <class T> Matrix<bool> isinf(const Matrix<T>& M)
+{
+    return apply<T,bool>(M, std::isinf);
+}
+
+template <class T> Matrix<bool> isnan(const Matrix<T>& M)
+{
+    return apply<T,bool>(M, std::isnan);
 }

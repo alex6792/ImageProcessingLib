@@ -410,6 +410,14 @@ template <class T> void Matrix<T>::operator*=(const Matrix<T>& M)
         std::cout<<"dimension mismatch"<<std::endl;
 }
 
+template <class T> void Matrix<T>::operator/=(const Matrix<T>& M)
+{
+    if(sizex==M.rowNb() && sizey==M.colNb())
+        std::transform(cbegin(), cend(), M.cbegin(), begin(), std::divides<T>());
+    else
+        std::cout<<"dimension mismatch"<<std::endl;
+}
+
 template <class T> void Matrix<T>::operator+=(const T& value)
 {
     std::for_each(begin(), end(), [value](T& x){x+=value;});
@@ -466,6 +474,16 @@ template <class T> Matrix<T> Matrix<T>::operator*(const Matrix<T>& M) const
     Matrix<T> newM(sizex, sizey);
     if(sizex==M.rowNb() && sizey==M.colNb())
         std::transform(cbegin(), cend(), M.cbegin(), newM.begin(), std::multiplies<T>());
+    else
+        std::cout<<"dimension mismatch"<<std::endl;
+    return newM;
+}
+
+template <class T> Matrix<T> Matrix<T>::operator/(const Matrix<T>& M) const
+{
+    Matrix<T> newM(sizex, sizey);
+    if(sizex==M.rowNb() && sizey==M.colNb())
+        std::transform(cbegin(), cend(), M.cbegin(), newM.begin(), std::divides<T>());
     else
         std::cout<<"dimension mismatch"<<std::endl;
     return newM;
@@ -695,11 +713,11 @@ template <class T> Matrix<T> rand(std::size_t a, std::size_t b)
 {
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine generator(seed);
-    std::uniform_int_distribution<T> distribution(0);
-    Matrix<T> new_mat(a, b);
+    std::uniform_int_distribution<int> distribution(0);
+    Matrix<int> new_mat(a, b);
     auto gen = std::bind(distribution, generator);
     std::generate(new_mat.begin(), new_mat.end(), gen);
-    return new_mat;
+    return Matrix<T>(new_mat);
 }
 
 
@@ -751,7 +769,6 @@ template <typename Type, class T> Matrix<T> apply(const Matrix<Type>& M, T (*ptr
     return new_mat;
 }
 
-
 template <typename Type, class T> Matrix<T> apply(const Matrix<Type>& M, T (*ptr)(const Type&))
 {
     Matrix<T> new_mat(M.rowNb(), M.colNb());
@@ -771,7 +788,6 @@ template <typename T1, typename T2, class T> Matrix<T> apply(const Matrix<T1>& M
     Matrix<T> new_mat(M1.rowNb(), M1.colNb());
     if(M1.rowNb()==M2.rowNb() && M1.colNb()==M2.colNb())
     {
-
         std::transform(M1.cbegin(), M1.cend(), M2.cbegin(), new_mat.begin(), *ptr);
         return new_mat;
     }

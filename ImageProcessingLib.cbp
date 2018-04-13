@@ -13,8 +13,22 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-std=c++11" />
+					<Add option="-pg" />
 					<Add option="-g" />
+					<Add directory="../../../../../Program Files (x86)/CodeBlocks/MinGW/include" />
+					<Add directory="../../../../../SDL2-2.0.7/x86_64-w64-mingw32/include" />
 				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+					<Add option="-lmingw32" />
+					<Add option="-lSDL2main" />
+					<Add option="-lSDL2" />
+					<Add library="../../../../../Program Files (x86)/CodeBlocks/MinGW/lib/libmingw32.a" />
+					<Add library="../../../../../SDL2-2.0.7/i686-w64-mingw32/lib/libSDL2main.a" />
+					<Add library="../../../../../SDL2-2.0.7/i686-w64-mingw32/lib/libSDL2.dll.a" />
+					<Add directory="../../../../../Program Files (x86)/CodeBlocks/MinGW/lib" />
+					<Add directory="../../../../../SDL2-2.0.7/x86_64-w64-mingw32/lib" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/ImageProcessingLib" prefix_auto="1" extension_auto="1" />
@@ -37,16 +51,18 @@
 			<Add option="-Wfatal-errors" />
 			<Add option="-Wextra" />
 			<Add option="-std=c++11" />
-			<Add directory="../../../../../SDL2-2.0.4/i686-w64-mingw32/include" />
-			<Add directory="../../../../../Program Files (x86)/GnuWin32/include" />
+			<Add directory="../../../../../Program Files (x86)/CodeBlocks/MinGW/include" />
+			<Add directory="../../../../../SDL2-2.0.7/x86_64-w64-mingw32/include" />
 		</Compiler>
 		<Linker>
+			<Add option="-lmingw32" />
+			<Add option="-lSDL2main" />
+			<Add option="-lSDL2" />
 			<Add library="../../../../../Program Files (x86)/CodeBlocks/MinGW/lib/libmingw32.a" />
-			<Add library="../../../../../SDL2-2.0.4/i686-w64-mingw32/lib/libSDL2main.a" />
-			<Add library="../../../../../SDL2-2.0.4/i686-w64-mingw32/lib/libSDL2.dll.a" />
-			<Add library="../../../../../Program Files (x86)/GnuWin32/lib/libjpeg.dll.a" />
-			<Add directory="../../../../../SDL2-2.0.4/i686-w64-mingw32/lib" />
-			<Add directory="../../../../../Program Files (x86)/GnuWin32/lib" />
+			<Add library="../../../../../SDL2-2.0.7/i686-w64-mingw32/lib/libSDL2main.a" />
+			<Add library="../../../../../SDL2-2.0.7/i686-w64-mingw32/lib/libSDL2.dll.a" />
+			<Add directory="../../../../../Program Files (x86)/CodeBlocks/MinGW/lib" />
+			<Add directory="../../../../../SDL2-2.0.7/x86_64-w64-mingw32/lib" />
 		</Linker>
 		<Unit filename="ImageProcessing/ImageIO/bmpIO.cpp" />
 		<Unit filename="ImageProcessing/ImageIO/bmpIO.hpp" />
@@ -92,10 +108,6 @@
 		<Unit filename="ImageProcessing/snake.hpp" />
 		<Unit filename="MachineLearning/Clustering/affinitypropagation.cpp" />
 		<Unit filename="MachineLearning/Clustering/affinitypropagation.hpp" />
-		<Unit filename="MachineLearning/Clustering/birch.cpp" />
-		<Unit filename="MachineLearning/Clustering/birch.hpp" />
-		<Unit filename="MachineLearning/Clustering/clusteringfeature.cpp" />
-		<Unit filename="MachineLearning/Clustering/clusteringfeature.hpp" />
 		<Unit filename="MachineLearning/Clustering/gmm.cpp" />
 		<Unit filename="MachineLearning/Clustering/gmm.hpp" />
 		<Unit filename="MachineLearning/Clustering/hierarchicalclustering.cpp" />
@@ -122,6 +134,8 @@
 		<Unit filename="MachineLearning/SupervisedLearning/perceptron.hpp" />
 		<Unit filename="MachineLearning/SupervisedLearning/qda.cpp" />
 		<Unit filename="MachineLearning/SupervisedLearning/qda.hpp" />
+		<Unit filename="MachineLearning/nnmf.cpp" />
+		<Unit filename="MachineLearning/nnmf.hpp" />
 		<Unit filename="MachineLearning/pca.cpp" />
 		<Unit filename="MachineLearning/pca.hpp" />
 		<Unit filename="MachineLearning/scaler.cpp" />
@@ -139,13 +153,13 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="matrix.hpp" />
 		<Unit filename="matrix.tcc" />
+		<Unit filename="matrix3d.hpp" />
 		<Unit filename="mmath.hpp" />
 		<Unit filename="mmath.tcc" />
 		<Unit filename="optimization.cpp" />
 		<Unit filename="optimization.hpp" />
 		<Unit filename="polynomial.cpp" />
 		<Unit filename="polynomial.hpp" />
-		<Unit filename="polynomial_equation_solver.hpp" />
 		<Unit filename="regression.hpp" />
 		<Unit filename="regression.tcc" />
 		<Unit filename="statistics.hpp" />

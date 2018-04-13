@@ -31,6 +31,44 @@ Matrix<float> harmonic_mean_filter(const Matrix<float>& M, std::size_t filtersiz
     return filtered_img;
 }
 
+Matrix<float> quadratic_mean_filter(const Matrix<float>& M, std::size_t filtersize)
+{
+    Matrix<float> filtered_img = M*M;
+    Matrix<float> f = average(filtersize);
+    filtered_img = conv(filtered_img, f);
+    filtered_img = sqrt(filtered_img);
+    return filtered_img;
+}
+
+Matrix<float> imguided_filtering(const Matrix<float>& I, const Matrix<float>& G, std::size_t filtersize, float epsilon)
+{
+    Matrix<float> f = average(filtersize);
+    Matrix<float> meanG = conv(G,f);
+    Matrix<float> meanI = conv(I,f);
+    Matrix<float> corrG = conv(G*G,f);
+    Matrix<float> corrIG = conv(I*G,f);
+    Matrix<float> varG = corrG-meanG*meanG;
+    Matrix<float> covIG = corrIG-meanI*meanG;
+    Matrix<float> a = covIG/(varG+epsilon);
+    Matrix<float> b = meanI-a*meanG;
+    Matrix<float> meana = conv(a,f);
+    Matrix<float> meanb = conv(b,f);
+    return meana*G+meanb;
+}
+
+Matrix<float> imguided_filtering(const Matrix<float>& I, std::size_t filtersize, float epsilon)
+{
+    Matrix<float> f = average(filtersize);
+    Matrix<float> meanI = conv(I,f);
+    Matrix<float> corrI = conv(I*I,f);
+    Matrix<float> varI = corrI-meanI*meanI;
+    Matrix<float> a = 1.0f-epsilon/(I+epsilon);
+    Matrix<float> b = (1.0f-a)*meanI;
+    Matrix<float> meana = conv(a,f);
+    Matrix<float> meanb = conv(b,f);
+    return meana*I+meanb;
+}
+
 Matrix<unsigned char> bilateral(const Matrix<unsigned char>& M, std::size_t filtersize, float range_var, float spatial_var)
 {
     Matrix<unsigned char> filtered_img(M.rowNb(), M.colNb());

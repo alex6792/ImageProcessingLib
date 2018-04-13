@@ -24,7 +24,7 @@ Mask octagon(std::size_t);
 Mask rect(std::size_t, std::size_t);
 Mask square(std::size_t);
 
-
+// binary images
 Matrix<bool> BTH(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> close(const Matrix<bool>&, const Mask& = square(3));
 Matrix<bool> closing_by_reconstruction(const Matrix<bool>&, const Mask& = square(3));

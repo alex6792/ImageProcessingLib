@@ -6,12 +6,12 @@
 #include "mmath.hpp"
 #include "optimization.hpp"
 #include "polynomial.hpp"
-#include "polynomial_equation_solver.hpp"
 #include "regression.hpp"
 #include "SDL_interface.hpp"
 #include "statistics.hpp"
 #include "test_functions.hpp"
 
+#include "MachineLearning/nnmf.hpp"
 #include "MachineLearning/pca.hpp"
 #include "MachineLearning/scaler.hpp"
 #include "MachineLearning/Clustering/affinitypropagation.hpp"
@@ -235,11 +235,38 @@ void test_morpho_binaire()
 
     SDL_Renderer* renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 
-    // test filtres non linéaires
-    Matrix<Color> img = read_png("Images/Filtrage/phare_bruit_ps.png");
-    Matrix<bool> gray_img = color2bwimage(img);
+    for(int i=1;i<5;++i)
+        show_matrix(renderer, circle(i));
+    for(int i=1;i<5;++i)
+        show_matrix(renderer, cross(i));
+    for(int i=1;i<5;++i)
+    {
+        for(int j=1;j<5;++j)
+            show_matrix(renderer, ellipse(i,j));
+    }
+    for(int i=1;i<5;++i)
+        show_matrix(renderer, diamond(i));
+    for(int i=1;i<5;++i)
+        show_matrix(renderer, octagon(i));
+    for(int i=1;i<5;++i)
+    {
+        for(int j=1;j<5;++j)
+            show_matrix(renderer, rect(i,j));
+    }
+    for(int i=1;i<5;++i)
+        show_matrix(renderer, square(i));
 
-    gray_img = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+    /*Matrix<bool> conservative_smoothing(const Matrix<bool>&);
+    Matrix<bool> contrast_enhancement(const Matrix<bool>&);
+    Matrix<bool> HitOrMiss(const Matrix<bool>&, const Mask&, const Mask&);
+    Matrix<bool> inner_gradient(const Matrix<bool>&, const Mask& = square(3));
+    Matrix<bool> reconstruct(const Matrix<bool>&, const Matrix<bool>& , const Mask& = square(3));
+    Matrix<bool> outer_gradient(const Matrix<bool>&, const Mask& = square(3));
+
+    Matrix<std::size_t> label(const Matrix<bool>&, const Mask& = square(3));*/
+
+
+    Matrix<bool> gray_img = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,1,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,1,1,1,1,0,0,0,0,0},
                 {0,0,0,0,0,1,1,1,1,0,1,0,0,0},
@@ -248,21 +275,6 @@ void test_morpho_binaire()
                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0},
     };
 
-    for(int i=1;i<10;++i)
-        show_matrix(renderer, octagon(i));
-    for(int i=1;i<10;++i)
-        show_matrix(renderer, circle(i));
-    for(int i=1;i<10;++i)
-        show_matrix(renderer, diamond(i));
-
-    for(int i=1;i<5;i+=1)
-    {
-        for(int j=1;j<5;j+=1)
-        {
-            show_matrix(renderer, ellipse(i, j));
-            save_pbm("ellipse.pbm", ellipse(i, j));
-        }
-    }
     SDL_SetWindowTitle(pWindow, "original");
     show_matrix(renderer, gray_img);
     SDL_SetWindowTitle(pWindow, "erode");
@@ -273,10 +285,16 @@ void test_morpho_binaire()
     show_matrix(renderer, open(gray_img));
     SDL_SetWindowTitle(pWindow, "close");
     show_matrix(renderer, close(gray_img));
+    SDL_SetWindowTitle(pWindow, "BTH");
+    show_matrix(renderer, BTH(gray_img));
+    SDL_SetWindowTitle(pWindow, "WTH");
+    show_matrix(renderer, WTH(gray_img));
     SDL_SetWindowTitle(pWindow, "gradient");
     show_matrix(renderer, gradient(gray_img));
-    SDL_SetWindowTitle(pWindow, "median");
-    show_matrix(renderer, median_filter(gray_img));
+    SDL_SetWindowTitle(pWindow, "inner gradient");
+    show_matrix(renderer, inner_gradient(gray_img));
+    SDL_SetWindowTitle(pWindow, "outer gradient");
+    show_matrix(renderer, outer_gradient(gray_img));
     SDL_SetWindowTitle(pWindow, "convex hull");
     show_matrix(renderer, convex_hull(gray_img));
     SDL_SetWindowTitle(pWindow, "skeleton");
@@ -315,14 +333,6 @@ void test_morpho_gray()
 
     SDL_SetWindowTitle(pWindow, "original");
     show_matrix(renderer, gray_img);
-    SDL_SetWindowTitle(pWindow, "bilateral");
-    show_matrix(renderer, bilateral(gray_img, 5, 10000.0f, 1.0f));
-    SDL_SetWindowTitle(pWindow, "despeckle");
-    show_matrix(renderer, despeckle(gray_img));
-    SDL_SetWindowTitle(pWindow, "nagao");
-    show_matrix(renderer, nagao(gray_img));
-    SDL_SetWindowTitle(pWindow, "original");
-    show_matrix(renderer, gray_img);
     SDL_SetWindowTitle(pWindow, "erode");
     show_matrix(renderer, erode(gray_img));
     SDL_SetWindowTitle(pWindow, "dilate");
@@ -331,18 +341,31 @@ void test_morpho_gray()
     show_matrix(renderer, open(gray_img));
     SDL_SetWindowTitle(pWindow, "close");
     show_matrix(renderer, close(gray_img));
-    //SDL_SetWindowTitle(pWindow, "gradient");
-    //show_matrix(renderer, gradient(gray_img));
+    SDL_SetWindowTitle(pWindow, "BTH");
+    show_matrix(renderer, BTH(gray_img));
+    SDL_SetWindowTitle(pWindow, "WTH");
+    show_matrix(renderer, WTH(gray_img));
+    SDL_SetWindowTitle(pWindow, "hmin");
+    show_matrix(renderer, hmin(gray_img));
+    SDL_SetWindowTitle(pWindow, "hmax");
+    show_matrix(renderer, hmax(gray_img));
     SDL_SetWindowTitle(pWindow, "median");
     show_matrix(renderer, median_filter(gray_img));
-    //SDL_SetWindowTitle(pWindow, "skeleton");
-    //show_matrix(renderer, skeleton(gray_img));
+
+    /*SDL_SetWindowTitle(pWindow, "gradient");
+    show_matrix(renderer, gradient(gray_img));*/
+    SDL_SetWindowTitle(pWindow, "inner gradient");
+    show_matrix(renderer, inner_gradient(gray_img));
+    SDL_SetWindowTitle(pWindow, "outer gradient");
+    show_matrix(renderer, outer_gradient(gray_img));
+    /*SDL_SetWindowTitle(pWindow, "convex hull");
+    show_matrix(renderer, convex_hull(gray_img));*/
+    SDL_SetWindowTitle(pWindow, "skeleton");
+    show_matrix(renderer, skeleton(gray_img));
     SDL_SetWindowTitle(pWindow, "conservative smoothing");
     show_matrix(renderer, conservative_smoothing(gray_img));
     SDL_SetWindowTitle(pWindow, "contrast enhancement");
     show_matrix(renderer, contrast_enhancement(gray_img));
-    SDL_SetWindowTitle(pWindow, "original");
-    show_matrix(renderer, gray_img);
     SDL_SetWindowTitle(pWindow, "opening by reconstruction");
     gray_img = opening_by_reconstruction(gray_img);
     show_matrix(renderer, gray_img);
@@ -370,13 +393,14 @@ void test_lecture_img()
     std::string extensions[] = { "bmp", "tga", "ico", "pbm", "pcx", "pgm", "ppm", "jpg", "gif", "png", "tiff"};
 
     std::for_each(
-                  extensions+8,
+                  extensions,
                   extensions+9,
-                  [renderer](std::string s){auto cur_list = get_files_recursively(".", s);
+                  [renderer,pWindow](std::string s){auto cur_list = get_files_recursively(".", s);
                                                 std::for_each(cur_list.begin(),
                                                   cur_list.end(),
-                                                  [renderer](std::string ss){std::cout<<ss<<std::endl;
+                                                  [renderer,pWindow](std::string ss){std::cout<<ss<<std::endl;
                                                                             Matrix<Color> img = read_img(ss);
+                                                                            SDL_SetWindowTitle(pWindow, ss.c_str());
                                                                             show_matrix(renderer, img);}
                                                   );
                                             }
@@ -804,9 +828,9 @@ void test_linalg()
 
 void test_regression()
 {
-    Matrix<double> X = arange<double>(-10.0,10.0);
-    Matrix<double> Y = 10.0*X*X+X*5.0+2.0;
-    Y+=randn(X.rowNb(), X.colNb(), 0.0, 0.3);
+    Matrix<float> X = arange<float>(-10.0,10.0);
+    Matrix<float> Y = 10.0f*X*X+X*5.0f+2.0f;
+    Y+=randn(X.rowNb(), X.colNb(), 0.0f, 0.3f);
 
     std::cout<<X<<std::endl;
     std::cout<<Y<<std::endl;
@@ -1156,6 +1180,19 @@ void test_pca()
     std::cout<<pca.inverse_transform(Z)<<std::endl;
 }
 
+void test_nnmf()
+{
+    NNMF nnmf(1);
+    Matrix<float> X = arange<float>(0.0,100.0);
+    Matrix<float> Y = 5.0f*X+2.0f;
+    Y+=randn(Y.rowNb(), Y.colNb(), 0.0f, 0.3f);
+    Matrix<float> Data = horzcat(X,Y);
+    Matrix<float> Z = nnmf.fit_transform(Data);
+
+    std::cout<<Data<<std::endl;
+    std::cout<<Z<<std::endl;
+    std::cout<<nnmf.inverse_transform(Z)<<std::endl;
+}
 
 void test_linprog()
 {
@@ -1196,7 +1233,15 @@ void test_quadprog()
     Matrix<float> x0 = {{2},{0}};
     std::cout<<-dot(pinv(H), f)<<std::endl;
     std::cout<<conjugate_gradient(H,f,x0)<<std::endl;
-    std::cout<<quadprog(H, f, A, b, Aeq, beq, x0);
+    std::cout<<solve(H,f,x0)<<std::endl;
+    std::cout<<quadprog(H, f, A, b, Aeq, beq, x0)<<std::endl;
+
+    H = {{3.0f,1.0f},{1.0f,8.0f}};
+    f = {{42.6f},{2.7f}};
+    x0 = {{34.2f},{34.2f}};
+    std::cout<<conjugate_gradient(H,f,x0)<<std::endl;//14.7 -1.5
+    std::cout<<solve(H,f,x0)<<std::endl;//14.7 -1.5
+    std::cout<<dot(A,conjugate_gradient(H,f,x0))<<std::endl;
 }
 
 void test_interp()
@@ -1227,28 +1272,17 @@ void test_interp()
 
 void test_optim()
 {
-    Matrix<float> A = {{3.0f,1.0f},{1.0f,8.0f}};
-    Matrix<float> b = {{42.6f},{2.7f}};
     Matrix<float> X0 = {{34.2f},{34.2f}};
-    std::cout<<A<<std::endl;
-    std::cout<<b<<std::endl;
-    std::cout<<X0<<std::endl;
-    std::cout<<conjugate_gradient(A,b,X0)<<std::endl;
-    std::cout<<dot(A,conjugate_gradient(A,b,X0))<<std::endl;
     std::cout<<"himmelblau"<<std::endl;
-    std::cout<<steepest_descent(himmelblau, {{34.2f},{34.2f}})<<std::endl;
+    std::cout<<steepest_descent(himmelblau, X0)<<std::endl;
     std::cout<<"rosenbrock"<<std::endl;
-    std::cout<<steepest_descent(rosenbrock, {{34.2f},{34.2f}})<<std::endl;
-    std::cout<<"himmelblau"<<std::endl;
-    std::cout<<steepest_descent(himmelblau, {{34.2f},{34.2f}})<<std::endl;
-    std::cout<<"rosenbrock"<<std::endl;
-    std::cout<<steepest_descent(rosenbrock, {{34.2f},{34.2f}})<<std::endl;
+    std::cout<<steepest_descent(rosenbrock, X0)<<std::endl;
     std::cout<<"himmelblau lbfgs"<<std::endl;
-    std::cout<<lbfgs(himmelblau, {{34.2f},{34.2f}})<<std::endl;
+    std::cout<<lbfgs(himmelblau, X0)<<std::endl;
     std::cout<<"rosenbrock lbfgs"<<std::endl;
-    std::cout<<lbfgs(rosenbrock, {{34.2f},{34.2f}})<<std::endl;
+    std::cout<<lbfgs(rosenbrock, X0)<<std::endl;
     std::cout<<"himmelblau bfgs"<<std::endl;
-    std::cout<<bfgs(himmelblau, {{34.2f},{34.2f}})<<std::endl;
+    std::cout<<bfgs(himmelblau, X0)<<std::endl;
     std::cout<<"rosenbrock bfgs"<<std::endl;
-    std::cout<<bfgs(rosenbrock, {{34.2f},{34.2f}})<<std::endl;
+    std::cout<<bfgs(rosenbrock, X0)<<std::endl;
 }

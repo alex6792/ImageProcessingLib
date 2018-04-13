@@ -228,7 +228,7 @@ template <class T> T mean(const Matrix<T>& M)
 
 template <class T> T median(const Matrix<T>& M)
 {
-    std::deque<T> M_copy(M.cbegin(), M.cend());
+    std::deque<T> M_copy(M.cbegin(),M.cend());
     if(M_copy.size()%2==1)
     {
         std::nth_element(M_copy.begin(), M_copy.begin()+(M_copy.size()-1)/2, M_copy.end());
@@ -262,7 +262,9 @@ template <class T> T moment(const Matrix<T>& M, int orderx, int ordery)
 
 template <class T> T prod(const Matrix<T>& M)
 {
-    return std::accumulate(M.cbegin(), M.cend(), T(1), std::multiplies<T>());
+    auto it = M.cbegin();
+    ++it;
+    return std::accumulate(it, M.cend(), *M.cbegin(), std::multiplies<T>());
 }
 
 template <class T> T stdev(const Matrix<T>& M)
@@ -279,7 +281,9 @@ template <class T> Matrix<T> sort(const Matrix<T>& M)
 
 template <class T> T sum(const Matrix<T>& M)
 {
-    return std::accumulate(M.cbegin(), M.cend(), T(0));
+    auto it = M.cbegin();
+    ++it;
+    return std::accumulate(it, M.cend(), *M.cbegin());
 }
 
 template <class T> T var(const Matrix<T>& M)

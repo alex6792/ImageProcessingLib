@@ -52,16 +52,20 @@ int main()
     std::cout<<axismax(Matrix<float>(N),0)<<std::endl;
     std::cout<<axismax(Matrix<float>(N),1)<<std::endl;
     std::cout<<axismax(Matrix<float>(N),2)<<std::endl;*/
+    test_lecture_img();
+    test_morpho_binaire();
+    test_morpho_gray();
     //test_filtrage_lineaire();
-    test_optim();
+    //test_optim();
     //test_regression();
     //test_interp();
     //test_pca();
+    //test_nnmf();
     //test_linprog();
     //test_quadprog();
     //test_linalg();
     //test_statistics();
-    //test_lecture_img();
+    //
     //test_supervisedlearning();
     return 0;
 }

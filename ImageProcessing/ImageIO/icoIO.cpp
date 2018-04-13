@@ -15,9 +15,9 @@ Matrix<Color> read_ico(std::string filename)
         unsigned reserved = header[0]+256*header[1];
         unsigned image_type = header[2]+256*header[3];
         unsigned nb_img = header[4]+256*header[5];
-        std::cout<<reserved<<std::endl;
-        std::cout<<image_type<<std::endl;
-        std::cout<<nb_img<<std::endl;
+        //std::cout<<reserved<<std::endl;
+        //std::cout<<image_type<<std::endl;
+        //std::cout<<nb_img<<std::endl;
 
         unsigned char image_entry[16];
         myfile.read(reinterpret_cast<char*>(image_entry), 16);
@@ -30,11 +30,11 @@ Matrix<Color> read_ico(std::string filename)
         unsigned size = *(unsigned*)&image_entry[8];
         unsigned offset = *(unsigned*)&image_entry[12];
 
-        std::cout<<"image_entry"<<std::endl;
+        /*std::cout<<"image_entry"<<std::endl;
         for(int i=0;i<4;++i)
         {
             std::cout<<(*(unsigned*)&image_entry[4*i])<<std::endl;
-        }
+        }*/
 
         unsigned char info[40];
         myfile.read(reinterpret_cast<char*>(info), 40);
@@ -63,11 +63,11 @@ Matrix<Color> read_ico(std::string filename)
 
 
 ////////////////
-        std::cout<<"info"<<std::endl;
+        /*std::cout<<"info"<<std::endl;
         for(int i=0;i<10;++i)
         {
             std::cout<<(*(unsigned*)&info[4*i])<<std::endl;
-        }
+        }*/
 
 
 
@@ -161,11 +161,11 @@ void save_ico(std::string filename, const Matrix<Color>& img)
                                 filesize, filesize>>8, filesize>>16, filesize>>24,
                                  22, 0, 0, 0};
 
-        std::cout<<"image_entry"<<std::endl;
+        /*std::cout<<"image_entry"<<std::endl;
         for(int i=0;i<4;++i)
         {
             std::cout<<(*(unsigned*)&image_entry[4*i])<<std::endl;
-        }
+        }*/
 
         myfile.write(image_entry, 16);
         filesize = 3*w*h;
@@ -176,11 +176,11 @@ void save_ico(std::string filename, const Matrix<Color>& img)
                         0, 0, 0, 0,
                         filesize, filesize>>8, filesize>>16, filesize>>24};
         unsigned char* info_u = (unsigned char*)info;
-        std::cout<<"info"<<std::endl;
+        /*std::cout<<"info"<<std::endl;
         for(int i=0;i<10;++i)
         {
             std::cout<<(*(unsigned*)&info_u[4*i])<<std::endl;
-        }
+        }*/
         myfile.write(info, 40);
 
         for(std::size_t i=h;i>0;--i)

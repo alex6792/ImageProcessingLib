@@ -95,7 +95,7 @@ template <class T> void save_csv(std::string filename, const Matrix<T>& M, char 
         {
             for(std::size_t j=0;j<M.colNb()-1;++j)
                 myfile<<M(i, j)<<separator;
-            myfile<<M(i, M.colNb()-1)<<'\n';
+            myfile<<M(i, M.colNb()-1)<<std::endl;
         }
         myfile.close();
     }

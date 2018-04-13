@@ -28,10 +28,10 @@ Matrix<Color> read_img(std::string filename)
     {
         return read_ico(filename);
     }
-    else if(!extension3.compare("jpg"))
+    /*else if(!extension3.compare("jpg"))
     {
         return read_jpeg(filename);
-    }
+    }*/
     else if(!extension3.compare("pcx"))
     {
         return read_pcx(filename);
@@ -84,10 +84,10 @@ void save_img(std::string filename, const Matrix<Color>& img)
     {
         save_ico(filename, img);
     }
-    else if(!extension3.compare("jpg"))
+    /*else if(!extension3.compare("jpg"))
     {
         save_jpeg(filename, img);
-    }
+    }*/
     else if(!extension3.compare("pcx"))
     {
         save_pcx(filename, img);

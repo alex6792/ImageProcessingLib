@@ -12,6 +12,7 @@
 
 
 #include <deque>
+#include <functional>
 #include <iostream>
 
 
@@ -139,6 +140,7 @@ template <class T> class Matrix
         void operator+=(const Matrix<T>&);
         void operator-=(const Matrix<T>&);
         void operator*=(const Matrix<T>&);
+        void operator/=(const Matrix<T>&);
 
         void operator+=(const T&);
         void operator-=(const T&);
@@ -149,6 +151,7 @@ template <class T> class Matrix
         Matrix<T> operator+(const Matrix<T>&) const;
         Matrix<T> operator-(const Matrix<T>&) const;
         Matrix<T> operator*(const Matrix<T>&) const;
+        Matrix<T> operator/(const Matrix<T>&) const;
 
         Matrix<T> operator+(const T&) const;
         Matrix<T> operator-(const T&) const;
@@ -196,6 +199,8 @@ template <class T> Matrix<T> zeros(std::size_t, std::size_t);
 template <typename Type, class T> Matrix<T> apply(const Matrix<Type>&, T (*)(Type));
 template <typename Type, class T> Matrix<T> apply(const Matrix<Type>&, T (*)(const Type&));
 template <typename Type, class T> Matrix<T> apply(const Matrix<Type>&, T (Type::*)() const);
+//template <typename Type, class T> Matrix<T> apply(const Matrix<Type>&, std::function<T(Type)>);
+//template <typename Type, class T> Matrix<T> apply(const Matrix<Type>&, std::function<T(const Type&)>);
 
 template <typename T1, typename T2, class T> Matrix<T> apply(const Matrix<T1>&, const Matrix<T2>&, T (*)(T1, T2));
 template <typename T1, typename T2, class T> Matrix<T> apply(const Matrix<T1>&, const Matrix<T2>&, T (*)(const T1&, const T2&));

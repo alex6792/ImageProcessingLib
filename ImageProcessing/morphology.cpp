@@ -142,10 +142,11 @@ Matrix<bool> convex_hull(const Matrix<bool>& M)
     Matrix<std::size_t> meshY = mesh.second;
     Matrix<std::size_t> meshU = meshX+meshY;
     Matrix<std::size_t> meshV = W+meshX-meshY;
-    Matrix<bool> result = (meshX>=xmin)*(meshX<=xmax);
-    result *= (meshY>=ymin)*(meshY<=ymax);
-    result *= (meshU>=umin)*(meshU<=umax);
-    result *= (meshV>=vmin)*(meshV<=vmax);
+    Matrix<bool> x_ok = AND(meshX>=xmin,meshX<=xmax);
+    Matrix<bool> y_ok = AND(meshY>=ymin,meshY<=ymax);
+    Matrix<bool> u_ok = AND(meshU>=umin,meshU<=umax);
+    Matrix<bool> v_ok = AND(meshV>=vmin,meshV<=vmax);
+    Matrix<bool> result = x_ok*y_ok*u_ok*v_ok;
     return result;
 }
 
@@ -354,12 +355,9 @@ Matrix<unsigned char> closing_by_reconstruction(const Matrix<unsigned char>& M, 
     I.clear();
     I.push_back(dilate(M, mask));
     I.push_back(max(erode(I[0], mask), M));
-    int cpt = 0;
     while(any(I[I.size()-1]!=I[I.size()-2]))
     {
         I.push_back(max(erode(I[I.size()-1], mask), M));
-        ++cpt;
-        std::cout<<cpt<<std::endl;
     }
     return I[I.size()-1];
 }
@@ -492,11 +490,18 @@ Matrix<unsigned char> median_filter(const Matrix<unsigned char>& M, const Mask& 
                     }
                 }
             }
-            std::sort(vec.begin(), vec.end());
+
             if(vec.size()%2==1)
+            {
+                std::nth_element(vec.begin(), vec.begin()+(vec.size()-1)/2, vec.end());
                 res(i, j) = vec[(vec.size()-1)/2];
+            }
             else
+            {
+                std::nth_element(vec.begin(), vec.begin()+(vec.size())/2-1, vec.end());
+                std::nth_element(vec.begin()+(vec.size())/2, vec.begin()+(vec.size())/2, vec.end());
                 res(i, j) = ((int)vec[vec.size()/2-1]+(int)vec[vec.size()/2])/2;
+            }
         }
     }
     return res;
@@ -516,12 +521,9 @@ Matrix<unsigned char> opening_by_reconstruction(const Matrix<unsigned char>& M, 
     I.clear();
     I.push_back(erode(M, mask));
     I.push_back(min(dilate(I[0], mask), M));
-    int cpt = 0;
     while(any(I[I.size()-1]!=I[I.size()-2]))
     {
         I.push_back(min(dilate(I[I.size()-1], mask), M));
-        ++cpt;
-        std::cout<<cpt<<std::endl;
     }
 
     return I[I.size()-1];

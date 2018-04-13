@@ -11,11 +11,13 @@ PCA::PCA(std::size_t nb_components_arg)
 
 void PCA::fit(const Matrix<float>& M)
 {
+    if(nb_components==0)
+        nb_components = M.colNb();
     StdSc = StandardScaler(true, true, 2);
     Matrix<float> scaled_mat = StdSc.fit_transform(M);
     covar = dot(transpose(scaled_mat), scaled_mat);
     std::pair<Matrix<float>, Matrix<float> > DP = jacobi(covar);
-    eigenvalues = DP.first;
+    eigenvalues = DP.first.getSubmat(0,nb_components,0,nb_components);
     eigenvectors = DP.second.getCols(0, nb_components);
 }
 

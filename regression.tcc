@@ -1,4 +1,5 @@
 #include "linalg.hpp"
+#include "optimization.hpp"
 #include "statistics.hpp"
 
 
@@ -15,7 +16,8 @@ template <class T> Matrix<T> poly_regression(const Matrix<T>& Y, const Matrix<T>
                 A.setCol(0, ones<T>(n, 1));
                 for(std::size_t i=1;i<=degree;++i)
                     A.setCol(i, pow(X, T(i)));
-                return dot(pinv(A), Y);
+                Matrix<T> X0 = zeros<T>(n,1);
+                return solve(A, Y, X0);
             }
             else
                 std::cout<<"not enough elements"<<std::endl;

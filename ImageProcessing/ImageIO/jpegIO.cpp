@@ -1,4 +1,4 @@
-#include <stdio.h>
+/*#include <stdio.h>
 #include <jpeglib.h>
 #include <jerror.h>
 
@@ -110,3 +110,4 @@ void save_jpeg(std::string filename, const Matrix<Color>& img)
     jpeg_destroy_compress(&cinfo);
     fclose(outfile);
 }
+*/

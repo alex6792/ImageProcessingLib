@@ -14,6 +14,7 @@
 #include "../matrix.hpp"
 #include <complex>
 
+
 float circularity(const Matrix<bool>&);
 float major_axis(const Matrix<bool> &);
 

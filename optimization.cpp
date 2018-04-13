@@ -4,20 +4,20 @@
 #include <deque>
 
 
-Matrix<float> steepest_descent(std::pair<float, Matrix<float> > (*ptr)(const Matrix<float>&), const Matrix<float>& X0)
+Matrix<float> steepest_descent(opti_func f, const Matrix<float>& X0)
 {
     Matrix<float> X = X0;
     Matrix<float> grad = ones<float>(X.rowNb(),X.colNb());
     std::size_t cpt = 0;
     while(norm(grad)>10e-10 && cpt<100)
     {
-        auto evalfunc = (*ptr)(X);
+        auto evalfunc = f(X);
         //std::cout<<"X "<<X<<std::endl;
         float func = evalfunc.first;
         std::cout<<"err "<<func<<std::endl;
         grad = evalfunc.second;
         //std::cout<<"grad "<<grad<<std::endl;
-        float alpha = WolfeLineSearch(ptr, X, func, grad, -grad);
+        float alpha = StrongWolfeLineSearch(f, X, func, grad, -grad);
         //std::cout<<"alpha "<<alpha<<std::endl;
         X-=alpha*grad;
         ++cpt;
@@ -25,13 +25,13 @@ Matrix<float> steepest_descent(std::pair<float, Matrix<float> > (*ptr)(const Mat
     return X;
 }
 
-Matrix<float> bfgs(std::pair<float, Matrix<float> > (*ptr)(const Matrix<float>&), const Matrix<float>& X0)
+Matrix<float> bfgs(opti_func f, const Matrix<float>& X0)
 {
 
     Matrix<float> X = X0;
     Matrix<float> H = id<float>(X.size());
     std::size_t cpt = 0;
-    auto evalfunc = (*ptr)(X);
+    auto evalfunc = f(X);
     float func_old = evalfunc.first;
     Matrix<float> grad_old = evalfunc.second;
     Matrix<float> grad = grad_old;
@@ -39,10 +39,10 @@ Matrix<float> bfgs(std::pair<float, Matrix<float> > (*ptr)(const Matrix<float>&)
     while(norm(grad)>10e-10 && cpt<100)
     {
         Matrix<float> p = -dot(H,grad_old);
-        float alpha = WolfeLineSearch(ptr, X, func_old, grad_old, p);
+        float alpha = StrongWolfeLineSearch(f, X, func_old, grad_old, p);
         X+=alpha*p;
 
-        auto evalfunc = (*ptr)(X);
+        auto evalfunc = f(X);
         float func = evalfunc.first;
         grad = evalfunc.second;
         std::cout<<"err "<<func<<std::endl;
@@ -66,23 +66,22 @@ Matrix<float> bfgs(std::pair<float, Matrix<float> > (*ptr)(const Matrix<float>&)
     return X;
 }
 
-Matrix<float> lbfgs(std::pair<float, Matrix<float> > (*ptr)(const Matrix<float>&), const Matrix<float>& X0)
+Matrix<float> lbfgs(opti_func f, const Matrix<float>& X0)
 {
     std::cout<<"hello"<<std::endl;
-    int m = 5;
+    int m = 3;
     std::deque<Matrix<float> > s_queue, y_queue;
 
     Matrix<float> X = X0;
     std::size_t cpt = 0;
 
-    auto evalfunc = (*ptr)(X);
+    auto evalfunc = f(X);
     float func_old = evalfunc.first;
     Matrix<float> grad_old = evalfunc.second;
     Matrix<float> grad = grad_old;
 
     while(norm(grad)>10e-10 && cpt<100)
     {
-        std::cout<<cpt<<std::endl;
         Matrix<float> p = grad_old;
         if(cpt>0)
         {
@@ -93,15 +92,17 @@ Matrix<float> lbfgs(std::pair<float, Matrix<float> > (*ptr)(const Matrix<float>&
                 cur_y = y_queue[i];
                 cur_s = s_queue[i];
                 float rho = sum(cur_y*cur_s);
-                std::cout<<"rho"<<rho<<std::endl;
+                if(std::abs(rho)<10e-9)
+                {
+                    return X;
+                }
                 rho_queue.push_back(rho);
                 float alpha = sum(cur_s*p)/rho;
                 alpha_queue.push_back(alpha);
                 p-=alpha*cur_y;
             }
             p *= rho_queue.front()/sum(y_queue[0]*y_queue[0]);
-            std::cout<<p<<std::endl;
-            for(std::size_t i=s_queue.size();i>0;--i)
+            for(std::size_t i=rho_queue.size();i>0;--i)
             {
                 float beta = sum(p*y_queue[i-1])/rho_queue[i-1];
                 p+=s_queue[i-1]*(alpha_queue[i-1]-beta);
@@ -110,12 +111,12 @@ Matrix<float> lbfgs(std::pair<float, Matrix<float> > (*ptr)(const Matrix<float>&
             rho_queue.clear();
         }
         p = -p;
-        std::cout<<p<<std::endl;
-        float alpha = WolfeLineSearch(ptr, X, func_old, grad_old, p);
+        float alpha = StrongWolfeLineSearch(f, X, func_old, grad_old, p);
         X+=alpha*p;
 
-        auto evalfunc = (*ptr)(X);
+        auto evalfunc = f(X);
         float func = evalfunc.first;
+        std::cout<<"err "<<func<<std::endl;
         grad = evalfunc.second;
         s_queue.push_front(alpha*p);
         y_queue.push_front(grad-grad_old);
@@ -131,6 +132,7 @@ Matrix<float> lbfgs(std::pair<float, Matrix<float> > (*ptr)(const Matrix<float>&
     }
     return X;
 }
+
 
 Matrix<float> linprog_std(Matrix<float> f, Matrix<float> A, Matrix<float> b)
 {
@@ -335,6 +337,236 @@ Matrix<float> quadprog(Matrix<float> H, Matrix<float> f, Matrix<float> A, Matrix
     }
 }
 
+Matrix<float> conjugate_gradient(const Matrix<float>& A, const Matrix<float>& b, const Matrix<float>& X0)//solve Ax= b
+{
+    Matrix<float> X = X0;
+    Matrix<float> r = dot(A, X0)-b;
+    Matrix<float> p = -r;
+    std::size_t k = 0;
+    std::size_t ndims = X.size();
+    float r2 = sum(r*r);
+    while(k<ndims || r2>1e-10)
+    {
+        Matrix<float> Ap = dot(A, p);
+        float alpha = r2/sum(p*Ap);
+        X += alpha*p;
+        r += alpha*Ap;
+        float beta = sum(r*r)/r2;
+        r2 = sum(r*r);
+        p = -r+beta*p;
+        ++k;
+    }
+    return X;
+}
+
+Matrix<float> solve(const Matrix<float>& A, const Matrix<float>& b, const Matrix<float>& x0)//solve Ax= b in least square sens
+{
+    Matrix<float> x = x0;
+    Matrix<float> At = transpose(A);
+    Matrix<float> H = dot(At,A);
+    Matrix<float> f = -dot(At,b);
+    Matrix<float> grad = dot(H,x)+f;
+    std::size_t cpt = 0;
+    while(norm(grad)>10e-10 && cpt<100)
+    {
+
+        float alpha = sum(grad*grad)/sum(grad*dot(H,grad));
+        x-=alpha*grad;
+        grad = dot(H,x)+f;
+        ++cpt;
+    }
+    return x;
+}
+
+Matrix<float> solve(const Matrix<float>& A, const Matrix<float>& b, const Matrix<float>& x0, const Matrix<float>& lb, const Matrix<float>& ub)//solve Ax= b in least square sens
+{
+    Matrix<float> x = x0;
+    x = where(x>ub,ub,x);
+    x = where(x<lb,lb,x);
+    Matrix<float> At = transpose(A);
+    Matrix<float> H = dot(At,A);
+    Matrix<float> f = -dot(At,b);
+    Matrix<float> grad = dot(H,x)+f;
+    Matrix<float> z = zeros<float>(x.rowNb(),x.colNb());
+    Matrix<float> p = -grad;
+    p = where(AND(x>=ub,p>0),z,p);
+    p = where(AND(x<=lb,p<0),z,p);
+
+    std::size_t cpt = 0;
+    while(norm(p)>10e-10 && cpt<100)
+    {
+        float alpha = -sum(p*grad)/sum(p*dot(H,p));
+        //x+alpha*p>=lb
+        //alpha*p>=lb-x
+        Matrix<float> pplus = p;
+        Matrix<float> pmoins = p;
+        replace_if(pplus, p<=0.0f, std::max(max(p),10e-10f));
+        replace_if(pmoins, p>0.0f, std::min(min(p),-10e-10f));
+        Matrix<float> temp1 = (ub-x)*(1.0f/pplus);
+        Matrix<float> temp2 = (lb-x)*(1.0f/pmoins);
+        Matrix<float> temp3 = (lb-x)*(1.0f/pplus);
+        Matrix<float> temp4 = (ub-x)*(1.0f/pmoins);
+        float alpha_max = std::min(min(temp1),min(temp2));
+        float alpha_min = std::max(max(temp3),max(temp4));
+        alpha = alpha<alpha_min?alpha_min:alpha;
+        alpha = alpha>alpha_max?alpha_max:alpha;
+        x+=alpha*p;
+        grad = dot(H,x)+f;
+        p = -grad;
+        p = where(AND(x>=ub,p>0),z,p);
+        p = where(AND(x<=lb,p<0),z,p);
+        ++cpt;
+    }
+    return x;
+}
+
+float ArmijoLineSearch(std::pair<float, Matrix<float> > (*ptr)(const Matrix<float>&), const Matrix<float>& X0, float err, const Matrix<float>& g0, const Matrix<float>& p)
+{
+    float alpha = 1.0f;
+    float coeff = 0.5f;
+    float c1 = 0.1f;
+    float dir = sum(p*g0);
+    while(true)
+    {
+        float f_x_ap = ((*ptr)(X0+alpha*p)).first;
+        if(f_x_ap>err+c1*alpha*dir)
+            alpha*=coeff;
+        else
+            return alpha;
+    }
+}
+
+float WolfeLineSearch(std::pair<float, Matrix<float> > (*ptr)(const Matrix<float>&), const Matrix<float>& X, float err, const Matrix<float>& g0, const Matrix<float>& p)
+{
+    float alpha_min = 0.0f;
+    float alpha_max = FLT_MAX;
+    float t = 1.0f;
+    float c1 = 1e-4f;
+    float c2 = 0.9f;
+    float dir = sum(p*g0);
+    while(true)
+    {
+        auto f_x_ap = (*ptr)(X+t*p);
+        if(f_x_ap.first > err+c1*t*dir)
+        {
+            alpha_max = t;
+            t = 0.5f*(alpha_min+alpha_max);
+        }
+        else if(sum(p*f_x_ap.second) < c2*dir)
+        {
+            alpha_min = t;
+            if(alpha_max>=FLT_MAX)
+                t = 2.0f*alpha_min;
+            else
+                t = 0.5f*(alpha_min+alpha_max);
+        }
+        else
+        {
+            return t;
+        }
+    }
+}
+
+float zoom(opti_func f, const Matrix<float>& X0, float err, const Matrix<float>& g0, const Matrix<float>& p, float alphal, float alphah)
+{
+    float c1 = 1e-4f;
+    float c2 = 0.5f;
+
+    auto f_x0 = f(X0);
+    float fx0 = f_x0.first;
+    Matrix<float> gx0 = f_x0.second;
+    float slope0 = sum(p*gx0);
+
+    auto f_x_lo = f(X0+alphal*p);
+    float fxlo = f_x_lo.first;
+
+    std::size_t i=0;
+    while(true)
+    {
+        float alpha = (alphal+alphah)/2.0f;
+
+        Matrix<float> Xc = X0+alpha*p;
+        auto f_x_ap = f(Xc);
+        float fxc = f_x_ap.first;
+        Matrix<float> gxc = f_x_ap.second;
+
+        if((fxc>fx0+c1*alpha*slope0)||(fxc>=fxlo))
+        {
+            alphah = alpha;
+        }
+        else
+        {
+            float slopexc = sum(p*gxc);
+            if(std::abs(slopexc)<=-c2*slope0)
+            {
+                return alpha;
+            }
+            if(slopexc*(alphah-alphal)>=0)
+            {
+                alphah = alphal;
+            }
+            alphal = alpha;
+            fxlo = fxc;
+        }
+
+        ++i;
+    }
+}
+
+float StrongWolfeLineSearch(opti_func f, const Matrix<float>& X0, float err, const Matrix<float>& g0, const Matrix<float>& p)
+{
+    float c1 = 1e-4f;
+    float c2 = 0.5f;
+
+    float alphamin = 0;
+    float alphamax = FLT_MAX;
+    float alpha_old = 0;
+    float alpha = 1;
+
+    auto f_x0 = f(X0);
+    float fx0 = f_x0.first;
+    Matrix<float> gx0 = f_x0.second;
+    float slope0 = sum(p*gx0);
+
+    std::size_t i=1;
+
+    while(true)
+    {
+
+        auto f_old = f(X0+alpha_old*p);
+        float fold = f_old.first;
+        Matrix<float> gold = f_old.second;
+        float slopeold = sum(p*gold);
+
+        auto f_xc = f(X0+alpha*p);
+        float fxc = f_xc.first;
+        Matrix<float> gxc = f_xc.second;
+        float slopexc = sum(p*gxc);
+
+        if((fxc>fx0+c1*alpha*slope0)||(fxc>=fold && i>1))
+        {
+            return zoom(f, X0, err, g0, p, alpha_old, alpha);
+        }
+        if(std::abs(slopexc)<=-c2*slope0)
+        {
+            return alpha;
+        }
+        if(slopexc >= 0.0f)
+        {
+            return zoom(f, X0, err, g0, p, alpha, alpha_old);
+        }
+
+        alpha_old = alpha;
+        if(alpha>=FLT_MAX)
+            alpha = 2*alpha;
+        else
+            alpha = 0.5*(alphamax+alpha);
+
+        ++i;
+    }
+}
+
+
 // predefined function
 std::pair<float, Matrix<float> > rosenbrock(const Matrix<float>& X)
 {
@@ -367,168 +599,4 @@ std::pair<float, Matrix<float> > rastrigin(const Matrix<float>& X)
     g(0,0) = 2.0f*x + 10.0f*2.0f*PI*sin(2.0f*PI*x);
     g(1,0) = 2.0f*y + 10.0f*2.0f*PI*sin(2.0f*PI*y);
     return std::make_pair(f, g);
-}
-
-float ArmijoLineSearch(std::pair<float, Matrix<float> > (*ptr)(const Matrix<float>&), const Matrix<float>& X0, float err, const Matrix<float>& g0, const Matrix<float>& p)
-{
-    float alpha = 1.0f;
-    float coeff = 0.2f;
-    float c1 = 0.1f;
-    float dir = sum(p*g0);
-    while(true)
-    {
-        float f_x_ap = ((*ptr)(X0+alpha*p)).first;
-        if(f_x_ap>err+c1*alpha*dir)
-            alpha*=coeff;
-        else
-            return alpha;
-    }
-}
-
-float WolfeLineSearch(std::pair<float, Matrix<float> > (*ptr)(const Matrix<float>&), const Matrix<float>& X, float err, const Matrix<float>& g0, const Matrix<float>& p)
-{
-    float alpha_min = 0.0f;
-    float alpha_max = FLT_MAX;
-    float t = 1.0f;
-    float c1 = 0.1f;
-    float c2 = 0.9f;
-    float dir = sum(p*g0);
-    while(true)
-    {
-        auto f_x_ap = (*ptr)(X+t*p);
-        if(f_x_ap.first > err+c1*t*dir)
-        {
-            alpha_max = t;
-            t = 0.5f*(alpha_min+alpha_max);
-        }
-        else if(sum(p*f_x_ap.second) < c2*dir)
-        {
-            alpha_min = t;
-            if(alpha_max==FLT_MAX)
-                t = 2.0f*alpha_min;
-            else
-                t = 0.5f*(alpha_min+alpha_max);
-        }
-        else
-        {
-            return t;
-        }
-    }
-}
-
-Matrix<float> conjugate_gradient(const Matrix<float>& A, const Matrix<float>& b, const Matrix<float>& X)
-{
-    Matrix<float> X0 = X;
-    Matrix<float> r = dot(A, X0)-b;
-    Matrix<float> p = -r;
-    std::size_t k = 0;
-    std::size_t ndims = X0.size();
-    float r2 = sum(r*r);
-    while(k<ndims || r2>1e-10)
-    {
-        Matrix<float> Ap = dot(A, p);
-        float alpha = r2/sum(p*Ap);
-        X0 += alpha*p;
-        r += alpha*Ap;
-        float beta = sum(r*r)/r2;
-        r2 = sum(r*r);
-        p = -r+beta*p;
-        ++k;
-    }
-    return X0;
-}
-
-float zoom(std::pair<float, Matrix<float> > (*ptr)(const Matrix<float>&), const Matrix<float>& X0, float err, const Matrix<float>& g0, const Matrix<float>& p, float alphal, float alphah)
-{
-    float c1 = 1e-4;
-    float c2 = 0.5f;
-
-    auto f_x0 = (*ptr)(X0);
-    float fx0 = f_x0.first;
-    Matrix<float> gx0 = f_x0.second;
-    float slope0 = sum(p*gx0);
-
-    auto f_x_lo = (*ptr)(X0+alphal*p);
-    float fxlo = f_x_lo.first;
-
-    std::size_t i=0;
-    while(true)
-    {
-        float alpha = (alphal+alphah)/2.0f;
-
-        Matrix<float> Xc = X0+alpha*p;
-        auto f_x_ap = (*ptr)(Xc);
-        float fxc = f_x_ap.first;
-        Matrix<float> gxc = f_x_ap.second;
-
-        if((fxc>fx0+c1*alpha*slope0)||(fxc>=fxlo))
-        {
-            alphah = alpha;
-        }
-        else
-        {
-            float slopexc = sum(p*gxc);
-            if(std::abs(slopexc)<=-c2*slope0)
-            {
-                return alpha;
-            }
-            if(slopexc*(alphah-alphal)>=0)
-            {
-                alphah = alphal;
-            }
-            alphal = alpha;
-            fxlo = fxc;
-        }
-
-        ++i;
-    }
-}
-
-
-
-float StrongWolfeLineSearch(std::pair<float, Matrix<float> > (*ptr)(const Matrix<float>&), const Matrix<float>& X0, float err, const Matrix<float>& g0, const Matrix<float>& p)
-{
-    float c1 = 1e-4;
-    float c2 = 0.5f;
-
-    float alphamin = 0;
-    float alphamax = FLT_MAX;
-    float alpha_old = 0;
-    float alpha = 1;
-
-    auto f_x0 = (*ptr)(X0);
-    float fx0 = f_x0.first;
-    Matrix<float> gx0 = f_x0.second;
-    float slope0 = sum(p*gx0);
-
-    std::size_t i=0;
-
-    while(true)
-    {
-
-        Matrix<float> Xc = X0+alpha*p;
-        auto f_x_ap = (*ptr)(Xc);
-        float fxc = f_x_ap.first;
-        Matrix<float> gxc = f_x_ap.second;
-        float slopexc = sum(p*gxc);
-
-        if((fxc>fx0+c1*alpha*slope0)||(fxc>=fx0 && i>0))
-        {
-            return zoom(ptr, X0,err, g0, p, alpha_old, alpha);
-        }
-        if(std::abs(slopexc)<=-c2*slope0)
-        {
-            return alpha;
-        }
-        if(slopexc >= 0.0f)
-        {
-            return zoom(ptr, X0,err, g0, p, alpha_old, alpha);
-            return alpha;
-        }
-
-        alpha_old = alpha;
-        alpha = 2*alpha;
-
-        ++i;
-    }
 }

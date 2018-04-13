@@ -62,6 +62,11 @@ template <class T> Matrix<T> floor(const Matrix<T>&);
 template <class T> Matrix<T> trunc(const Matrix<T>&);
 template <class T> Matrix<T> round(const Matrix<T>&);
 
+// classification functions
+template <class T> Matrix<bool> isfinite(const Matrix<T>&);
+template <class T> Matrix<bool> isinf(const Matrix<T>&);
+template <class T> Matrix<bool> isnan(const Matrix<T>&);
+
 
 #include "mmath.tcc"
 
